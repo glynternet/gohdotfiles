@@ -1,0 +1,226 @@
+# VARIABLES
+MUSICDATE="$(date "+20%y-%m_%B")"
+MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
+DOWNLOADS="$HOME/Downloads"
+MAMP="/Applications/MAMP/htdocs/"
+SERVICES="/Users/glynhanmer/Library/Services"
+
+### PATHS
+if [ -d "/usr/local/mysql/bin" ]; then
+	export PATH=$PATH:/usr/local/mysql/bin
+fi
+
+# PERMANENT ALIASES
+alias cant_touch='touch'
+alias cdmamp='cd $MAMP'
+alias cdname='echo ${PWD##*/}'
+alias composer='php composer.phar'
+alias cp='cp -v'
+alias editcron='env EDITOR=nano crontab -e'
+alias ls="ls -Ga"
+alias mv='mv -v'
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
+alias sshglynserv='ssh glyn@192.168.0.34'
+
+
+# TEMPORARY ALIASES
+alias twc='perl /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/texcount.pl $(find /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/Chapters -iname "*.tex") | grep "Words in text: " | tail -1'
+alias wcl="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis; date >> wordcount; twc >> wordcount; twc"
+
+alias cdthesis="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis"
+
+[[ -n "$DROPBOX_PROFILE" ]] &&  alias editDROPBOX_PROFILE="vim $DROPBOX_PROFILE && . $DROPBOX_PROFILE"
+
+rsyncPhotos() {
+	say "Starting sync.";
+	rsync -av /Volumes/CANON500D/DCIM/100CANON/ /Users/glynhanmer/Mezzanine-MacBook/iMac/Photos/;
+	rsync -av /Users/glynhanmer/Mezzanine-MacBook/iMac/Photos/ /Volumes/SilverGlynny/Photos/;
+	say "Sync complete";
+}
+
+BBCproxy() {
+	if [ -z ${http_proxy+x} ] || [ -z ${https_proxy+x} ]; then
+		export http_proxy=http://www-cache.reith.bbc.co.uk:80;
+		echo "setting http_proxy to $http_proxy";
+		export https_proxy=http://www-cache.reith.bbc.co.uk:80;
+		echo "setting https_proxy to $https_proxy";
+	else 
+		echo "http_proxy is already set to '$http_proxy'";
+		echo "https_proxy is already set to '$https_proxy'";
+		echo "Unset these proxies to change them using the BBCproxy function."
+	fi
+}
+
+cdu() {
+	echo "cd .. $1 times"
+	COUNTER=0
+
+	if ! [[ "$1" =~ ^[0-9]+$ ]]; then
+		return "Argument should be an integer."
+	fi
+
+	while [[ $COUNTER -lt $1 ]] && [[ "$PWD" != "/" ]]; do
+			pwd
+			cd ..
+			(( COUNTER++ ))
+	done
+	pwd
+}
+
+cdl() {
+        echo "cd $1"
+	echo "%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%"
+        cd $1
+        ls
+}
+
+cdmus() {
+	COMPUTER_NAME="$(scutil --get ComputerName)"
+	checkName="Glyn’s iMac"
+
+	if [[ "$COMPUTER_NAME" != "$checkName" ]]; then
+		echo "You're on $COMPUTER_NAME, the wrong computer."
+	else
+		cd $MUSIC
+	fi
+}
+
+codeception() {
+	if [ -f ./vendor/bin/codecept ]; then
+		echo running php ./vendor/bin/codecept "$@"
+		php ./vendor/bin/codecept "$@"
+	else
+		echo "$(pwd)/vendor/bin/codecept" does not exist
+	fi
+}
+
+echoArguments() {
+	echo "\$# - $#"
+	echo "\$* - $*"
+	echo "\$@ - $@"
+	echo "for var in \"\$@; do echo \"\$var\""
+	for var in "$@"; do
+		echo "$var"
+	done
+	echo "for var in \"\$*; do echo \"\$*var\""
+	for var in "$*"; do
+		echo "$var"
+	done
+}
+
+externalIP() {
+	wget http://ipinfo.io/ip -qO -
+}
+
+getcomposer() {
+	curl -sS https://getcomposer.org/installer | php
+	printf "\e[31;47;1mNow init your composer project.\e[0m\n"
+}
+
+
+getproxy() {
+	printf "=============SYSTEM:=============\n"
+	system_profiler SPNetworkDataType | grep -i "proxy" | sed "s/^[ \t]*//"
+	printf "=============SHELL:==============\n"
+	echo "http_proxy:  $http_proxy"
+	echo "https_proxy: $https_proxy"
+}
+
+gohmysql() {
+	if [ "$*" != 'start' ] && [ "$*" != 'on' ] && [ "$*" != 'stop' ] && [ "$*" != 'off' ]; then
+		printf "Requires argument of start, on, stop or off.\n"
+		return
+	fi
+	printf "\e[31;47;1mRequires sudo privileges.\e[0m\n"
+	if [ "$*" == 'start' ] || [ "$*" == 'on' ]; then
+		sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+	elif [ "$*" == 'stop' ] || [ "$*" == 'off' ]; then
+	 	sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
+	fi
+}
+
+mkcd() {
+	if [ -d "$1" ]; then
+		echo "$1 is already a directory"
+		echo "Would you like to go to it? (yes/no)"
+		read answer
+		if [ "$answer" == 'yes' ] || [ "$answer" == 'y' ]; then
+			cd "$1"
+		fi
+	else 
+		echo "Making directory $1..."
+		mkdir "$1"
+		echo "Entering directory $1..."
+		cd "$1"
+	fi
+}
+
+mp3DownloadsToMusic() {
+	if [ -f $DOWNLOADS/*.mp3 ]; then
+		echo "MP3S WOOOOH"
+		for mp3File in $DOWNLOADS/*.mp3; do
+			mv "$mp3File" "$MUSIC"
+			echo "Moving "$mp3File""
+		done
+		echo "Files moved to $MUSIC"
+	else
+		echo "No .mp3 files to move from $DOWNLOADS directory"
+	fi
+}
+
+setupCodeception() {
+	getcomposer;
+	wget http://codeception.com/codecept.phar;
+	php composer.phar require "codeception/codeception:*";
+	php codecept.phar bootstrap;
+}
+
+stats(){
+	echo "OS: ${OS}"
+}
+
+toucho() {
+	if [ -f "$1" ]; then
+		echo "$1 already exists."
+		echo "Would you like to open it? (yes/no)"
+		read answer
+		if [ "$answer" == 'yes' ] || [ "$answer" == 'y' ]; then
+			open "$1"
+		fi
+		# apparently this should work - from http://unix.stackexchange.com/questions/111508/bash-test-if-word-is-in-set
+		# if [[ "$answer" =~ ^(yes/ye/y)$ ]]; then 
+		# 	open "$1"
+		# else
+		#     echo "$answer is not in the list"
+		# fi
+	else
+		touch "$1"
+		open "$1"
+	fi
+}
+
+unsetProxies() {
+	unset http_proxy
+	unset https_proxy
+}
+
+# I move across various *nix type OSes. I have found that it’s easiest to keep my login stuff (aliases & environment variables) in separate files as in .aliases-{OS}. E.g.:
+
+# $HOME/.aliases-darwin
+# $HOME/.aliases-linux
+# All I have to do then in .bashrc, or .profile, whatever is do this:
+
+OS=$( uname | tr '[:upper:]' '[:lower:]')
+# . $HOME/.aliases-${OS}
+# . $HOME/.environment_variables-${OS}
+# and/or
+
+# for SCRIPT in $( ls -1 $HOME/scripts/login/*-${OS} )
+# do
+#   . ${SCRIPT}
+# done
+
+bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ~/.backups.log; }
+
+
