@@ -1,9 +1,11 @@
 # VARIABLES
+GOHBASHPROFILE="$HOME/Dropbox/Configs/gohdotfiles/gohbashprofile"
 MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
 SERVICES="/Users/glynhanmer/Library/Services"
+
 
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
@@ -26,7 +28,6 @@ alias editcron='env EDITOR=nano crontab -e'
 alias ls="ls -Ga"
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-#alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 alias sshglynserv='ssh glyn@192.168.0.34'
 
 
@@ -36,7 +37,7 @@ alias wcl="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis; date >> wordcount
 
 alias cdthesis="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis"
 
-[[ -n "$DROPBOX_PROFILE" ]] &&  alias editDROPBOX_PROFILE="vim $DROPBOX_PROFILE && . $DROPBOX_PROFILE"
+[[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="vim $GOHBASHPROFILE && . $GOHBASHPROFILE"
 
 rsyncPhotos() {
 	say "Starting sync.";
@@ -228,5 +229,4 @@ OS=$( uname | tr '[:upper:]' '[:lower:]')
 # done
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ~/.backups.log; }
-
 
