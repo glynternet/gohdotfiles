@@ -18,6 +18,14 @@ elif [ -d "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin" ]; then
        	export PATH=$PATH:"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
 fi
 
+if [ -d "/Library/Frameworks/Python.framework/Versions/3.5/bin" ]; then
+	export PATH=/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}
+fi
+
+if [ -d "/usr/local/php5/bin" ]; then
+	export PATH=/usr/local/php5/bin:${PATH}
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
