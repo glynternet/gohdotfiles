@@ -10,6 +10,12 @@ if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
 fi
 
+if [ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" ]; then
+        export PATH=$PATH:"/Applications/Sublime Text.app/Contents/SharedSupport/bin"
+elif [ -d "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin" ]; then
+       	export PATH=$PATH:"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
@@ -20,7 +26,7 @@ alias editcron='env EDITOR=nano crontab -e'
 alias ls="ls -Ga"
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
+#alias subl='/Applications/Sublime\ Text\ 2.app/Contents/SharedSupport/bin/subl'
 alias sshglynserv='ssh glyn@192.168.0.34'
 
 
