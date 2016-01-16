@@ -26,6 +26,10 @@ if [ -d "/usr/local/php5/bin" ]; then
 	export PATH=/usr/local/php5/bin:${PATH}
 fi
 
+if [ -d "/usr/local/php5/bin" ]; then
+	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
