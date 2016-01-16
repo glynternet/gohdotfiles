@@ -47,9 +47,12 @@ alias sshglynserv='ssh glyn@192.168.0.34'
 alias twc='perl /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/texcount.pl $(find /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/Chapters -iname "*.tex") | grep "Words in text: " | tail -1'
 alias wcl="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis; date >> wordcount; twc >> wordcount; twc"
 
-alias cdthesis="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis"
-
 [[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="vim $GOHBASHPROFILE && . $GOHBASHPROFILE"
+
+# AWS CLI Completer
+if [ -x /usr/local/bin/aws_completer ]; then
+        complete -C '/usr/local/bin/aws_completer' aws;
+fi;
 
 rsyncPhotos() {
 	say "Starting sync.";
