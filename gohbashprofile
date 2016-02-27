@@ -30,18 +30,33 @@ if [ -d "/usr/local/php5/bin" ]; then
 	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
 fi
 
+if [[ -d "/Users/glynhanmer/Dropbox/go" ]]; then
+	export GOPATH='/Users/glynhanmer/Dropbox/go'
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias composer='php composer.phar'
 alias cp='cp -v'
+alias dateSorted='date +%Y%m%d_%H%M'
 alias editcron='env EDITOR=nano crontab -e'
+alias grep='grep --color=auto'
+alias fgrep='fgrep --color=auto'
+alias egrep='egrep --color=auto'
 alias ls="ls -Ga"
+alias lsusers='cut -d: -f1 /etc/passwd'
+alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias sshglynserv='ssh glyn@192.168.0.34'
 
+# AWS ALIASES
+alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId}'"
+
+# AV ORRON GLYN ALIASES
+alias squiggmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
 # TEMPORARY ALIASES
 alias twc='perl /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/texcount.pl $(find /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/Chapters -iname "*.tex") | grep "Words in text: " | tail -1'
@@ -200,6 +215,7 @@ setupCodeception() {
 
 stats(){
 	echo "OS: ${OS}"
+	echo "Shell: ${SHELL}"
 }
 
 toucho() {
