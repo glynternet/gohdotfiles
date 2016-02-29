@@ -6,7 +6,6 @@ DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
 SERVICES="/Users/glynhanmer/Library/Services"
 
-
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
@@ -187,7 +186,7 @@ mkcd() {
 		fi
 	else 
 		echo "Making directory $1..."
-		mkdir "$1"
+		mkdir -p "$1"
 		echo "Entering directory $1..."
 		cd "$1"
 	fi
