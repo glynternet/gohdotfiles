@@ -4,7 +4,7 @@ MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
-SERVICES="/Users/glynhanmer/Library/Services"
+SERVICES=~/"Library/Services"
 
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
@@ -29,8 +29,8 @@ if [ -d "/usr/local/php5/bin" ]; then
 	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
 fi
 
-if [[ -d "/Users/glynhanmer/Dropbox/go" ]]; then
-	export GOPATH='/Users/glynhanmer/Dropbox/go'
+if [[ -d ~/"Dropbox/go" ]]; then
+	export GOPATH='~/Dropbox/go'
 fi
 
 # PERMANENT ALIASES
@@ -57,23 +57,19 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 # AV ORRON GLYN ALIASES
 alias squiggmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
-# TEMPORARY ALIASES
-alias twc='perl /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/texcount.pl $(find /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis/Chapters -iname "*.tex") | grep "Words in text: " | tail -1'
-alias wcl="cd /Users/glynhanmer/Dropbox/BBC/MScProject/Thesis; date >> wordcount; twc >> wordcount; twc"
+# Icinga Exports
+export CC='ccache clang'
+export CXX='ccache clang++'
+export CCACHE_CPP2=yes
 
-[[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="vim $GOHBASHPROFILE && . $GOHBASHPROFILE"
+# TEMPORARY ALIASES
+
+[[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
 
 # AWS CLI Completer
 if [ -x /usr/local/bin/aws_completer ]; then
         complete -C '/usr/local/bin/aws_completer' aws;
 fi;
-
-rsyncPhotos() {
-	say "Starting sync.";
-	rsync -av /Volumes/CANON500D/DCIM/100CANON/ /Users/glynhanmer/Mezzanine-MacBook/iMac/Photos/;
-	rsync -av /Users/glynhanmer/Mezzanine-MacBook/iMac/Photos/ /Volumes/SilverGlynny/Photos/;
-	say "Sync complete";
-}
 
 BBCproxy() {
 	if [ -z ${http_proxy+x} ] || [ -z ${https_proxy+x} ]; then
