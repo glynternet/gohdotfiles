@@ -52,7 +52,7 @@ alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias sshglynserv='ssh glyn@192.168.0.34'
 
 # AWS ALIASES
-alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId}'"
+alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
 
 # AV ORRON GLYN ALIASES
 alias squiggmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
