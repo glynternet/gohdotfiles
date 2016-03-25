@@ -1,5 +1,4 @@
 # VARIABLES
-GOHBASHPROFILE="$HOME/Dropbox/Configs/gohdotfiles/gohbashprofile"
 MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
