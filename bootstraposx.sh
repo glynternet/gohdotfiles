@@ -12,6 +12,7 @@ defaults write com.apple.dock static-only -bool TRUE;
 killall Dock
 
 #Install Homebrew
+
 cd ~
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
@@ -21,6 +22,7 @@ pip install --upgrade pip
 sudo pip install awscli
 sudo pip install awscli --ignore-installed six
 
+#Set Sublime as default text editor
 cp -r ~/Library/Preferences/com.apple.LaunchServices{,.bak}
 defaults write com.apple.LaunchServices/com.apple.launchservices.secure LSHandlers -array-add \
 '{LSHandlerContentType=public.plain-text;LSHandlerRoleAll=com.sublimetext.3;}'
