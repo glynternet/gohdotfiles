@@ -17,6 +17,8 @@ cd ~
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 
 brew install git
+git config --global user.name "Glyn Hanmer"
+git config --global user.email "glynhanmer@gmail.com"
 brew install python
 pip install --upgrade pip
 sudo pip install awscli
