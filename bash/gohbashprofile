@@ -34,6 +34,10 @@ if [[ -d ~/"Dropbox/go" ]]; then
 	export GOPATH=~/'Dropbox/go'
 fi
 
+if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
+	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
