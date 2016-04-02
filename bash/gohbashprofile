@@ -52,6 +52,7 @@ alias egrep='egrep --color=auto'
 alias ls="ls -Ga"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
+alias money='subl -w /Volumes/Spinny/Dropbox/Money/paypaltotal && /Volumes/Spinny/Dropbox/Money/paypaltotal'
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias sshglynserv='ssh glyn@192.168.0.34'
