@@ -5,6 +5,11 @@ DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
 SERVICES=~/"Library/Services"
 
+# Icinga Variables
+export CC='ccache clang'
+export CXX='ccache clang++'
+export CCACHE_CPP2='yes'
+
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
@@ -63,25 +68,24 @@ alias sshglynserv='ssh glyn@192.168.0.34'
 alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
 
 # AV ORRON GLYN ALIASES
-alias squiggmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
-
-# Icinga Exports
-export CC='ccache clang'
-export CXX='ccache clang++'
-export CCACHE_CPP2=yes
+alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
 # RIDERHQ ALIASES
-export startRiderHQJetty='java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
+alias startRiderHQJetty='java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
 
 # TEMPORARY ALIASES
 
 [[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
+
+# CONFIGS
 
 # AWS CLI Completer
 if [ -x /usr/local/bin/aws_completer ]; then
         complete -C '/usr/local/bin/aws_completer' aws;
 fi;
 
+
+# FUNCTIONS
 BBCproxy() {
 	if [ -z ${http_proxy+x} ] || [ -z ${https_proxy+x} ]; then
 		export http_proxy=http://www-cache.reith.bbc.co.uk:80;
