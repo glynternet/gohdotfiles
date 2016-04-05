@@ -3,7 +3,7 @@ MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
-SERVICES=~/"Library/Services"
+SERVICES=${HOME}/"Library/Services"
 
 # Icinga Variables
 export CC='ccache clang'
@@ -33,8 +33,8 @@ if [ -d "/usr/local/php5/bin" ]; then
 	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
 fi
 
-if [[ -d ~/"Dropbox/go" ]]; then
-	export GOPATH=~/'Dropbox/go'
+if [[ -d ${HOME}/"Dropbox/go" ]]; then
+	export GOPATH=${HOME}/'Dropbox/go'
 fi
 
 if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
@@ -274,5 +274,5 @@ OS=$( uname | tr '[:upper:]' '[:lower:]')
 #   . ${SCRIPT}
 # done
 
-bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ~/.backups.log; }
+bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
