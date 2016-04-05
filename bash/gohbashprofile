@@ -45,6 +45,11 @@ if [[ -d "${HOME}/Dropbox/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/Dropbox/scripts"
 fi
 
+if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
+	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
+fi
+
+# ALIASES
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
