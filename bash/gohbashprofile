@@ -38,6 +38,10 @@ if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
 	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
 fi
 
+if [[ -d "${HOME}/Dropbox/scripts" ]]; then
+	export PATH="${PATH}:${HOME}/Dropbox/scripts"
+fi
+
 # PERMANENT ALIASES
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
@@ -67,6 +71,9 @@ alias squiggmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -
 export CC='ccache clang'
 export CXX='ccache clang++'
 export CCACHE_CPP2=yes
+
+# RIDERHQ ALIASES
+export startRiderHQJetty='java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
 
 # TEMPORARY ALIASES
 
