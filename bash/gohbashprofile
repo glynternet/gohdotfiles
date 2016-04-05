@@ -1,5 +1,3 @@
-#!/bin/bash
-
 # VARIABLES
 MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
