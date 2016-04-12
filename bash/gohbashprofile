@@ -58,6 +58,7 @@ alias composer='php composer.phar'
 alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
 alias editcron='env EDITOR=nano crontab -e'
+alias externalip='curl -s https://4.ifcfg.me/'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -76,7 +77,7 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
 # RIDERHQ ALIASES
-alias startRiderHQJetty='java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
+alias startRiderHQJetty='cd /usr/local/jetty9; java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
 
 # TEMPORARY ALIASES
 
