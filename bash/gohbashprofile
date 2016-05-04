@@ -59,6 +59,7 @@ alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
 alias editcron='env EDITOR=nano crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
+alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
@@ -68,7 +69,7 @@ alias lslisteningports='netstat -lpn'
 alias money='subl -w /Volumes/Spinny/Dropbox/Money/paypaltotal && /Volumes/Spinny/Dropbox/Money/paypaltotal'
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
-alias sshglynserv='ssh glyn@192.168.0.34'
+alias sshhosts='cat ~/.ssh/config | grep Host'
 
 # AWS ALIASES
 alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
@@ -76,8 +77,8 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
-# RIDERHQ ALIASES
-alias startRiderHQJetty='cd /usr/local/jetty9; java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
+# RIDERHQ ALIASES - COMMENTED OUT UNTIL NO CHANCE OF ROLLBACK
+# alias startRiderHQJetty='cd /usr/local/jetty9; java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
 
 # TEMPORARY ALIASES
 
