@@ -240,16 +240,11 @@ toucho() {
 	if [ -f "$1" ]; then
 		echo "$1 already exists."
 		echo "Would you like to open it? (yes/no)"
-		read answer
-		if [ "$answer" == 'yes' ] || [ "$answer" == 'y' ]; then
+		if [[ "$answer" =~ ^(yes|ye|y)$ ]]; then 
 			open "$1"
+		else
+		    echo "$answer is not in the list"
 		fi
-		# apparently this should work - from http://unix.stackexchange.com/questions/111508/bash-test-if-word-is-in-set
-		# if [[ "$answer" =~ ^(yes/ye/y)$ ]]; then 
-		# 	open "$1"
-		# else
-		#     echo "$answer is not in the list"
-		# fi
 	else
 		touch "$1"
 		open "$1"
