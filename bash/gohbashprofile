@@ -79,6 +79,7 @@ alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p 
 
 # RIDERHQ ALIASES - COMMENTED OUT UNTIL NO CHANCE OF ROLLBACK
 # alias startRiderHQJetty='cd /usr/local/jetty9; java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
+alias tailJettyLog='tail -f /usr/local/jetty9/out.log'
 
 # TEMPORARY ALIASES
 
