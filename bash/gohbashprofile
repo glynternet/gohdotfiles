@@ -49,6 +49,11 @@ if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
 fi
 
+if [[ -d "${HOME}/Dropbox/RiderHQ/Scripts" ]]; then
+	export PATH="${PATH}:${HOME}/Dropbox/RiderHQ/Scripts"
+fi
+
+
 # ALIASES
 # PERMANENT ALIASES
 alias cant_touch='touch'
