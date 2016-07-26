@@ -14,10 +14,9 @@ git config --global user.name "Glyn Hanmer"
 git config --global user.email "glynhanmer@gmail.com"
 brew install python
 pip install --upgrade pip
-sudo pip install awscli
-sudo pip install awscli --ignore-installed six
+install awscli
+install awscli --ignore-installed six
 
 brew install caskroom/cask/brew-cask
 brew tap caskroom/versions
 brew cask install sublime-text3
-

@@ -49,10 +49,9 @@ if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
 fi
 
-if [[ -d "${HOME}/Dropbox/RiderHQ/Scripts" ]]; then
-	export PATH="${PATH}:${HOME}/Dropbox/RiderHQ/Scripts"
+if [[ -d "${HOME}/Dropbox/riderhq/scripts" ]]; then
+	export PATH="${PATH}:${HOME}/Dropbox/riderhq/scripts"
 fi
-
 
 # ALIASES
 # PERMANENT ALIASES
@@ -68,10 +67,9 @@ alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
-alias ls="ls -Ga"
+alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
-alias money='subl -w /Volumes/Spinny/Dropbox/Money/paypaltotal && /Volumes/Spinny/Dropbox/Money/paypaltotal'
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias sshhosts='cat ~/.ssh/config | grep Host'
@@ -214,6 +212,10 @@ mkcd() {
 		echo "Entering directory $1..."
 		cd "$1"
 	fi
+}
+
+money() {
+	subl -w ${HOME}/Dropbox/money/paypaltotal && ${HOME}/Dropbox/money/paypaltotal
 }
 
 mp3DownloadsToMusic() {
