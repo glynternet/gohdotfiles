@@ -4,6 +4,8 @@ MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
 MAMP="/Applications/MAMP/htdocs/"
 SERVICES=${HOME}/"Library/Services"
+[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
+[[ -d "${HOME}/java_local/projects/riderhq" ]] && export RHQ="${HOME}/java_local/projects/riderhq"
 
 # Icinga Variables
 export CC='ccache clang'
@@ -25,16 +27,12 @@ if [ -d "/Library/Frameworks/Python.framework/Versions/3.5/bin" ]; then
 	export PATH=/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}
 fi
 
-if [ -d "/usr/local/php5/bin" ]; then
-	export PATH=/usr/local/php5/bin:${PATH}
-fi
-
-if [ -d "/usr/local/php5/bin" ]; then
+if [ -d "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin" ]; then
 	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
 fi
 
 if [[ -d ${HOME}/"Dropbox/go" ]]; then
-	export GOPATH=${HOME}/'Dropbox/go'
+	export GOPATH="${HOME}/Dropbox/go"
 fi
 
 if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
@@ -58,7 +56,6 @@ fi
 alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
-alias composer='php composer.phar'
 alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
 alias editcron='env EDITOR=nano crontab -e'
@@ -80,13 +77,8 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
-# RIDERHQ ALIASES - COMMENTED OUT UNTIL NO CHANCE OF ROLLBACK
-# alias startRiderHQJetty='cd /usr/local/jetty9; java -Djetty.home=/usr/local/jetty9 -jar /usr/local/jetty9/start.jar'
-alias tailJettyLog='tail -f /usr/local/jetty9/out.log'
-
 # TEMPORARY ALIASES
-
-[[ -n "$GOHBASHPROFILE" ]] &&  alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
+[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
 
 # CONFIGS
 
@@ -94,7 +86,6 @@ alias tailJettyLog='tail -f /usr/local/jetty9/out.log'
 if [ -x /usr/local/bin/aws_completer ]; then
         complete -C '/usr/local/bin/aws_completer' aws;
 fi;
-
 
 # FUNCTIONS
 BBCproxy() {
@@ -144,15 +135,6 @@ cdmus() {
 	fi
 }
 
-codeception() {
-	if [ -f ./vendor/bin/codecept ]; then
-		echo running php ./vendor/bin/codecept "$@"
-		php ./vendor/bin/codecept "$@"
-	else
-		echo "$(pwd)/vendor/bin/codecept" does not exist
-	fi
-}
-
 echoArguments() {
 	echo "\$# - $#"
 	echo "\$* - $*"
@@ -170,12 +152,6 @@ echoArguments() {
 externalIP() {
 	wget http://ipinfo.io/ip -qO -
 }
-
-getcomposer() {
-	curl -sS https://getcomposer.org/installer | php
-	printf "\e[31;47;1mNow init your composer project.\e[0m\n"
-}
-
 
 getproxy() {
 	printf "=============SYSTEM:=============\n"
@@ -196,6 +172,15 @@ gohmysql() {
 	elif [ "$*" == 'stop' ] || [ "$*" == 'off' ]; then
 	 	sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 	fi
+}
+
+install-and-log(){
+	sudo apt-get install $1 && echo $1 >> ./packages_installs.md
+	if [[ $? -ne 0 ]]; then
+		return
+	fi
+	echo "====LOGGED PACKAGES===="
+	cat ./packages_installs.md
 }
 
 mkcd() {
@@ -229,13 +214,6 @@ mp3DownloadsToMusic() {
 	else
 		echo "No .mp3 files to move from $DOWNLOADS directory"
 	fi
-}
-
-setupCodeception() {
-	getcomposer;
-	wget http://codeception.com/codecept.phar;
-	php composer.phar require "codeception/codeception:*";
-	php codecept.phar bootstrap;
 }
 
 stats(){
