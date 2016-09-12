@@ -41,6 +41,10 @@ if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
 	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
 fi
 
+if [[ -d /usr/lib/postgresql/9.5/bin/ ]]; then
+	export PATH=${PATH}:/usr/lib/postgresql/9.5/bin/
+fi
+
 if [[ -d "${HOME}/Dropbox/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/Dropbox/scripts"
 fi
@@ -198,6 +202,12 @@ gohmysql() {
 	elif [ "$*" == 'stop' ] || [ "$*" == 'off' ]; then
 	 	sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
 	fi
+}
+
+historyplain() {
+	tput bold
+	history $@ | cut -c 8-
+	tput sgr0
 }
 
 mkcd() {
