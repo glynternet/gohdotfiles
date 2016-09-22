@@ -12,17 +12,6 @@ export CC='ccache clang'
 export CXX='ccache clang++'
 export CCACHE_CPP2='yes'
 
-export_path_if_exists(){
-	if [[ $# -lt 1 ]]; then
-		echo "Requires argument of path to add."
-		exit 1
-	fi
-	newPath="$1"
-	if [ -d "$newPath" ]; then
-		export PATH="$PATH:$newPath"
-	fi
-}
-
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
@@ -48,6 +37,10 @@ fi
 
 if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
 	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
+fi
+
+if [[ -d /usr/lib/postgresql/9.5/bin/ ]]; then
+	export PATH=${PATH}:/usr/lib/postgresql/9.5/bin/
 fi
 
 export_path_if_exists "${HOME}/Dropbox/scripts"
@@ -219,6 +212,12 @@ install-and-log(){
 	fi
 	echo "====LOGGED PACKAGES===="
 	cat ./packages_installs.md
+}
+
+historyplain() {
+	tput bold
+	history $@ | cut -c 8-
+	tput sgr0
 }
 
 mkcd() {
