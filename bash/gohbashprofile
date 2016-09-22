@@ -12,6 +12,18 @@ export CC='ccache clang'
 export CXX='ccache clang++'
 export CCACHE_CPP2='yes'
 
+## Profile Functions
+export_path_if_exists(){
+	if [[ $# -lt 1 ]]; then
+		echo "Requires argument of path to add."
+		exit 1
+	fi
+	dirPath="$1"
+	if [ -d "$newPath" ]; then
+		export PATH="$PATH:$dirPath"
+	fi
+}
+
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
@@ -44,10 +56,6 @@ if [[ -d /usr/lib/postgresql/9.5/bin/ ]]; then
 fi
 
 export_path_if_exists "${HOME}/Dropbox/scripts"
-
-#if [[ -d "${HOME}/Dropbox/scripts" ]]; then
-#	export PATH="${PATH}:${HOME}/Dropbox/scripts"
-#fi
 
 if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
@@ -95,6 +103,12 @@ alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2'
 if [ -x /usr/local/bin/aws_completer ]; then
         complete -C '/usr/local/bin/aws_completer' aws;
 fi;
+
+if [ -x /usr/bin/aws_completer ]; then
+        complete -C '/usr/bin/aws_completer' aws;
+fi;
+
+# FUNCTIONS
 
 fetchPayLog(){
 	set -e
