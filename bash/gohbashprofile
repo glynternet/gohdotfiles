@@ -12,6 +12,17 @@ export CC='ccache clang'
 export CXX='ccache clang++'
 export CCACHE_CPP2='yes'
 
+export_path_if_exists(){
+	if [[ $# -lt 1 ]]; then
+		echo "Requires argument of path to add."
+		exit 1
+	fi
+	newPath="$1"
+	if [ -d "$newPath" ]; then
+		export PATH="$PATH:$newPath"
+	fi
+}
+
 ### PATHS
 if [ -d "/usr/local/mysql/bin" ]; then
 	export PATH=$PATH:/usr/local/mysql/bin
@@ -39,9 +50,11 @@ if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
 	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
 fi
 
-if [[ -d "${HOME}/Dropbox/scripts" ]]; then
-	export PATH="${PATH}:${HOME}/Dropbox/scripts"
-fi
+export_path_if_exists "${HOME}/Dropbox/scripts"
+
+#if [[ -d "${HOME}/Dropbox/scripts" ]]; then
+#	export PATH="${PATH}:${HOME}/Dropbox/scripts"
+#fi
 
 if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
 	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
@@ -77,6 +90,9 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
+# RHQ ALIASES
+alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2'
+
 # TEMPORARY ALIASES
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
 
@@ -86,6 +102,28 @@ alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p 
 if [ -x /usr/local/bin/aws_completer ]; then
         complete -C '/usr/local/bin/aws_completer' aws;
 fi;
+
+fetchPayLog(){
+	set -e
+	logDir="/var/riderhq/googlecheckout/notifications"
+	ssh pay -t "ls -ltr $logDir | tail -n 10"
+	echo "Which pay log would you like to fetch?"
+	read logName
+	echo "$logName"
+	logDest="${HOME}/$logName"
+	scp "pay:$logDir/$logName" "$logDest"
+	if [[ ! -f "$logDest" ]]; then
+		echo "Log fetch failed..."
+		exit 1
+	fi
+	echo "Log located at ${HOME}/$logName"
+	echo "Open in sublime? [y/n]"
+	read openInSublime
+	if [[ "$openInSublime" != 'y' ]]; then
+		exit
+	fi
+	subl "$logName"
+}
 
 # FUNCTIONS
 BBCproxy() {
@@ -214,6 +252,14 @@ mp3DownloadsToMusic() {
 	else
 		echo "No .mp3 files to move from $DOWNLOADS directory"
 	fi
+}
+
+ssh-disk-capacity(){
+	echo "ONLY DISKS BEGINNING WITH /dev"
+	for server in "$@"; do
+	echo "$server";
+	ssh "$server" 'df -h' | grep --color=none -E '^/dev';
+	done
 }
 
 stats(){
