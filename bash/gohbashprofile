@@ -220,12 +220,19 @@ gohmysql() {
 }
 
 install-and-log(){
-	sudo apt-get install $1 && echo $1 >> ./packages_installs.md
+	aptGetInstalledList=~/Dropbox/bash/package-installs/apt-get
+	if [[ ! -f "$aptGetInstalledList" ]]; then
+		echo "Unable to find log file at $aptGetInstalledList."
+		echo "Will not be able to log install."
+		echo "Exiting."
+		return 1
+	fi
+	sudo apt-get install $1 && echo $1 >> "$aptGetInstalledList"
 	if [[ $? -ne 0 ]]; then
-		return
+		return $?
 	fi
 	echo "====LOGGED PACKAGES===="
-	cat ./packages_installs.md
+	cat "$aptGetInstalledList"
 }
 
 historyplain() {
