@@ -2,7 +2,6 @@
 MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
-MAMP="/Applications/MAMP/htdocs/"
 SERVICES=${HOME}/"Library/Services"
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
 [[ -d "${HOME}/java_local/projects/riderhq" ]] && export RHQ="${HOME}/java_local/projects/riderhq"
@@ -19,8 +18,11 @@ export_path_if_exists(){
 		exit 1
 	fi
 	dirPath="$1"
-	if [ -d "$newPath" ]; then
-		export PATH="$PATH:$dirPath"
+	if [ -d "$dirPath" ]; then
+		export PATH="$PATH:$dirPath";
+	else
+		echo "Unable to find directory '$dirPath'"
+		ls $dirPath
 	fi
 }
 
@@ -206,19 +208,6 @@ getproxy() {
 	echo "https_proxy: $https_proxy"
 }
 
-gohmysql() {
-	if [ "$*" != 'start' ] && [ "$*" != 'on' ] && [ "$*" != 'stop' ] && [ "$*" != 'off' ]; then
-		printf "Requires argument of start, on, stop or off.\n"
-		return
-	fi
-	printf "\e[31;47;1mRequires sudo privileges.\e[0m\n"
-	if [ "$*" == 'start' ] || [ "$*" == 'on' ]; then
-		sudo launchctl load -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-	elif [ "$*" == 'stop' ] || [ "$*" == 'off' ]; then
-	 	sudo launchctl unload -F /Library/LaunchDaemons/com.oracle.oss.mysql.mysqld.plist
-	fi
-}
-
 install-and-log(){
 	sudo apt-get install $1 && echo $1 >> ./packages_installs.md
 	if [[ $? -ne 0 ]]; then
@@ -283,6 +272,7 @@ stats(){
 toucho() {
 	if [ -f "$1" ]; then
 		echo "$1 already exists."
+		read answer
 		echo "Would you like to open it? (yes/no)"
 		if [[ "$answer" =~ ^(yes|ye|y)$ ]]; then 
 			open "$1"
