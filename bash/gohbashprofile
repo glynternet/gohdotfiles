@@ -78,6 +78,7 @@ alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
+alias ipof='dig +short'
 alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
