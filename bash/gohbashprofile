@@ -86,6 +86,7 @@ alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
+alias shrug='echo "¯\_(ツ)_/¯" && echo "¯\_(ツ)_/¯" | xsel -ib && echo "Copied to clipboard."'
 alias sshhosts='cat ~/.ssh/config | grep Host'
 
 # AWS ALIASES
@@ -95,7 +96,7 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
 # RHQ ALIASES
-alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2'
+alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2 aws2 aws3 s5'
 
 # TEMPORARY ALIASES
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
