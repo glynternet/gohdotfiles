@@ -4,12 +4,6 @@ MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
 DOWNLOADS="$HOME/Downloads"
 SERVICES=${HOME}/"Library/Services"
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
-[[ -d "${HOME}/java_local/projects/riderhq" ]] && export RHQ="${HOME}/java_local/projects/riderhq"
-
-# Icinga Variables
-export CC='ccache clang'
-export CXX='ccache clang++'
-export CCACHE_CPP2='yes'
 
 ## Profile Functions
 export_path_if_exists(){
@@ -21,15 +15,16 @@ export_path_if_exists(){
 	if [ -d "$dirPath" ]; then
 		export PATH="$PATH:$dirPath";
 	else
-		echo "Unable to find directory '$dirPath'"
-		ls $dirPath
+		echo "Unable to add directory to PATH: unable to find '$dirPath'"
 	fi
 }
 
 ### PATHS
-if [ -d "/usr/local/mysql/bin" ]; then
-	export PATH=$PATH:/usr/local/mysql/bin
-fi
+export_path_if_exists "/Library/Frameworks/Python.framework/Versions/3.5/bin"
+export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
+export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
+export_path_if_exists /usr/lib/postgresql/9.5/bin/
+export_path_if_exists "${HOME}/Dropbox/scripts"
 
 if [ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" ]; then
         export PATH=$PATH:"/Applications/Sublime Text.app/Contents/SharedSupport/bin"
@@ -37,34 +32,8 @@ elif [ -d "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin" ]; then
        	export PATH=$PATH:"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
 fi
 
-if [ -d "/Library/Frameworks/Python.framework/Versions/3.5/bin" ]; then
-	export PATH=/Library/Frameworks/Python.framework/Versions/3.5/bin:${PATH}
-fi
-
-if [ -d "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin" ]; then
-	export PATH=${PATH}:/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin
-fi
-
 if [[ -d ${HOME}/"Dropbox/go" ]]; then
 	export GOPATH="${HOME}/Dropbox/go"
-fi
-
-if [[ -d /Applications/Postgres.app/Contents/Versions/latest/bin ]]; then
-	export PATH=${PATH}:/Applications/Postgres.app/Contents/Versions/latest/bin
-fi
-
-if [[ -d /usr/lib/postgresql/9.5/bin/ ]]; then
-	export PATH=${PATH}:/usr/lib/postgresql/9.5/bin/
-fi
-
-export_path_if_exists "${HOME}/Dropbox/scripts"
-
-if [[ -d "${HOME}/java_local/projects/riderhq/scripts" ]]; then
-	export PATH="${PATH}:${HOME}/java_local/projects/riderhq/scripts"
-fi
-
-if [[ -d "${HOME}/Dropbox/riderhq/scripts" ]]; then
-	export PATH="${PATH}:${HOME}/Dropbox/riderhq/scripts"
 fi
 
 # ALIASES
@@ -95,24 +64,13 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
-# RHQ ALIASES
+# RHQ PROFILE
+[[ -d "${HOME}/java_local/projects/riderhq" ]] && export RHQ="${HOME}/java_local/projects/riderhq"
 alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2 aws2 aws3 s5'
 
-# TEMPORARY ALIASES
-[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
-
-# CONFIGS
-
-# AWS CLI Completer
-if [ -x /usr/local/bin/aws_completer ]; then
-        complete -C '/usr/local/bin/aws_completer' aws;
-fi;
-
-if [ -x /usr/bin/aws_completer ]; then
-        complete -C '/usr/bin/aws_completer' aws;
-fi;
-
-# FUNCTIONS
+export_path_if_exists "${HOME}/java_local/projects/riderhq/deploy"
+export_path_if_exists "${HOME}/java_local/projects/riderhq/scripts"
+export_path_if_exists "${HOME}/Dropbox/riderhq/scripts"
 
 fetchPayLog(){
 	set -e
@@ -135,6 +93,19 @@ fetchPayLog(){
 	fi
 	subl "$logName"
 }
+# TEMPORARY ALIASES
+[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
+
+# CONFIGS
+
+# AWS CLI Completer
+if [ -x /usr/local/bin/aws_completer ]; then
+        complete -C '/usr/local/bin/aws_completer' aws;
+fi;
+
+if [ -x /usr/bin/aws_completer ]; then
+        complete -C '/usr/bin/aws_completer' aws;
+fi;
 
 # FUNCTIONS
 BBCproxy() {
@@ -316,4 +287,3 @@ OS=$( uname | tr '[:upper:]' '[:lower:]')
 # done
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
-
