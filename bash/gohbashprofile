@@ -19,11 +19,12 @@ export_path_if_exists(){
 	fi
 }
 
-### PATHS
-export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
 export_path_if_exists /usr/lib/postgresql/9.5/bin/
 export_path_if_exists "${HOME}/Dropbox/scripts"
+
+### macOS PATHS
+export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
+export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
 
 if [ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" ]; then
         export PATH=$PATH:"/Applications/Sublime Text.app/Contents/SharedSupport/bin"
