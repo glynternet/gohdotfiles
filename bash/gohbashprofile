@@ -24,22 +24,36 @@ export_path_if_exists(){
 	fi
 }
 
+export_if_exists(){
+	if [[ $# -lt 2 ]]; then
+		echo "Requires argument of variable name to export and path to check."
+		exit 1
+	fi
+	variableName="$1"
+	if [[ -z "$variableName" ]]; then
+		echo "Empty variable name given. Exiting."
+	fi
+	path="$2"
+	if [[ -z "$path" ]]; then
+		echo "Empty variable name given. Exiting."
+	fi
+	if [ -e "$path" ]; then
+		export "$variableName"="$path";
+	else
+		echo "Unable to export variable $variableName: unable to find '$path'"
+	fi
+}
+
 export_path_if_exists /usr/lib/postgresql/9.5/bin/
 export_path_if_exists "${HOME}/Dropbox/scripts"
 
 ### macOS PATHS
 export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
+export_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
+export_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
+export_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
 
-if [ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" ]; then
-        export PATH=$PATH:"/Applications/Sublime Text.app/Contents/SharedSupport/bin"
-elif [ -d "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin" ]; then
-       	export PATH=$PATH:"/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
-fi
-
-if [[ -d ${HOME}/"Dropbox/go" ]]; then
-	export GOPATH="${HOME}/Dropbox/go"
-fi
+export_if_exists GOPATH "${HOME}/Dropbox/go"
 
 # ALIASES
 # PERMANENT ALIASES
@@ -70,7 +84,7 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4';
 
 # RHQ PROFILE
-[[ -d "${HOME}/java_local/projects/riderhq" ]] && export RHQ="${HOME}/java_local/projects/riderhq"
+export_if_exists RHQ "${HOME}/java_local/projects/riderhq"
 alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2 aws2 aws3 s5'
 
 export_path_if_exists "${HOME}/java_local/projects/riderhq/deploy"
