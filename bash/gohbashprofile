@@ -24,12 +24,12 @@ export_path_if_exists(){
 	fi
 }
 
-### PATHS
-export_path_if_exists "/Library/Frameworks/Python.framework/Versions/3.5/bin"
-export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
 export_path_if_exists /usr/lib/postgresql/9.5/bin/
 export_path_if_exists "${HOME}/Dropbox/scripts"
+
+### macOS PATHS
+export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
+export_path_if_exists /Applications/Postgres.app/Contents/Versions/latest/bin
 
 if [ -d "/Applications/Sublime Text.app/Contents/SharedSupport/bin" ]; then
         export PATH=$PATH:"/Applications/Sublime Text.app/Contents/SharedSupport/bin"
@@ -76,6 +76,20 @@ alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2 aws2 aws3 s5'
 export_path_if_exists "${HOME}/java_local/projects/riderhq/deploy"
 export_path_if_exists "${HOME}/java_local/projects/riderhq/scripts"
 export_path_if_exists "${HOME}/Dropbox/riderhq/scripts"
+
+disk-space(){
+	baseDir="$1"
+	if [[ -z "$baseDir" ]]; then
+		echo "No base directory given, using root."
+		baseDir="/"
+	fi
+	depth="$2"
+	if [[ -z "$depth" ]]; then
+		echo "No max depth given, using 1."
+		depth=1
+	fi
+	sudo du -d"$depth" "$baseDir" | sort -g
+}
 
 fetchPayLog(){
 	set -e
