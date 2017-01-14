@@ -303,6 +303,16 @@ unsetProxies() {
 	unset https_proxy
 }
 
+wifi() {
+	name="$1"
+	wifiCodes=~/Dropbox/wifi_codes.txt 
+	if [[ -z "$name" ]]; then
+		cat $wifiCodes
+		exit
+	fi
+	grep -i $name $wifiCodes 
+}
+
 # I move across various *nix type OSes. I have found that it’s easiest to keep my login stuff (aliases & environment variables) in separate files as in .aliases-{OS}. E.g.:
 
 # $HOME/.aliases-darwin
