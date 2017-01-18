@@ -258,7 +258,7 @@ mkcd() {
 }
 
 money() {
-	subl -w ${HOME}/Dropbox/money/paypaltotal && ${HOME}/Dropbox/money/paypaltotal
+	subl ~/Dropbox/go/src/bitbucket.org/glynny/GOHMoney.sublime-project && psql -d money -p 5432 -U glynhanmer && ~/Dropbox/money/db/scripts/create-backups.sh
 }
 
 mp3DownloadsToMusic() {
