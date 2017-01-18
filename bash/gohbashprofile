@@ -1,7 +1,8 @@
 # VARIABLES
+MONEY="$HOME/Dropbox/money"
+MONEYDB="$HOME/Dropbox/money/db"
 MUSICDATE="$(date "+20%y-%m_%B")"
 MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
-DOWNLOADS="$HOME/Downloads"
 SERVICES=${HOME}/"Library/Services"
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
 
@@ -57,6 +58,7 @@ export_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin
 export_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
 
 export_if_exists GOPATH "${HOME}/Dropbox/go"
+export_if_exists GOGLYN "${GOPATH}/src/bitbucket.org/glynny"
 
 # ALIASES
 # PERMANENT ALIASES
