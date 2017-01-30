@@ -32,6 +32,19 @@ export_if_exists(){
 	fi
 }
 
+# VARIABLES
+export_if_exists GOPATH "${HOME}/Dropbox/go"
+export_if_exists GOGLYN "${GOPATH}/src/bitbucket.org/glynny"
+export_if_exists MONEY "$HOME/Dropbox/Money"
+export_if_exists MONEYDB "$MONEY/db"
+[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
+
+## macOS VARIABLES
+export MUSICDATE="$(date "+20%y-%m_%B")"
+export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
+export_if_exists SERVICES ${HOME}/"Library/Services"
+
+# PATHS
 augment_path_if_exists /usr/lib/postgresql/9.5/bin/
 augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
@@ -58,6 +71,13 @@ augment_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
 augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 augment_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
 
+source /etc/bash_completion.d/git
+operatingSystem="$(uname)"
+if [[ $operatingSystem = 'Linux' ]]; then
+	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
+elif [[ $operatingSystem = 'Darwin' ]]; then
+	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
+fi
 export_if_exists GOPATH "${HOME}/Dropbox/go"
 export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
