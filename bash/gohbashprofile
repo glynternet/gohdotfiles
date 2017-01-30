@@ -1,19 +1,3 @@
-# VARIABLES
-MONEY="$HOME/Dropbox/money"
-MONEYDB="$HOME/Dropbox/money/db"
-MUSICDATE="$(date "+20%y-%m_%B")"
-MUSIC="$(date "+$HOME/Music/20%y-%m_%B")"
-SERVICES=${HOME}/"Library/Services"
-[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
-
-source /etc/bash_completion.d/git
-operatingSystem="$(uname)"
-if [[ $operatingSystem = 'Linux' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
-elif [[ $operatingSystem = 'Darwin' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
-fi
-
 ## Profile Functions
 augment_path_if_exists(){
 	if [[ $# -lt 1 ]]; then
@@ -51,6 +35,22 @@ export_if_exists(){
 augment_path_if_exists /usr/lib/postgresql/9.5/bin/
 augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
+# VARIABLES
+export_if_exists GOPATH "${HOME}/Dropbox/go"
+export_if_exists GOGLYN "${GOPATH}/src/bitbucket.org/glynny"
+export_if_exists MONEY "$HOME/Dropbox/Money"
+export_if_exists MONEYDB "$MONEY/db"
+[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
+
+## macOS VARIABLES
+export MUSICDATE="$(date "+20%y-%m_%B")"
+export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
+export_if_exists SERVICES ${HOME}/"Library/Services"
+
+# PATHS
+export_path_if_exists /usr/lib/postgresql/9.5/bin/
+export_path_if_exists "${HOME}/Dropbox/scripts"
+export_path_if_exists /usr/local/go/bin
 
 ### macOS PATHS
 augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
@@ -61,6 +61,13 @@ augment_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/
 export_if_exists GOPATH "${HOME}/Dropbox/go"
 export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+source /etc/bash_completion.d/git
+operatingSystem="$(uname)"
+if [[ $operatingSystem = 'Linux' ]]; then
+	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
+elif [[ $operatingSystem = 'Darwin' ]]; then
+	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
+fi
 
 # ALIASES
 # PERMANENT ALIASES
@@ -69,7 +76,7 @@ alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
-alias editcron='env EDITOR=nano crontab -e'
+alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
@@ -262,7 +269,25 @@ mkcd() {
 }
 
 money() {
-	subl ~/Dropbox/go/src/bitbucket.org/glynny/GOHMoney.sublime-project && psql -d money -p 5432 -U glynhanmer && ~/Dropbox/money/db/scripts/create-backups.sh
+	project=~/"Dropbox/go/src/bitbucket.org/glynny/GOHMoney.sublime-project"
+	subl $project
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to subl $project. subl error: $exitStatus"
+		return $exitStatus
+	fi
+	psql -d money -p 5432 -U glynhanmer
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to run psql. psql error: $exitStatus"
+		return $exitStatus
+	fi
+	~/Dropbox/money/db/scripts/create-backups.sh
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to create-backups.sh. create-backups.sh error: $exitStatus"
+		return $exitStatus
+	fi
 }
 
 mp3DownloadsToMusic() {
