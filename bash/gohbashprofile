@@ -35,7 +35,7 @@ export_if_exists(){
 # VARIABLES
 export_if_exists GOPATH "${HOME}/Dropbox/go"
 export_if_exists GOGLYN "${GOPATH}/src/bitbucket.org/glynny"
-export_if_exists MONEY "$HOME/Dropbox/money"
+export_if_exists MONEY "$HOME/Dropbox/Money"
 export_if_exists MONEYDB "$MONEY/db"
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
 
@@ -47,6 +47,7 @@ export_if_exists SERVICES ${HOME}/"Library/Services"
 # PATHS
 export_path_if_exists /usr/lib/postgresql/9.5/bin/
 export_path_if_exists "${HOME}/Dropbox/scripts"
+export_path_if_exists /usr/local/go/bin
 
 ### macOS PATHS
 export_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
@@ -69,7 +70,7 @@ alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
-alias editcron='env EDITOR=nano crontab -e'
+alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
@@ -260,7 +261,25 @@ mkcd() {
 }
 
 money() {
-	subl ~/Dropbox/go/src/bitbucket.org/glynny/GOHMoney.sublime-project && psql -d money -p 5432 -U glynhanmer && ~/Dropbox/money/db/scripts/create-backups.sh
+	project=~/"Dropbox/go/src/bitbucket.org/glynny/GOHMoney.sublime-project"
+	subl $project
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to subl $project. subl error: $exitStatus"
+		return $exitStatus
+	fi
+	psql -d money -p 5432 -U glynhanmer
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to run psql. psql error: $exitStatus"
+		return $exitStatus
+	fi
+	~/Dropbox/money/db/scripts/create-backups.sh
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "$Unable to create-backups.sh. create-backups.sh error: $exitStatus"
+		return $exitStatus
+	fi
 }
 
 mp3DownloadsToMusic() {
