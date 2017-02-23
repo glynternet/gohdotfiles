@@ -37,7 +37,7 @@ export_if_exists(){
 export_if_exists GOPATH "${HOME}/Dropbox/go"
 export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
-export_if_exists MONEY "$HOME/Dropbox/Money"
+export_if_exists MONEY "$HOME/Dropbox/money"
 export_if_exists MONEYDB "$MONEY/db"
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
 
@@ -50,20 +50,13 @@ export_if_exists SERVICES ${HOME}/"Library/Services"
 augment_path_if_exists /usr/lib/postgresql/9.5/bin/
 augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
+augment_path_if_exists "${HOME}/Dropbox/scripts/music"
 
 ### macOS PATHS
 augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
 augment_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
 augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 augment_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
-
-source /etc/bash_completion.d/git
-operatingSystem="$(uname)"
-if [[ $operatingSystem = 'Linux' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
-elif [[ $operatingSystem = 'Darwin' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
-fi
 
 source /etc/bash_completion.d/git
 operatingSystem="$(uname)"
@@ -125,27 +118,6 @@ disk-space(){
 	sudo du -d"$depth" "$baseDir" | sort -g
 }
 
-fetchPayLog(){
-	set -e
-	logDir="/var/riderhq/googlecheckout/notifications"
-	ssh pay -t "ls -ltr $logDir | tail -n 10"
-	echo "Which pay log would you like to fetch?"
-	read logName
-	echo "$logName"
-	logDest="${HOME}/$logName"
-	scp "pay:$logDir/$logName" "$logDest"
-	if [[ ! -f "$logDest" ]]; then
-		echo "Log fetch failed..."
-		exit 1
-	fi
-	echo "Log located at ${HOME}/$logName"
-	echo "Open in sublime? [y/n]"
-	read openInSublime
-	if [[ "$openInSublime" != 'y' ]]; then
-		exit
-	fi
-	subl "$logName"
-}
 # TEMPORARY ALIASES
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
 
