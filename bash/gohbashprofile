@@ -75,18 +75,19 @@ alias cp='cp -v'
 alias dateSorted='date +%Y%m%d_%H%M'
 alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
 alias grep='grep --color=auto'
-alias fgrep='fgrep --color=auto'
-alias egrep='egrep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
+alias moneygraph="cd $HOME/Dropbox/money/moneygraph/src && python -m SimpleHTTPServer 8000"
 alias mv='mv -v'
-alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 alias shrug='echo "¯\_(ツ)_/¯" && echo "¯\_(ツ)_/¯" | xsel -ib && echo "Copied to clipboard."'
 alias sshhosts='cat ~/.ssh/config | grep Host'
+alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
 # AWS ALIASES
 alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
@@ -249,21 +250,28 @@ money() {
 	subl $project
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
-		echo "$Unable to subl $project. subl error: $exitStatus"
+		echo "Unable to subl $project. subl error: $exitStatus"
 		return $exitStatus
 	fi
 	psql -d money -p 5432 -U glynhanmer
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
-		echo "$Unable to run psql. psql error: $exitStatus"
+		echo "Unable to run psql. psql error: $exitStatus"
 		return $exitStatus
 	fi
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
-		echo "$Unable to create-backups.sh. create-backups.sh error: $exitStatus"
+		echo "Unable to create-backups.sh. create-backups.sh error: $exitStatus"
 		return $exitStatus
 	fi
+	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Unable to build money app and generate new json"
+		return $exitStatus
+	fi
+	cp /home/glyn/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json ~/Dropbox/money/moneygraph/src/data/money.json
 }
 
 mp3DownloadsToMusic() {
