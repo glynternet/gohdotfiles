@@ -32,13 +32,18 @@ export_if_exists(){
 	fi
 }
 
-
 # VARIABLES
 export_if_exists GOPATH "${HOME}/Dropbox/go"
-export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+if [[ -n "$GOPATH" ]]; then
+	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
+	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+fi
 export_if_exists MONEY "$HOME/Dropbox/money"
-export_if_exists MONEYDB "$MONEY/db"
+if [[ -n "$MONEY" ]]; then
+	export_if_exists MONEYDB "$MONEY/db"
+fi
+export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
+
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
 
 ## macOS VARIABLES
@@ -72,7 +77,7 @@ alias cant_touch='touch'
 alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
-alias dateSorted='date +%Y%m%d_%H%M'
+alias datestring='date -u "+20%y%m%d_%H%M"'
 alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
@@ -253,6 +258,8 @@ money() {
 		echo "Unable to subl $project. subl error: $exitStatus"
 		return $exitStatus
 	fi
+	psql -d money -p 5432 -U glynhanmer -c 'SELECT a.id, a.name, a.date_opened, sq.date, sq.balance FROM accounts a join (SELECT DISTINCT ON (account_id) * FROM balances b ORDER BY account_id ASC, date DESC) sq ON a.id = sq.account_id where a.is_open = true;'
+
 	psql -d money -p 5432 -U glynhanmer
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
@@ -321,16 +328,21 @@ unsetProxies() {
 	unset https_proxy
 }
 
-wifiCodes=~/Dropbox/wifi_codes.txt 
-alias edit-wifi="vim $wifiCodes"
+wifiedit(){
+	if [[ ! -f "$WIFICODES" ]]; then
+		echo "Cannot find wifi codes file at $WIFICODES"
+		exit 1
+	fi
+	vim $WIFICODES
+}
 
 wifi() {
 	name="$1"
 	if [[ -z "$name" ]]; then
-		cat $wifiCodes
+		cat $WIFICODES
 		exit
 	fi
-	grep -i $name $wifiCodes 
+	grep -i $name $WIFICODES 
 }
 
 # I move across various *nix type OSes. I have found that it’s easiest to keep my login stuff (aliases & environment variables) in separate files as in .aliases-{OS}. E.g.:
