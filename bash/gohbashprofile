@@ -102,21 +102,6 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
 export_if_exists DBAVVA $HOME/Dropbox/sharedpeople/DroneBox/AVVA/
 
-# RHQ PROFILE
-export_if_exists RHQ "${HOME}/java_local/projects/riderhq"
-alias rhq-disk-capacity='ssh-disk-capacity aws1 bm2 aws2 aws3 s5'
-
-augment_path_if_exists "${RHQ}/deploy"
-augment_path_if_exists "${RHQ}/deploy/css"
-augment_path_if_exists "${RHQ}/scripts"
-augment_path_if_exists "${HOME}/Dropbox/riderhq/scripts"
-alias fetch-restore-latest='sudo su - postgres -c "fetchBaseBackup.sh --subdomain bm2 --latest --restore"'
-
-fetch-rhq-user-data() {	
-	rsync --delete-after --exclude backup --exclude nginx_static --exclude test_data --exclude log --exclude emails_sent --exclude googlecheckout -avz -e ssh --progress $1:/var/riderhq/ /var/riderhq/ 
-}
-alias update-rhq-data='fetch-rhq-user-data bm2'
-
 disk-space(){
 	baseDir="$1"
 	if [[ -z "$baseDir" ]]; then
@@ -386,3 +371,5 @@ OS=$( uname | tr '[:upper:]' '[:lower:]')
 # done
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
+
+. $(dirname $GOH_BASH_PROFILE)/rhq_profile
