@@ -12,4 +12,4 @@ fetch-rhq-user-data() {
 	rsync --delete-after --exclude backup --exclude nginx_static --exclude test_data --exclude log --exclude emails_sent --exclude googlecheckout -avz -e ssh --progress $1:/var/riderhq/ /var/riderhq/ 
 }
 alias update-rhq-data='fetch-rhq-user-data bm2'
-alias rerun-rhq-css="cd $RHQ/src && rerun --pattern '**/*.less' \"cd $RHQ && compile-css.sh && rsync-css.sh\""
+alias rerun-rhq-css="cd $RHQ && rerun --pattern './src/**/*.less' \"cd $RHQ && compile-css.sh && rsync-css.sh\""

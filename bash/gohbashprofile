@@ -250,7 +250,7 @@ money() {
 		echo "Unable to subl $project. subl error: $exitStatus"
 		return $exitStatus
 	fi
-	psql -d money -p 5432 -U glynhanmer -c 'SELECT a.id, a.name, a.date_opened, sq.date, sq.balance FROM accounts a join (SELECT DISTINCT ON (account_id) * FROM balances b ORDER BY account_id ASC, date DESC) sq ON a.id = sq.account_id where a.is_open = true;'
+	psql -d money -p 5432 -U glynhanmer -c 'SELECT a.id, a.name, a.date_opened, sq.date, sq.balance FROM accounts a join (SELECT DISTINCT ON (account_id) * FROM balances b ORDER BY account_id ASC, date DESC, id DESC) sq ON a.id = sq.account_id where a.is_open = true;'
 
 	psql -d money -p 5432 -U glynhanmer
 	exitStatus="$?"
