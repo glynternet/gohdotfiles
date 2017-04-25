@@ -83,6 +83,7 @@ alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
+alias gogland='/opt/*/bin/gogland.sh'
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
