@@ -44,32 +44,13 @@ if [[ -n "$MONEY" ]]; then
 fi
 export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
-[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $GOH_BASH_PROFILE && . $GOH_BASH_PROFILE"
-
-## macOS VARIABLES
-export MUSICDATE="$(date "+20%y-%m_%B")"
-export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
-export_if_exists SERVICES ${HOME}/"Library/Services"
+[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
 
 # PATHS
 augment_path_if_exists /usr/lib/postgresql/9.5/bin/
 augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
 augment_path_if_exists "${HOME}/Dropbox/scripts/music"
-
-### macOS PATHS
-augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-augment_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
-augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
-augment_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
-
-source /etc/bash_completion.d/git
-operatingSystem="$(uname)"
-if [[ $operatingSystem = 'Linux' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
-elif [[ $operatingSystem = 'Darwin' ]]; then
-	export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
-fi
 
 # ALIASES
 # PERMANENT ALIASES
@@ -83,6 +64,7 @@ alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
+alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
 alias gogland='/opt/*/bin/gogland.sh'
 alias grep='grep --color=auto'
 alias ipof='dig +short'
@@ -91,7 +73,7 @@ alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
 SHRUG='¯\_(ツ)_/¯'
-alias shrug="echo '$SHRUG' && echo '$SHRUG' | xsel -ib && echo \"Copied to clipboard.\""
+
 alias sshhosts='cat ~/.ssh/config | grep Host'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
@@ -100,7 +82,6 @@ alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservatio
 
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
-export_if_exists DBAVVA $HOME/Dropbox/sharedpeople/DroneBox/AVVA/
 
 disk-space(){
 	baseDir="$1"
@@ -361,4 +342,10 @@ OS=$( uname | tr '[:upper:]' '[:lower:]')
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
-. $(dirname $GOH_BASH_PROFILE)/rhq_profile
+OS=$( uname | tr '[:upper:]' '[:lower:]')
+osSpecificProfile=$(dirname $GOH_BASH_PROFILE)/$OS
+if [[ -f $osSpecificProfile ]]; then
+	. $osSpecificProfile
+else
+	echo "No OS specific profile found at $osSpecificProfile"
+fi
