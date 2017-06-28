@@ -149,17 +149,6 @@ cdl() {
         ls
 }
 
-cdmus() {
-	COMPUTER_NAME="$(scutil --get ComputerName)"
-	checkName="Glyn’s iMac"
-
-	if [[ "$COMPUTER_NAME" != "$checkName" ]]; then
-		echo "You're on $COMPUTER_NAME, the wrong computer."
-	else
-		cd $MUSIC
-	fi
-}
-
 echoArguments() {
 	echo "\$# - $#"
 	echo "\$* - $*"
@@ -176,6 +165,20 @@ echoArguments() {
 
 externalIP() {
 	wget http://ipinfo.io/ip -qO -
+}
+
+findflacs() {
+	if [[ -z "$1" ]]; then
+		echo "No find location given."
+		return
+	fi
+	echo $2
+	if [[ "$2" = 'avprobe' ]] || [[ "$2" = '--avprobe' ]] ; then
+		find "$1" -iname '*.flac' -exec avprobe {} \;
+	else
+		find "$1" -iname '*.flac'
+	fi
+	
 }
 
 getproxy() {
