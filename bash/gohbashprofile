@@ -65,7 +65,6 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
 alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
-alias gogland='/opt/*/bin/gogland.sh'
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
