@@ -45,6 +45,7 @@ fi
 export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
+export SHRUG='¯\_(ツ)_/¯'
 
 # PATHS
 augment_path_if_exists /usr/lib/postgresql/9.5/bin/
@@ -54,8 +55,6 @@ augment_path_if_exists "${HOME}/Dropbox/scripts/music"
 
 # ALIASES
 # PERMANENT ALIASES
-alias cant_touch='touch'
-alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
 alias datestring='date -u "+20%y%m%d_%H%M"'
@@ -71,8 +70,6 @@ alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
-SHRUG='¯\_(ツ)_/¯'
-
 alias sshhosts='cat ~/.ssh/config | grep Host'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
