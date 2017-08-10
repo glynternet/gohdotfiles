@@ -52,7 +52,7 @@ augment_path_if_exists /usr/lib/postgresql/9.5/bin/
 augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
 augment_path_if_exists "${HOME}/Dropbox/scripts/music"
-augment_path_if_exists "${HOME}/Dropbox/Dronebox/AVVA/Utilities"
+augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"
 
 # ALIASES
 # PERMANENT ALIASES
