@@ -8,3 +8,8 @@ if [[ -n "$MONEY" ]]; then
 	export_if_exists MONEYDB "$MONEY/db"
 fi
 export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
+
+# DROPBOX PATHS
+augment_path_if_exists "${HOME}/Dropbox/scripts"
+augment_path_if_exists "${HOME}/Dropbox/scripts/music"
+augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"

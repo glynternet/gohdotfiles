@@ -3,3 +3,8 @@ if [[ -n "$GOPATH" ]]; then
 	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
 fi
+
+pm-clone-go(){
+	cd ~/go/src/github.com/Pocketbrain/
+	git clone "ssh://git@github.com/Pocketbrain/$1"
+}

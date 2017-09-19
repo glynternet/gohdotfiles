@@ -37,11 +37,6 @@ export_if_exists(){
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
 export SHRUG='¯\_(ツ)_/¯'
 
-# PATHS
-augment_path_if_exists "${HOME}/Dropbox/scripts"
-augment_path_if_exists "${HOME}/Dropbox/scripts/music"
-augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"
-
 # ALIASES
 # PERMANENT ALIASES
 alias cdname='echo ${PWD##*/}'
