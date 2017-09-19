@@ -1,0 +1,5 @@
+export_if_exists GOPATH "${HOME}/go"
+if [[ -n "$GOPATH" ]]; then
+	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
+	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+fi

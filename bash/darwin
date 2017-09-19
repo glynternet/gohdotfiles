@@ -1,6 +1,4 @@
 ## macOS VARIABLES
-export MUSICDATE="$(date "+20%y-%m_%B")"
-export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
 export_if_exists SERVICES ${HOME}/"Library/Services"
 
 ### macOS PATHS

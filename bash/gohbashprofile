@@ -33,23 +33,11 @@ export_if_exists(){
 }
 
 # VARIABLES
-export_if_exists GOPATH "${HOME}/Dropbox/go"
-if [[ -n "$GOPATH" ]]; then
-	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
-fi
-export_if_exists MONEY "$HOME/Dropbox/money"
-if [[ -n "$MONEY" ]]; then
-	export_if_exists MONEYDB "$MONEY/db"
-fi
-export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
 export SHRUG='¯\_(ツ)_/¯'
 
 # PATHS
-augment_path_if_exists /usr/lib/postgresql/9.5/bin/
-augment_path_if_exists /usr/local/go/bin
 augment_path_if_exists "${HOME}/Dropbox/scripts"
 augment_path_if_exists "${HOME}/Dropbox/scripts/music"
 augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"
@@ -348,4 +336,12 @@ if [[ -f $osSpecificProfile ]]; then
 	. $osSpecificProfile
 else
 	echo "No OS specific profile found at $osSpecificProfile"
+fi
+
+hn="$(hostname)"
+hostnameSpecificProfile="$(dirname $GOH_BASH_PROFILE)/hostname/$hn"
+if [[ -f $hostnameSpecificProfile ]]; then
+	. $hostnameSpecificProfile
+else
+	echo "No hostname specific profile found at $osSpecificProfile"
 fi
