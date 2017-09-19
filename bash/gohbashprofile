@@ -239,23 +239,6 @@ mp3DownloadsToMusic() {
 	fi
 }
 
-rerun-latex() {
-	if [[ $# -lt 1 ]]; then
-		echo "No files given to monitor for changes."
-	fi
-	xelatexCommand=""
-	chromeCommand=""
-	joiner=' && '
-	for texFile in "$@"; do
-		xelatexCommand="${xelatexCommand}xelatex $texFile$joiner"
-		pdf="${texFile%tex}pdf"
-		chromeCommand="${chromeCommand}google-chrome $pdf$joiner"
-	done
-	chromeCommand=${chromeCommand%$joiner}
-	echo "$xelatexCommand$chromeCommand"
-	rerun --pattern '**/*.tex' "$xelatexCommand$chromeCommand"
-}
-
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do

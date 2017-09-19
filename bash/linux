@@ -6,3 +6,20 @@ export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033
 
 alias gogland='/opt/*/bin/gogland.sh'
 alias shrug="echo '$SHRUG' && echo '$SHRUG' | xsel -ib && echo \"Copied to clipboard.\""
+
+rerun-latex() {
+	if [[ $# -lt 1 ]]; then
+		echo "No files given to monitor for changes."
+	fi
+	xelatexCommand=""
+	chromeCommand=""
+	joiner=' && '
+	for texFile in "$@"; do
+		xelatexCommand="${xelatexCommand}xelatex $texFile$joiner"
+		pdf="${texFile%tex}pdf"
+		chromeCommand="${chromeCommand}google-chrome $pdf$joiner"
+	done
+	chromeCommand=${chromeCommand%$joiner}
+	echo "$xelatexCommand$chromeCommand"
+	rerun --pattern '**/*.tex' "$xelatexCommand$chromeCommand"
+}

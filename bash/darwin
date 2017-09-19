@@ -2,8 +2,6 @@
 export_if_exists SERVICES ${HOME}/"Library/Services"
 
 ### macOS PATHS
-augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-augment_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
 augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
