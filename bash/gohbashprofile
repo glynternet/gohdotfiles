@@ -206,6 +206,21 @@ mkcd() {
 	fi
 }
 
+md-convert() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	fileBase="${file%.*}"
+	outFile="$fileBase.html"
+	markdown "$file" > "$outFile"
+}
+
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"

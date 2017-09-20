@@ -1,9 +1,14 @@
 ## macOS VARIABLES
 export_if_exists SERVICES ${HOME}/"Library/Services"
 
-### macOS PATHS
+## macOS PATHS
 augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
+
+## BASH COMPLETION
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi
 
 alias shrug="echo '$SHRUG' && echo '$SHRUG' | pbcopy && echo \"Copied to clipboard.\""
