@@ -206,7 +206,7 @@ mkcd() {
 	fi
 }
 
-md-convert() {
+md-html() {
 	if [[ -z "$1" ]]; then
 		echo "No file given."
 		return 1
@@ -219,6 +219,24 @@ md-convert() {
 	fileBase="${file%.*}"
 	outFile="$fileBase.html"
 	markdown "$file" > "$outFile"
+}
+
+md-pdf() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	md-html "$file"
+	fileBase="${file%.*}"
+	htmlFile="$fileBase.html"
+	outFile="$fileBase.pdf"
+	wkhtmltopdf --dpi 300 "$htmlFile" "$outFile"
+	rm "$htmlFile"
 }
 
 moneybackups() {
