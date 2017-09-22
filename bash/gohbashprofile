@@ -146,6 +146,15 @@ externalIP() {
 	wget http://ipinfo.io/ip -qO -
 }
 
+exit-if-error() {
+	exitStatus="$1"
+	message="$2"
+	if [[ $exitStatus -ne 0 ]]; then
+		printf "Exit status: $exitStatus. $2"
+		exit $exitStatus
+	fi
+}
+
 findflacs() {
 	if [[ -z "$1" ]]; then
 		echo "No find location given."
@@ -158,6 +167,17 @@ findflacs() {
 		find "$1" -iname '*.flac'
 	fi
 	
+}
+
+git-checkout-pullrequest() {
+	pr="$1"
+	if [[ -z "$pr" ]]; then
+		echo "No pull request given."
+		return
+	fi
+	branchName="pullrequest-$(datestring)"
+	git fetch origin "pull/$pr/head:$branchName"
+	git checkout "$branchName"
 }
 
 getproxy() {

@@ -3,10 +3,18 @@ export_if_exists GOPATH "${HOME}/go"
 if [[ -n "$GOPATH" ]]; then
 	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+	export_if_exists GOP "${GOPATH}/src/github.com/Pocketbrain"
 fi
-export_if_exists GOPB "${GOPATH}/src/github.com/Pocketbrain"
 
+## FUNCTIONS
 pm-clone-go(){
+	current="$(pwd)"
 	cd ~/go/src/github.com/Pocketbrain/
-	git clone "ssh://git@github.com/Pocketbrain/$1"
+	repoUrl="ssh://git@github.com/Pocketbrain/$1"
+	git clone "$repoUrl"
+	status=$?
+	if [[ $status -ne 0 ]]; then
+		return "Unable to clone repo at $repoUrl"
+	fi
+	cd "$current"
 }

@@ -12,3 +12,4 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 
 alias shrug="echo '$SHRUG' && echo '$SHRUG' | pbcopy && echo \"Copied to clipboard.\""
+alias chrome='open -a "Google Chrome"'
