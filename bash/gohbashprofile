@@ -51,7 +51,7 @@ source-if-exists(){
 
 # VARIABLES
 
-[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
+[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
 export SHRUG='¯\_(ツ)_/¯'
 
 # ALIASES
@@ -362,7 +362,7 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
-dotFilesDir="$(dirname $GOH_BASH_PROFILE)"
+dotFilesDir="$(dirname $GOHBASHPROFILE)"
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
 if [[ -f $osSpecificProfile ]]; then
