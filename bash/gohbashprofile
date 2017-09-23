@@ -392,14 +392,14 @@ else
 fi
 
 hn="$(hostname)"
-
 hostnameSpecificProfile="$dotFilesDir/hostname/$hn"
 if [[ -f $hostnameSpecificProfile ]]; then
 	. $hostnameSpecificProfile
 else
-	echo "No hostname specific profile found at $osSpecificProfile"
+	echo "No hostname specific profile found at $hn"
 fi
 
+# Needs to be after loading GOPATH from specific hostname profile
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$dotFilesDir/environment/go"
 	augment-path-if-exists "$GOPATH/bin"
