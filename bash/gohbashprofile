@@ -223,6 +223,22 @@ mkcd() {
 	fi
 }
 
+moneyjohnandemily() {
+	cd $GOGH/GOHMoneyJAndE/
+	go build
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Unable build project"
+		return $exitStatus
+	fi
+	./GOHMoneyJAndE
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Error running GOHMoneyJAndE"
+		return $exitStatus
+	fi
+}
+
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"
