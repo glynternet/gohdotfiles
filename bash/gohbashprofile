@@ -1,5 +1,5 @@
 ## Profile Functions
-augment_path_if_exists(){
+augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
 		exit 1
@@ -12,7 +12,7 @@ augment_path_if_exists(){
 	fi
 }
 
-export_if_exists(){
+export-if-exists(){
 	if [[ $# -lt 2 ]]; then
 		echo "Requires argument of variable name to export and path to check."
 		exit 1
@@ -32,30 +32,30 @@ export_if_exists(){
 	fi
 }
 
+source-if-exists(){
+	if [[ $# -ne 1 ]]; then
+		echo "Requires 1 argument of file to source."
+		return 1
+	fi
+	path="$1"
+	if [[ -z "$path" ]]; then
+		echo "No path provided"
+		return 2
+	fi
+	if [[ ! -f "$path" ]]; then
+		eccho "Cannot source file at $path: Not a file."
+		return 3
+	fi
+	. "$path"
+}
+
 # VARIABLES
-export_if_exists GOPATH "${HOME}/Dropbox/go"
-if [[ -n "$GOPATH" ]]; then
-	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
-fi
-export_if_exists MONEY "$HOME/Dropbox/money"
-if [[ -n "$MONEY" ]]; then
-	export_if_exists MONEYDB "$MONEY/db"
-fi
-export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
-[[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
-
-# PATHS
-augment_path_if_exists /usr/lib/postgresql/9.5/bin/
-augment_path_if_exists /usr/local/go/bin
-augment_path_if_exists "${HOME}/Dropbox/scripts"
-augment_path_if_exists "${HOME}/Dropbox/scripts/music"
+[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
+export SHRUG='¯\_(ツ)_/¯'
 
 # ALIASES
 # PERMANENT ALIASES
-alias cant_touch='touch'
-alias cdmamp='cd $MAMP'
 alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
 alias datestring='date -u "+20%y%m%d_%H%M"'
@@ -65,15 +65,13 @@ alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
 alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
-alias gogland='/opt/*/bin/gogland.sh'
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
-SHRUG='¯\_(ツ)_/¯'
-
+alias shrug="echo '$SHRUG' && echo '$SHRUG' | copy && echo \"Copied to clipboard.\""
 alias sshhosts='cat ~/.ssh/config | grep Host'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
@@ -125,6 +123,8 @@ BBCproxy() {
 	fi
 }
 
+bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
+
 cdu() {
 	echo "cd .. $1 times"
 	COUNTER=0
@@ -148,17 +148,6 @@ cdl() {
         ls
 }
 
-cdmus() {
-	COMPUTER_NAME="$(scutil --get ComputerName)"
-	checkName="Glyn’s iMac"
-
-	if [[ "$COMPUTER_NAME" != "$checkName" ]]; then
-		echo "You're on $COMPUTER_NAME, the wrong computer."
-	else
-		cd $MUSIC
-	fi
-}
-
 echoArguments() {
 	echo "\$# - $#"
 	echo "\$* - $*"
@@ -175,6 +164,40 @@ echoArguments() {
 
 externalIP() {
 	wget http://ipinfo.io/ip -qO -
+}
+
+exit-if-error() {
+	exitStatus="$1"
+	message="$2"
+	if [[ $exitStatus -ne 0 ]]; then
+		printf "Exit status: $exitStatus. $2"
+		exit $exitStatus
+	fi
+}
+
+findflacs() {
+	if [[ -z "$1" ]]; then
+		echo "No find location given."
+		return
+	fi
+	echo $2
+	if [[ "$2" = 'avprobe' ]] || [[ "$2" = '--avprobe' ]] ; then
+		find "$1" -iname '*.flac' -exec avprobe {} \;
+	else
+		find "$1" -iname '*.flac'
+	fi
+	
+}
+
+git-checkout-pullrequest() {
+	pr="$1"
+	if [[ -z "$pr" ]]; then
+		echo "No pull request given."
+		return
+	fi
+	branchName="pullrequest-$(datestring)"
+	git fetch origin "pull/$pr/head:$branchName"
+	git checkout "$branchName"
 }
 
 getproxy() {
@@ -239,6 +262,39 @@ moneyjohnandemily() {
 	fi
 }
 
+md-html() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	fileBase="${file%.*}"
+	outFile="$fileBase.html"
+	markdown "$file" > "$outFile"
+}
+
+md-pdf() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	md-html "$file"
+	fileBase="${file%.*}"
+	htmlFile="$fileBase.html"
+	outFile="$fileBase.pdf"
+	wkhtmltopdf --dpi 300 "$htmlFile" "$outFile"
+	rm "$htmlFile"
+}
+
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"
@@ -273,23 +329,6 @@ mp3DownloadsToMusic() {
 	else
 		echo "No .mp3 files to move from $DOWNLOADS directory"
 	fi
-}
-
-rerun-latex() {
-	if [[ $# -lt 1 ]]; then
-		echo "No files given to monitor for changes."
-	fi
-	xelatexCommand=""
-	chromeCommand=""
-	joiner=' && '
-	for texFile in "$@"; do
-		xelatexCommand="${xelatexCommand}xelatex $texFile$joiner"
-		pdf="${texFile%tex}pdf"
-		chromeCommand="${chromeCommand}google-chrome $pdf$joiner"
-	done
-	chromeCommand=${chromeCommand%$joiner}
-	echo "$xelatexCommand$chromeCommand"
-	rerun --pattern '**/*.tex' "$xelatexCommand$chromeCommand"
 }
 
 ssh-disk-capacity(){
@@ -343,28 +382,25 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
-# I move across various *nix type OSes. I have found that it’s easiest to keep my login stuff (aliases & environment variables) in separate files as in .aliases-{OS}. E.g.:
-
-# $HOME/.aliases-darwin
-# $HOME/.aliases-linux
-# All I have to do then in .bashrc, or .profile, whatever is do this:
-
+dotFilesDir="$(dirname $GOHBASHPROFILE)"
 OS=$( uname | tr '[:upper:]' '[:lower:]')
-# . $HOME/.aliases-${OS}
-# . $HOME/.environment_variables-${OS}
-# and/or
-
-# for SCRIPT in $( ls -1 $HOME/scripts/login/*-${OS} )
-# do
-#   . ${SCRIPT}
-# done
-
-bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
-
-OS=$( uname | tr '[:upper:]' '[:lower:]')
-osSpecificProfile=$(dirname $GOH_BASH_PROFILE)/$OS
+osSpecificProfile="$dotFilesDir/$OS"
 if [[ -f $osSpecificProfile ]]; then
 	. $osSpecificProfile
 else
 	echo "No OS specific profile found at $osSpecificProfile"
+fi
+
+hn="$(hostname)"
+
+hostnameSpecificProfile="$dotFilesDir/hostname/$hn"
+if [[ -f $hostnameSpecificProfile ]]; then
+	. $hostnameSpecificProfile
+else
+	echo "No hostname specific profile found at $osSpecificProfile"
+fi
+
+if [[ -n "$GOPATH" ]]; then
+	source-if-exists "$dotFilesDir/environment/go"
+	augment-path-if-exists "$GOPATH/bin"
 fi

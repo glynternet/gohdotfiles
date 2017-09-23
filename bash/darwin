@@ -1,14 +1,17 @@
-## macOS VARIABLES
-export MUSICDATE="$(date "+20%y-%m_%B")"
-export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
-export_if_exists SERVICES ${HOME}/"Library/Services"
+## macOS ALIASES
+alias copy="pbcopy"
+alias chrome='open -a "Google Chrome"'
 
-### macOS PATHS
-augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
-augment_path_if_exists "/Applications/Postgres.app/Contents/Versions/latest/bin"
-augment_path_if_exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
-augment_path_if_exists "/Applications/Sublime Text 2.app/Contents/SharedSupport/bin"
+## macOS VARIABLES
+export-if-exists SERVICES ${HOME}/"Library/Services"
+
+## macOS PATHS
+augment-path-if-exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
 
-alias shrug="echo '$SHRUG' && echo '$SHRUG' | pbcopy && echo \"Copied to clipboard.\""
+## BASH COMPLETION
+if [ -f $(brew --prefix)/etc/bash_completion ]; then
+. $(brew --prefix)/etc/bash_completion
+fi
+
