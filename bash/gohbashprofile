@@ -105,6 +105,8 @@ BBCproxy() {
 	fi
 }
 
+bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
+
 cdu() {
 	echo "cd .. $1 times"
 	COUNTER=0
@@ -343,26 +345,9 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
-# I move across various *nix type OSes. I have found that it’s easiest to keep my login stuff (aliases & environment variables) in separate files as in .aliases-{OS}. E.g.:
-
-# $HOME/.aliases-darwin
-# $HOME/.aliases-linux
-# All I have to do then in .bashrc, or .profile, whatever is do this:
-
+dotFilesDir="$(dirname $GOH_BASH_PROFILE)"
 OS=$( uname | tr '[:upper:]' '[:lower:]')
-# . $HOME/.aliases-${OS}
-# . $HOME/.environment_variables-${OS}
-# and/or
-
-# for SCRIPT in $( ls -1 $HOME/scripts/login/*-${OS} )
-# do
-#   . ${SCRIPT}
-# done
-
-bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
-
-OS=$( uname | tr '[:upper:]' '[:lower:]')
-osSpecificProfile=$(dirname $GOH_BASH_PROFILE)/$OS
+osSpecificProfile="$dotFilesDir/$OS"
 if [[ -f $osSpecificProfile ]]; then
 	. $osSpecificProfile
 else
@@ -370,9 +355,15 @@ else
 fi
 
 hn="$(hostname)"
-hostnameSpecificProfile="$(dirname $GOH_BASH_PROFILE)/hostname/$hn"
+
+hostnameSpecificProfile="$dotFilesDir/hostname/$hn"
 if [[ -f $hostnameSpecificProfile ]]; then
 	. $hostnameSpecificProfile
 else
 	echo "No hostname specific profile found at $osSpecificProfile"
+fi
+
+goProfile="$dotFilesDir/environment/go"
+if [[ -n "$GOPATH" ]] && [[ -f "$goProfile" ]]; then
+	. "$goProfile"
 fi

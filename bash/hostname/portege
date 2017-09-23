@@ -1,8 +1,4 @@
 export_if_exists GOPATH "${HOME}/Dropbox/go"
-if [[ -n "$GOPATH" ]]; then
-	export_if_exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-	export_if_exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
-fi
 export_if_exists MONEY "$HOME/Dropbox/money"
 if [[ -n "$MONEY" ]]; then
 	export_if_exists MONEYDB "$MONEY/db"
