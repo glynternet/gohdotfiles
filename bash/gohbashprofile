@@ -71,6 +71,7 @@ alias ls="ls -a"
 alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
+alias shrug="echo '$SHRUG' && echo '$SHRUG' | copy && echo \"Copied to clipboard.\""
 alias sshhosts='cat ~/.ssh/config | grep Host'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 

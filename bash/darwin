@@ -1,3 +1,7 @@
+## macOS ALIASES
+alias copy="pbcopy"
+alias chrome='open -a "Google Chrome"'
+
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"
 
@@ -11,5 +15,3 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 . $(brew --prefix)/etc/bash_completion
 fi
 
-alias shrug="echo '$SHRUG' && echo '$SHRUG' | pbcopy && echo \"Copied to clipboard.\""
-alias chrome='open -a "Google Chrome"'
