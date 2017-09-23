@@ -1,11 +1,11 @@
-export_if_exists GOPATH "${HOME}/Dropbox/go"
-export_if_exists MONEY "$HOME/Dropbox/money"
+export-if-exists GOPATH "${HOME}/Dropbox/go"
+export-if-exists MONEY "$HOME/Dropbox/money"
 if [[ -n "$MONEY" ]]; then
-	export_if_exists MONEYDB "$MONEY/db"
+	export-if-exists MONEYDB "$MONEY/db"
 fi
-export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
+export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
 # DROPBOX PATHS
-augment_path_if_exists "${HOME}/Dropbox/scripts"
-augment_path_if_exists "${HOME}/Dropbox/scripts/music"
-augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"
+augment-path-if-exists "${HOME}/Dropbox/scripts"
+augment-path-if-exists "${HOME}/Dropbox/scripts/music"
+augment-path-if-exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"

@@ -1,5 +1,5 @@
 ## Profile Functions
-augment_path_if_exists(){
+augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
 		exit 1
@@ -12,7 +12,7 @@ augment_path_if_exists(){
 	fi
 }
 
-export_if_exists(){
+export-if-exists(){
 	if [[ $# -lt 2 ]]; then
 		echo "Requires argument of variable name to export and path to check."
 		exit 1
@@ -382,5 +382,5 @@ fi
 
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$dotFilesDir/environment/go"
-	augment_path_if_exists "$GOPATH/bin"
+	augment-path-if-exists "$GOPATH/bin"
 fi

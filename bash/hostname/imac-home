@@ -1,11 +1,11 @@
-augment_path_if_exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
+augment-path-if-exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
 
-export_if_exists GOPATH "${HOME}/Dropbox/go"
+export-if-exists GOPATH "${HOME}/Dropbox/go"
 export MUSICDATE="$(date "+20%y-%m_%B")"
-export_if_exists MUSICDIR "$HOME/Music/$MUSICDATE"
-export_if_exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
+export-if-exists MUSICDIR "$HOME/Music/$MUSICDATE"
+export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 
 # DROPBOX PATHS
-augment_path_if_exists "${HOME}/Dropbox/scripts"
-augment_path_if_exists "${HOME}/Dropbox/scripts/music"
-augment_path_if_exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"
+augment-path-if-exists "${HOME}/Dropbox/scripts"
+augment-path-if-exists "${HOME}/Dropbox/scripts/music"
+augment-path-if-exists "${HOME}/Dropbox/DroneBox/AVVA/Utilities"

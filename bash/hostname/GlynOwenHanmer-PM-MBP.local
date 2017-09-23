@@ -1,7 +1,7 @@
 ## VARIABLES
-export_if_exists GOPATH "${HOME}/go"
+export-if-exists GOPATH "${HOME}/go"
 if [[ -n "$GOPATH" ]]; then
-	export_if_exists GOP "${GOPATH}/src/github.com/Pocketbrain"
+	export-if-exists GOP "${GOPATH}/src/github.com/Pocketbrain"
 fi
 
 ## FUNCTIONS

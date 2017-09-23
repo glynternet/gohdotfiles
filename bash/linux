@@ -1,6 +1,6 @@
 ### linux PATHS
-augment_path_if_exists /usr/lib/postgresql/9.5/bin/
-augment_path_if_exists /usr/local/go/bin
+augment-path-if-exists /usr/lib/postgresql/9.5/bin/
+augment-path-if-exists /usr/local/go/bin
 
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
 
