@@ -32,6 +32,23 @@ export_if_exists(){
 	fi
 }
 
+source-if-exists(){
+	if [[ $# -ne 1 ]]; then
+		echo "Requires 1 argument of file to source."
+		return 1
+	fi
+	path="$1"
+	if [[ -z "$path" ]]; then
+		echo "No path provided"
+		return 2
+	fi
+	if [[ ! -f "$path" ]]; then
+		eccho "Cannot source file at $path: Not a file."
+		return 3
+	fi
+	. "$path"
+}
+
 # VARIABLES
 
 [[ -n "$GOH_BASH_PROFILE" ]] && alias editGOH_BASH_PROFILE="subl -w $(dirname $GOH_BASH_PROFILE) && . $GOH_BASH_PROFILE"
@@ -363,7 +380,7 @@ else
 	echo "No hostname specific profile found at $osSpecificProfile"
 fi
 
-goProfile="$dotFilesDir/environment/go"
-if [[ -n "$GOPATH" ]] && [[ -f "$goProfile" ]]; then
-	. "$goProfile"
+if [[ -n "$GOPATH" ]]; then
+	source-if-exists "$dotFilesDir/environment/go"
+	augment_path_if_exists "$GOPATH/bin"
 fi
