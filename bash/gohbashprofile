@@ -208,6 +208,12 @@ getproxy() {
 	echo "https_proxy: $https_proxy"
 }
 
+historyplain() {
+	tput bold
+	history $@ | cut -c 8-
+	tput sgr0
+}
+
 install-and-log(){
 	aptGetInstalledList=~/Dropbox/bash/package-installs/apt-get
 	if [[ ! -f "$aptGetInstalledList" ]]; then
@@ -224,10 +230,19 @@ install-and-log(){
 	cat "$aptGetInstalledList"
 }
 
-historyplain() {
-	tput bold
-	history $@ | cut -c 8-
-	tput sgr0
+kubectlgetall(){
+	for entity in \
+	node \
+	pod \
+	deployment \
+	replicationcontroller "nodes -o jsonpath='{.items[*].status.addresses}'" \
+	"service" \
+	; do
+		printf "\n"
+		echo $entity | tr '[:lower:]' '[:upper:]'
+		kubectl get $entity
+	done
+	printf "\n"
 }
 
 mkcd() {
