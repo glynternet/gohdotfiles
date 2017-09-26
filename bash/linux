@@ -8,6 +8,7 @@ export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033
 alias copy='xsel -ib'
 alias chrome='google-chrome'
 alias gogland='/opt/*/bin/gogland.sh'
+alias mouse-sensitivity="xset m"
 
 rerun-latex() {
 	if [[ $# -lt 1 ]]; then

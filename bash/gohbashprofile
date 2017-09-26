@@ -264,6 +264,22 @@ mkcd() {
 	fi
 }
 
+moneyjohnandemily() {
+	cd $GOGH/GOHMoneyJAndE/
+	go build
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Unable build project"
+		return $exitStatus
+	fi
+	./GOHMoneyJAndE
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Error running GOHMoneyJAndE"
+		return $exitStatus
+	fi
+}
+
 md-html() {
 	if [[ -z "$1" ]]; then
 		echo "No file given."
@@ -304,6 +320,9 @@ moneybackups() {
 		echo "Unable to create-backups.sh. create-backups.sh error: $exitStatus"
 		return $exitStatus
 	fi
+}
+
+moneyjson() {
 	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
@@ -313,7 +332,7 @@ moneybackups() {
 }
 
 moneygraph() {
-	cp $PHOME/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json $MONEY/moneygraph/src/data/money.json
+	cp $HOME/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json $MONEY/moneygraph/src/data/money.json
 	cd $HOME/Dropbox/money/moneygraph/src && python -m SimpleHTTPServer 8000
 }
 
@@ -391,14 +410,14 @@ else
 fi
 
 hn="$(hostname)"
-
 hostnameSpecificProfile="$dotFilesDir/hostname/$hn"
 if [[ -f $hostnameSpecificProfile ]]; then
 	. $hostnameSpecificProfile
 else
-	echo "No hostname specific profile found at $osSpecificProfile"
+	echo "No hostname specific profile found at $hn"
 fi
 
+# Needs to be after loading GOPATH from specific hostname profile
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$dotFilesDir/environment/go"
 	augment-path-if-exists "$GOPATH/bin"
