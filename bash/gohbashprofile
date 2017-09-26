@@ -1,3 +1,5 @@
+HISTSIZE=1000
+
 ## Profile Functions
 augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
@@ -236,7 +238,8 @@ kubectlgetall(){
 	pod \
 	deployment \
 	replicationcontroller "nodes -o jsonpath='{.items[*].status.addresses}'" \
-	"service" \
+	replicaset \
+	service \
 	; do
 		printf "\n"
 		echo $entity | tr '[:lower:]' '[:upper:]'
