@@ -54,6 +54,7 @@ source-if-exists(){
 # VARIABLES
 
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
+
 export SHRUG='¯\_(ツ)_/¯'
 
 # ALIASES
@@ -96,11 +97,6 @@ disk-space(){
 	fi
 	sudo du -d"$depth" "$baseDir" | sort -g
 }
-
-# TEMPORARY ALIASES
-[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
-
-# CONFIGS
 
 # AWS CLI Completer
 if [ -x /usr/local/bin/aws_completer ]; then
