@@ -228,7 +228,7 @@ install-and-log(){
 	cat "$aptGetInstalledList"
 }
 
-kubectlgetall(){
+kubectl-getall(){
 	for entity in \
 	node \
 	pod \
@@ -242,6 +242,14 @@ kubectlgetall(){
 		kubectl get $entity
 	done
 	printf "\n"
+}
+
+kubectl-watch(){
+	entity="$1"
+	clear && \
+	echo "$entity" | tr '[:lower:]' '[:upper:]' | figlet && \
+	kubectl get "$entity" --watch
+	# echo "$entity" | tr '[:lower:]' '[:upper:]' && \
 }
 
 mkcd() {
