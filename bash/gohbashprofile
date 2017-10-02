@@ -246,10 +246,17 @@ kubectl-getall(){
 
 kubectl-watch(){
 	entity="$1"
-	clear && \
-	echo "$entity" | tr '[:lower:]' '[:upper:]' | figlet && \
-	kubectl get "$entity" --watch
-	# echo "$entity" | tr '[:lower:]' '[:upper:]' && \
+	if [[ -z "$entity" ]]; then
+		echo "No entity given."
+		return 1
+	fi
+	for ((i=1;i<=10000;i++)); 
+	do 
+	   sleep 1
+	   clear && \
+		echo "$entity" | tr '[:lower:]' '[:upper:]' | figlet && \
+		kubectl get "$entity"
+	done
 }
 
 mkcd() {
