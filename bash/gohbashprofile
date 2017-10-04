@@ -294,61 +294,6 @@ moneyjohnandemily() {
 	fi
 }
 
-md-html() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	fileBase="${file%.*}"
-	outFile="$fileBase.html"
-	markdown "$file" > "$outFile"
-	prepend-file "$outFile" '<style type="text/css">pre {
-  display: block;
-  white-space: pre-wrap; 
-  border: light-grey 1px solid;
-}
-* {
-    line-height: 125%;
-}
-</style>'
-}
-
-html-pdf() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	fileBase="${file%.*}"
-	outFile="$fileBase.pdf"
-	wkhtmltopdf --dpi 400 "$file" "$outFile"
-}
-
-md-pdf() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	md-html "$file"
-	fileBase="${file%.*}"
-	htmlFile="$fileBase.html"
-	html-pdf "$htmlFile"
-}
-
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"

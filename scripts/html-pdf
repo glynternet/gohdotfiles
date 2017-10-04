@@ -1,0 +1,14 @@
+#!/bin/bash
+# html-pdf
+if [[ -z "$1" ]]; then
+	echo "No file given."
+	return 1
+fi
+file="$1"
+if [[ ! -f "$file" ]]; then
+	echo "File does not exist."
+	return 2
+fi
+fileBase="${file%.*}"
+outFile="$fileBase.pdf"
+wkhtmltopdf --dpi 400 "$file" "$outFile"
