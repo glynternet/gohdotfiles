@@ -12,7 +12,11 @@ fi
 fileBase="${file%.*}"
 outFile="$fileBase.html"
 markdown "$file" > "$outFile"
+echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
 prepend-file "$outFile" '<style type="text/css">
 pre { display: block; white-space: pre-wrap; border: light-grey 1px solid; }
 * { line-height: 125%; }
 </style>'
+if [[ "$2" = "--open" ]]; then 
+	open -g $outFile
+fi

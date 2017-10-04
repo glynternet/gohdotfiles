@@ -66,7 +66,6 @@ alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-alias fswatch-simple='fswatch -0 notes.md | xargs -0 -n 1 -I {}'
 alias golangDocs='godoc -http=:6060'
 alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
 alias grep='grep --color=auto'
@@ -186,6 +185,10 @@ findflacs() {
 		find "$1" -iname '*.flac'
 	fi
 	
+}
+
+fswatchsimple() {
+	fswatch -0 $1 | xargs -0 -n 1 -I {} ${@:2}
 }
 
 git-checkout-pullrequest() {

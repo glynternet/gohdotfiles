@@ -13,3 +13,6 @@ md-html "$file"
 fileBase="${file%.*}"
 htmlFile="$fileBase.html"
 html-pdf "$htmlFile"
+if [[ "$2" = "--open" ]]; then 
+	open -g $fileBase.pdf
+fi
