@@ -66,6 +66,7 @@ alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
+alias fswatch-simple='fswatch -0 notes.md | xargs -0 -n 1 -I {}'
 alias golangDocs='godoc -http=:6060'
 alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
 alias grep='grep --color=auto'
@@ -242,6 +243,8 @@ kubectl-getall(){
 		kubectl get $entity
 	done
 	printf "\n"
+	echo "Port Forwarding" | tr '[:lower:]' '[:upper:]'
+	ps -ef | grep "kubectl port-forward"
 }
 
 kubectl-watch(){
@@ -304,6 +307,30 @@ md-html() {
 	fileBase="${file%.*}"
 	outFile="$fileBase.html"
 	markdown "$file" > "$outFile"
+	prepend-file "$outFile" '<style type="text/css">pre {
+  display: block;
+  white-space: pre-wrap; 
+  border: light-grey 1px solid;
+}
+* {
+    line-height: 125%;
+}
+</style>'
+}
+
+html-pdf() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	fileBase="${file%.*}"
+	outFile="$fileBase.pdf"
+	wkhtmltopdf --dpi 400 "$file" "$outFile"
 }
 
 md-pdf() {
@@ -319,9 +346,7 @@ md-pdf() {
 	md-html "$file"
 	fileBase="${file%.*}"
 	htmlFile="$fileBase.html"
-	outFile="$fileBase.pdf"
-	wkhtmltopdf --dpi 300 "$htmlFile" "$outFile"
-	rm "$htmlFile"
+	html-pdf "$htmlFile"
 }
 
 moneybackups() {
@@ -358,6 +383,27 @@ mp3DownloadsToMusic() {
 	else
 		echo "No .mp3 files to move from $DOWNLOADS directory"
 	fi
+}
+
+prepend-file() {
+	if [[ -z "$1" ]]; then
+		echo "No file given."
+		echo "Should be: prepend-file <file> <text>"
+		return 1
+	fi
+	file="$1"
+	if [[ ! -f "$file" ]]; then
+		echo "File does not exist."
+		return 2
+	fi
+	if [[ -z "$2" ]]; then
+		echo "No text given."
+		echo "Should be: prepend-file <file> <text>"
+		return 1
+	fi
+	text="$2"
+	tempFile="./.temp-prepend-file"
+	echo "$2" | cat - "$file" > "$tempFile" && mv $tempFile "$file"
 }
 
 ssh-disk-capacity(){
