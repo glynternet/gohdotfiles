@@ -1,0 +1,19 @@
+#!/bin/bash
+if [[ -z "$1" ]]; then
+	echo "No file given."
+	echo "Should be: prepend-file <file> <text>"
+	return 1
+fi
+file="$1"
+if [[ ! -f "$file" ]]; then
+	echo "File does not exist."
+	return 2
+fi
+if [[ -z "$2" ]]; then
+	echo "No text given."
+	echo "Should be: prepend-file <file> <text>"
+	return 1
+fi
+text="$2"
+tempFile="./.temp-prepend-file"
+echo "$2" | cat - "$file" > "$tempFile" && mv $tempFile "$file"

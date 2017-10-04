@@ -330,27 +330,6 @@ mp3DownloadsToMusic() {
 	fi
 }
 
-prepend-file() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		echo "Should be: prepend-file <file> <text>"
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	if [[ -z "$2" ]]; then
-		echo "No text given."
-		echo "Should be: prepend-file <file> <text>"
-		return 1
-	fi
-	text="$2"
-	tempFile="./.temp-prepend-file"
-	echo "$2" | cat - "$file" > "$tempFile" && mv $tempFile "$file"
-}
-
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do
@@ -403,8 +382,7 @@ wifi() {
 }
 
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
-dotFilesScriptsDir="$(dirname $dotFilesDir)/scripts"
-augment-path-if-exists $dotFilesScriptsDir
+augment-path-if-exists $dotFilesDir/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
