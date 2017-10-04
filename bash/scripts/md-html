@@ -14,6 +14,8 @@ outFile="$fileBase.html"
 markdown "$file" > "$outFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
 prepend-file "$outFile" '<style type="text/css">
+code { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
+    background-color: #eff0f1; }
 pre { display: block; white-space: pre-wrap; border: light-grey 1px solid; }
 * { line-height: 125%; }
 </style>'
