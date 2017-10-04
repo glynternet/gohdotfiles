@@ -403,6 +403,9 @@ wifi() {
 }
 
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
+dotFilesScriptsDir="$(dirname $dotFilesDir)/scripts"
+augment-path-if-exists $dotFilesScriptsDir
+
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
 if [[ -f $osSpecificProfile ]]; then
