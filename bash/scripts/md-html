@@ -11,14 +11,11 @@ if [[ ! -f "$file" ]]; then
 fi
 fileBase="${file%.*}"
 outFile="$fileBase.html"
-markdown "$file" > "$outFile"
+tmpFile="$outFile.mid"
+markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
-prepend-file "$outFile" '<style type="text/css">
-code { font-family: Consolas,Menlo,Monaco,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,sans-serif;
-    background-color: #eff0f1; }
-pre { display: block; white-space: pre-wrap; border: light-grey 1px solid; }
-* { line-height: 125%; }
-</style>'
+cat "$DOTFILESDIR/scripts/md.css.html" "$tmpFile" > "$outFile"
+rm "$tmpFile"
 if [[ "$2" = "--open" ]]; then 
-	open -g $outFile
+	open -g "$outFile"
 fi

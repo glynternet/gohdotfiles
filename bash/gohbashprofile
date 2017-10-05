@@ -188,7 +188,11 @@ findflacs() {
 }
 
 fswatchsimple() {
-	fswatch -0 $1 | xargs -0 -n 1 -I {} ${@:2}
+	echo "Watching: $1"
+	echo "Command: ${@:2}"
+	# fswatch -0 "$1" | xargs -0 grep -v 4913
+	fswatch -0 "$1" | xargs -0 -n 1 -I "{}" "${@:2}"
+	# something like this will work but I'm not sure what. fswatch "$1" | grep -Z -v 4913 | xargs -0 -n 1 -I "{}" "${@:2}"
 }
 
 git-checkout-pullrequest() {
@@ -384,8 +388,10 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
+augment-path-if-exists ~/scripts
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $dotFilesDir/scripts
+export-if-exists DOTFILESDIR $dotFilesDir
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
