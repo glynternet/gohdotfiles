@@ -6,12 +6,12 @@ if [[ -z "$1" ]]; then
 fi
 file="$1"
 if [[ ! -f "$file" ]]; then
-	echo "File does not exist."
+	echo "File does not exist: $file"
 	return 2
 fi
 fileBase="${file%.*}"
 outFile="$fileBase.html"
-tmpFile="$outFile.mid"
+tmpFile="/tmp/$(basename $outFile.mid)"
 markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
 cat "$DOTFILESDIR/scripts/md.css.html" "$tmpFile" > "$outFile"
