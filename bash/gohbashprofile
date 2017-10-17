@@ -356,6 +356,15 @@ stats(){
 	echo "Shell: ${SHELL}"
 }
 
+tmux-dev() {
+	sessionName="session-$(datestring)"
+	tmux new-session -d -s "$sessionName"
+	tmux split-window -h
+	tmux split-window -v
+	# -2 means force tmux to assume 256 colours
+	tmux -2 attach-session -d 
+}
+
 toucho() {
 	if [ -f "$1" ]; then
 		echo "$1 already exists."
