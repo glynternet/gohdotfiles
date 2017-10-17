@@ -16,3 +16,13 @@ pm-clone-go(){
 	fi
 	cd "$current"
 }
+
+cdgop(){
+	repo="$1"
+	path="$GOP/$repo"
+	if [[ ! -d "$path" ]]; then
+		echo "$repo repository doesn't exist, cloning..."
+		pm-clone-go "$repo"
+	fi
+	cd  "$path"
+}

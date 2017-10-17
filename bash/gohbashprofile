@@ -67,8 +67,7 @@ alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
-alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
-alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
+# alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
@@ -213,6 +212,12 @@ getproxy() {
 	printf "=============SHELL:==============\n"
 	echo "http_proxy:  $http_proxy"
 	echo "https_proxy: $https_proxy"
+}
+
+gotestcover(){
+	DATESTRING="$(date -u "+20%y%m%d_%H%M%S")"
+	coveragefile="/tmp/coverage$DATESTRING.out"
+	go test "$1" -coverprofile=$coveragefile && go tool cover -func=$coveragefile && go tool cover -html=$coveragefile
 }
 
 historyplain() {
