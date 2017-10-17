@@ -1,2 +1,2 @@
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-export-if-exists GOGH "${GOPATH}/src/github.com/GlynOwenHanmer"
+export-if-exists GOG "${GOPATH}/src/github.com/glynternet"

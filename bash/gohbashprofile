@@ -1,3 +1,5 @@
+HISTSIZE=1000
+
 ## Profile Functions
 augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
@@ -52,6 +54,7 @@ source-if-exists(){
 # VARIABLES
 
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
+
 export SHRUG='¯\_(ツ)_/¯'
 
 # ALIASES
@@ -64,7 +67,7 @@ alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias golangDocs='godoc -http=:6060'
-alias go-test-cover='go test -coverprofile=coverage.out && go tool cover -func=coverage.out && go tool cover -html=coverage.out'
+# alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
@@ -94,11 +97,6 @@ disk-space(){
 	fi
 	sudo du -d"$depth" "$baseDir" | sort -g
 }
-
-# TEMPORARY ALIASES
-[[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $GOHBASHPROFILE && . $GOHBASHPROFILE"
-
-# CONFIGS
 
 # AWS CLI Completer
 if [ -x /usr/local/bin/aws_completer ]; then
@@ -189,6 +187,14 @@ findflacs() {
 	
 }
 
+fswatchsimple() {
+	echo "Watching: $1"
+	echo "Command: ${@:2}"
+	# fswatch -0 "$1" | xargs -0 grep -v 4913
+	fswatch -0 "$1" | xargs -0 -n 1 -I "{}" "${@:2}"
+	# something like this will work but I'm not sure what. fswatch "$1" | grep -Z -v 4913 | xargs -0 -n 1 -I "{}" "${@:2}"
+}
+
 git-checkout-pullrequest() {
 	pr="$1"
 	if [[ -z "$pr" ]]; then
@@ -208,6 +214,18 @@ getproxy() {
 	echo "https_proxy: $https_proxy"
 }
 
+gotestcover(){
+	DATESTRING="$(date -u "+20%y%m%d_%H%M%S")"
+	coveragefile="/tmp/coverage$DATESTRING.out"
+	go test "$1" -coverprofile=$coveragefile && go tool cover -func=$coveragefile && go tool cover -html=$coveragefile
+}
+
+historyplain() {
+	tput bold
+	history $@ | cut -c 8-
+	tput sgr0
+}
+
 install-and-log(){
 	aptGetInstalledList=~/Dropbox/bash/package-installs/apt-get
 	if [[ ! -f "$aptGetInstalledList" ]]; then
@@ -224,10 +242,37 @@ install-and-log(){
 	cat "$aptGetInstalledList"
 }
 
-historyplain() {
-	tput bold
-	history $@ | cut -c 8-
-	tput sgr0
+kubectl-getall(){
+	for entity in \
+	node \
+	pod \
+	deployment \
+	replicationcontroller "nodes -o jsonpath='{.items[*].status.addresses}'" \
+	replicaset \
+	service \
+	; do
+		printf "\n"
+		echo $entity | tr '[:lower:]' '[:upper:]'
+		kubectl get $entity
+	done
+	printf "\n"
+	echo "Port Forwarding" | tr '[:lower:]' '[:upper:]'
+	ps -ef | grep "kubectl port-forward"
+}
+
+kubectl-watch(){
+	entity="$1"
+	if [[ -z "$entity" ]]; then
+		echo "No entity given."
+		return 1
+	fi
+	for ((i=1;i<=10000;i++)); 
+	do 
+	   sleep 1
+	   clear && \
+		echo "$entity" | tr '[:lower:]' '[:upper:]' | figlet && \
+		kubectl get "$entity"
+	done
 }
 
 mkcd() {
@@ -260,39 +305,6 @@ moneyjohnandemily() {
 		echo "Error running GOHMoneyJAndE"
 		return $exitStatus
 	fi
-}
-
-md-html() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	fileBase="${file%.*}"
-	outFile="$fileBase.html"
-	markdown "$file" > "$outFile"
-}
-
-md-pdf() {
-	if [[ -z "$1" ]]; then
-		echo "No file given."
-		return 1
-	fi
-	file="$1"
-	if [[ ! -f "$file" ]]; then
-		echo "File does not exist."
-		return 2
-	fi
-	md-html "$file"
-	fileBase="${file%.*}"
-	htmlFile="$fileBase.html"
-	outFile="$fileBase.pdf"
-	wkhtmltopdf --dpi 300 "$htmlFile" "$outFile"
-	rm "$htmlFile"
 }
 
 moneybackups() {
@@ -344,6 +356,15 @@ stats(){
 	echo "Shell: ${SHELL}"
 }
 
+tmux-dev() {
+	sessionName="session-$(datestring)"
+	tmux new-session -d -s "$sessionName"
+	tmux split-window -h
+	tmux split-window -v
+	# -2 means force tmux to assume 256 colours
+	tmux -2 attach-session -d 
+}
+
 toucho() {
 	if [ -f "$1" ]; then
 		echo "$1 already exists."
@@ -382,7 +403,11 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
+augment-path-if-exists ~/scripts
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
+augment-path-if-exists $dotFilesDir/scripts
+export-if-exists DOTFILESDIR $dotFilesDir
+
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
 if [[ -f $osSpecificProfile ]]; then
