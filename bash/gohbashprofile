@@ -314,7 +314,7 @@ moneyjson() {
 }
 
 moneygraph() {
-	cp $HOME/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json $MONEY/moneygraph/src/data/money.json
+	# cp $HOME/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json $MONEY/moneygraph/src/data/money.json
 	cd $HOME/Dropbox/money/moneygraph/src && python -m SimpleHTTPServer 8000
 }
 
