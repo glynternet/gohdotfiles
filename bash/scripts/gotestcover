@@ -1,0 +1,5 @@
+#!/bin/bash
+dateString="$(date -u "+20%y%m%d_%H%M%S")"
+randomString="$(openssl rand -base64 32 | fold -w3 | head -n1)"
+coveragefile="/tmp/coverage$dateString-$randomString.out"
+go test "$1" -coverprofile=$coveragefile && go tool cover -func=$coveragefile && go tool cover -html=$coveragefile
