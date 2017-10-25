@@ -288,13 +288,13 @@ mkcd() {
 }
 
 moneyjohnandemily() {
-	cd $GOGH/GOHMoneyJAndE/
-	go build
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable build project"
-		return $exitStatus
-	fi
+	cd $GOG/GOHMoneyJAndE/
+	# go build
+	# exitStatus="$?"
+	# if [[ $exitStatus -ne 0 ]]; then
+	# 	echo "Unable build project"
+	# 	return $exitStatus
+	# fi
 	./GOHMoneyJAndE
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
