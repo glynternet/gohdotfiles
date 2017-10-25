@@ -402,7 +402,7 @@ wifi() {
 augment-path-if-exists ~/scripts ~/bin
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $dotFilesDir/scripts
-export-if-exists DOTFILESDIR $dotFilesDir
+export-if-exists GOHBASHPROFILE_DIR $dotFilesDir
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$dotFilesDir/$OS"
@@ -420,7 +420,7 @@ else
 	echo "No hostname specific profile found at $hn"
 fi
 
-# Needs to be after loading GOPATH from specific hostname profile
+# Needs to be after hostname profile because they load the GOPATH
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$dotFilesDir/environment/go"
 	augment-path-if-exists "$GOPATH/bin"
