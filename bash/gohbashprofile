@@ -6,12 +6,14 @@ augment-path-if-exists(){
 		echo "Requires argument of path to add."
 		exit 1
 	fi
-	dirPath="$1"
-	if [ -d "$dirPath" ]; then
-		export PATH="$PATH:$dirPath";
-	else
-		echo "Unable to add directory to PATH: unable to find '$dirPath'"
-	fi
+	for dirPath in "$@"; do
+		# dirPath="$1"
+		if [ -d "$dirPath" ]; then
+			export PATH="$PATH:$dirPath";
+		else
+			echo "Unable to add directory to PATH: unable to find '$dirPath'"
+		fi
+	done
 }
 
 export-if-exists(){
@@ -397,7 +399,7 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
-augment-path-if-exists ~/scripts
+augment-path-if-exists ~/scripts ~/bin
 dotFilesDir="$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $dotFilesDir/scripts
 export-if-exists DOTFILESDIR $dotFilesDir
