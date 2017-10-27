@@ -16,6 +16,22 @@ augment-path-if-exists(){
 	done
 }
 
+export CDPATH=.
+augment-cdpath-if-exists(){
+	if [[ $# -lt 1 ]]; then
+		echo "Requires argument of path to add."
+		exit 1
+	fi
+	for dirPath in "$@"; do
+		# dirPath="$1"
+		if [ -d "$dirPath" ]; then
+			export CDPATH="$CDPATH:$dirPath";
+		else
+			echo "Unable to add directory to PATH: unable to find '$dirPath'"
+		fi
+	done
+}
+
 export-if-exists(){
 	if [[ $# -lt 2 ]]; then
 		echo "Requires argument of variable name to export and path to check."
@@ -402,6 +418,8 @@ wifi() {
 augment-path-if-exists ~/scripts ~/bin
 export-if-exists GOHBASHPROFILE_DIR "$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $GOHBASHPROFILE_DIR/scripts
+
+augment-cdpath-if-exists ~ $GOPATH $GOP
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$GOHBASHPROFILE_DIR/$OS"
