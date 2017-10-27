@@ -400,12 +400,11 @@ wifi() {
 }
 
 augment-path-if-exists ~/scripts ~/bin
-dotFilesDir="$(dirname $GOHBASHPROFILE)"
-augment-path-if-exists $dotFilesDir/scripts
-export-if-exists GOHBASHPROFILE_DIR $dotFilesDir
+export-if-exists GOHBASHPROFILE_DIR "$(dirname $GOHBASHPROFILE)"
+augment-path-if-exists $GOHBASHPROFILE_DIR/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
-osSpecificProfile="$dotFilesDir/$OS"
+osSpecificProfile="$GOHBASHPROFILE_DIR/$OS"
 if [[ -f $osSpecificProfile ]]; then
 	. $osSpecificProfile
 else
@@ -413,7 +412,7 @@ else
 fi
 
 hn="$(hostname)"
-hostnameSpecificProfile="$dotFilesDir/hostname/$hn"
+hostnameSpecificProfile="$GOHBASHPROFILE_DIR/hostname/$hn"
 if [[ -f $hostnameSpecificProfile ]]; then
 	. $hostnameSpecificProfile
 else
@@ -422,6 +421,6 @@ fi
 
 # Needs to be after hostname profile because they load the GOPATH
 if [[ -n "$GOPATH" ]]; then
-	source-if-exists "$dotFilesDir/environment/go"
+	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
 	augment-path-if-exists "$GOPATH/bin"
 fi
