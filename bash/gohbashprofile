@@ -419,8 +419,6 @@ augment-path-if-exists ~/scripts ~/bin
 export-if-exists GOHBASHPROFILE_DIR "$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $GOHBASHPROFILE_DIR/scripts
 
-augment-cdpath-if-exists ~ $GOPATH $GOP
-
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 osSpecificProfile="$GOHBASHPROFILE_DIR/$OS"
 if [[ -f $osSpecificProfile ]]; then
@@ -442,3 +440,5 @@ if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
 	augment-path-if-exists "$GOPATH/bin"
 fi
+
+augment-cdpath-if-exists ~ $GOPATH $GOP
