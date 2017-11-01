@@ -352,8 +352,8 @@ newscript() {
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do
-	echo "$server";
-	ssh "$server" 'df -h' | grep --color=none -E '^/dev';
+		echo "$server";
+		ssh "$server" 'df -h' | grep --color=none -E '^/dev';
 	done
 }
 
