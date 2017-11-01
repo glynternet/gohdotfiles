@@ -355,6 +355,19 @@ mp3DownloadsToMusic() {
 	fi
 }
 
+newscript() {
+	scriptFile=$1
+	if [[ -z $scriptFile ]]; then
+		defaultNew="./newscript.sh"
+		echo "No script file given. Making a new one at $defaultNew"
+		scriptFile=$defaultNew
+	fi
+	touch $scriptFile
+	chmod 700 $scriptFile
+	echo '#!/bin/bash' > $scriptFile
+	subl $scriptFile --command "move_to args to eof" && subl --command 'move_to {"to": "eof"}'
+}
+
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do
