@@ -23,7 +23,6 @@ augment-cdpath-if-exists(){
 		exit 1
 	fi
 	for dirPath in "$@"; do
-		# dirPath="$1"
 		if [ -d "$dirPath" ]; then
 			export CDPATH="$CDPATH:$dirPath";
 		else
@@ -305,12 +304,6 @@ mkcd() {
 
 moneyjohnandemily() {
 	cd $GOG/GOHMoneyJAndE/
-	# go build
-	# exitStatus="$?"
-	# if [[ $exitStatus -ne 0 ]]; then
-	# 	echo "Unable build project"
-	# 	return $exitStatus
-	# fi
 	./GOHMoneyJAndE
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
@@ -338,7 +331,6 @@ moneyjson() {
 }
 
 moneygraph() {
-	# cp $HOME/Dropbox/go/src/bitbucket.org/glynny/GOHMoneyQuick/out/money.json $MONEY/moneygraph/src/data/money.json
 	cd $HOME/Dropbox/money/moneygraph/src && python -m SimpleHTTPServer 8000
 }
 
