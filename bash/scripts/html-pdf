@@ -11,7 +11,7 @@ if [[ ! -f "$file" ]]; then
 fi
 fileBase="${file%.*}"
 outFile="$fileBase.pdf"
-wkhtmltopdf --dpi 600 -O landscape "$file" "$outFile"
+wkhtmltopdf --dpi 280 -O portrait "$file" "$outFile"
 if [[ "$2" = "--open" ]]; then 
 	open -g $outFile
 fi
