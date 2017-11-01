@@ -9,14 +9,23 @@ if [[ ! -f "$file" ]]; then
 	echo "File does not exist: $file"
 	return 2
 fi
+
 fileBase="${file%.*}"
 outFile="$fileBase.html"
+
+# If the second argument isn't --open but does contain information, it must be the outfile argument
+if [[ ! "$2" = "--open" ]] && [[ -n "$2" ]]; then 
+	outFile="$2"
+fi
+
 tmpFile="/tmp/$(basename $outFile.mid)"
 markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
 cat "$GOHBASHPROFILE_DIR/scripts/md.css.html" "$tmpFile" > "$outFile"
 rm "$tmpFile"
-if [[ "$2" = "--open" ]]; then 
+
+# If last argument is --open, open the file
+if [[ "${!#}" = "--open" ]]; then 
 	echo "opening $outFile"
 	open -g "$outFile"
 fi
