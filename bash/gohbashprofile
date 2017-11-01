@@ -125,18 +125,6 @@ if [ -x /usr/bin/aws_completer ]; then
 fi;
 
 # FUNCTIONS
-BBCproxy() {
-	if [ -z ${http_proxy+x} ] || [ -z ${https_proxy+x} ]; then
-		export http_proxy=http://www-cache.reith.bbc.co.uk:80;
-		echo "setting http_proxy to $http_proxy";
-		export https_proxy=http://www-cache.reith.bbc.co.uk:80;
-		echo "setting https_proxy to $https_proxy";
-	else 
-		echo "http_proxy is already set to '$http_proxy'";
-		echo "https_proxy is already set to '$https_proxy'";
-		echo "Unset these proxies to change them using the BBCproxy function."
-	fi
-}
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
@@ -207,6 +195,7 @@ findflacs() {
 fswatchsimple() {
 	echo "Watching: $1"
 	echo "Command: ${@:2}"
+	# vim can put a file called 4913 in its working directory so if I start using vim, I will have to work out how to ignore this file
 	# fswatch -0 "$1" | xargs -0 grep -v 4913
 	fswatch -0 "$1" | xargs -0 -n 1 -I "{}" "${@:2}"
 	# something like this will work but I'm not sure what. fswatch "$1" | grep -Z -v 4913 | xargs -0 -n 1 -I "{}" "${@:2}"
