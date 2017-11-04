@@ -83,8 +83,6 @@ alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-alias golangDocs='godoc -http=:6060'
-alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
@@ -291,30 +289,11 @@ mkcd() {
 	fi
 }
 
-moneyjohnandemily() {
-	cd $GOG/GOHMoneyJAndE/
-	./GOHMoneyJAndE
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Error running GOHMoneyJAndE"
-		return $exitStatus
-	fi
-}
-
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
 		echo "Unable to create-backups.sh. create-backups.sh error: $exitStatus"
-		return $exitStatus
-	fi
-}
-
-moneyjson() {
-	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to build money app and generate new json"
 		return $exitStatus
 	fi
 }
