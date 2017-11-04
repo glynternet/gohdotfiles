@@ -1,2 +1,4 @@
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
+augment-path-if-exists "$GOPATH/bin"
+augment-cdpath-if-exists $GOPATH $GOG $GOBB $GOP

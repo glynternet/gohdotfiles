@@ -16,7 +16,7 @@ augment-path-if-exists(){
 	done
 }
 
-export CDPATH=.
+export CDPATH=.:~
 augment-cdpath-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
@@ -432,7 +432,4 @@ fi
 # Needs to be after hostname profile because they load the GOPATH
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
-	augment-path-if-exists "$GOPATH/bin"
 fi
-
-augment-cdpath-if-exists ~ $GOPATH $GOP
