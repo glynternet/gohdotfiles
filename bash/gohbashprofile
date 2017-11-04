@@ -210,14 +210,6 @@ git-checkout-pullrequest() {
 	git checkout "$branchName"
 }
 
-getproxy() {
-	printf "=============SYSTEM:=============\n"
-	system_profiler SPNetworkDataType | grep -i "proxy" | sed "s/^[ \t]*//"
-	printf "=============SHELL:==============\n"
-	echo "http_proxy:  $http_proxy"
-	echo "https_proxy: $https_proxy"
-}
-
 historyplain() {
 	tput bold
 	history $@ | cut -c 8-
@@ -364,11 +356,6 @@ toucho() {
 		touch "$1"
 		open "$1"
 	fi
-}
-
-unsetProxies() {
-	unset http_proxy
-	unset https_proxy
 }
 
 wifiedit(){
