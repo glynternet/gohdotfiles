@@ -2,12 +2,12 @@
 # md-pdf
 if [[ -z "$1" ]]; then
 	echo "No file given."
-	return 1
+	exit 1
 fi
 file="$1"
 if [[ ! -f "$file" ]]; then
 	echo "File does not exist."
-	return 2
+	exit 2
 fi
 md-html "$file"
 fileBase="${file%.*}"
