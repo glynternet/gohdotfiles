@@ -435,4 +435,4 @@ if [[ -n "$GOPATH" ]]; then
 	augment-path-if-exists "$GOPATH/bin"
 fi
 
-augment-cdpath-if-exists ~ $GOPATH $GOP
+augment-cdpath-if-exists ~ $GOPATH $GOP ~/Notes
