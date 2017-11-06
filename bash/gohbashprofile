@@ -16,7 +16,7 @@ augment-path-if-exists(){
 	done
 }
 
-export CDPATH=.
+export CDPATH=.:~
 augment-cdpath-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
@@ -83,8 +83,6 @@ alias editcron='env EDITOR=vim crontab -e'
 alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
-alias golangDocs='godoc -http=:6060'
-alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
 alias grep='grep --color=auto'
 alias ipof='dig +short'
 alias ls="ls -a"
@@ -212,14 +210,6 @@ git-checkout-pullrequest() {
 	git checkout "$branchName"
 }
 
-getproxy() {
-	printf "=============SYSTEM:=============\n"
-	system_profiler SPNetworkDataType | grep -i "proxy" | sed "s/^[ \t]*//"
-	printf "=============SHELL:==============\n"
-	echo "http_proxy:  $http_proxy"
-	echo "https_proxy: $https_proxy"
-}
-
 historyplain() {
 	tput bold
 	history $@ | cut -c 8-
@@ -291,30 +281,11 @@ mkcd() {
 	fi
 }
 
-moneyjohnandemily() {
-	cd $GOG/GOHMoneyJAndE/
-	./GOHMoneyJAndE
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Error running GOHMoneyJAndE"
-		return $exitStatus
-	fi
-}
-
 moneybackups() {
 	~/Dropbox/money/db/scripts/create-backups.sh
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
 		echo "Unable to create-backups.sh. create-backups.sh error: $exitStatus"
-		return $exitStatus
-	fi
-}
-
-moneyjson() {
-	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to build money app and generate new json"
 		return $exitStatus
 	fi
 }
@@ -387,11 +358,6 @@ toucho() {
 	fi
 }
 
-unsetProxies() {
-	unset http_proxy
-	unset https_proxy
-}
-
 wifiedit(){
 	if [[ ! -f "$WIFICODES" ]]; then
 		echo "Cannot find wifi codes file at $WIFICODES"
@@ -432,7 +398,4 @@ fi
 # Needs to be after hostname profile because they load the GOPATH
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
-	augment-path-if-exists "$GOPATH/bin"
 fi
-
-augment-cdpath-if-exists ~ $GOPATH $GOP ~/Notes

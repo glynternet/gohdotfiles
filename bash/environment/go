@@ -1,2 +1,26 @@
+alias golangDocs='godoc -http=:6060'
+alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
+
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
+augment-path-if-exists "$GOPATH/bin"
+augment-cdpath-if-exists $GOPATH $GOG $GOBB $GOP
+
+moneyjohnandemily() {
+	cd $GOG/GOHMoneyJAndE/
+	./GOHMoneyJAndE
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Error running GOHMoneyJAndE"
+		return $exitStatus
+	fi
+}
+
+moneyjson() {
+	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
+	exitStatus="$?"
+	if [[ $exitStatus -ne 0 ]]; then
+		echo "Unable to build money app and generate new json"
+		return $exitStatus
+	fi
+}

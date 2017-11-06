@@ -3,6 +3,7 @@ export-if-exists GOPATH "${HOME}/go"
 if [[ -n "$GOPATH" ]]; then
 	export-if-exists GOP "${GOPATH}/src/github.com/Pocketbrain"
 fi
+augment-cdpath-if-exists ~/Notes
 
 ## FUNCTIONS
 pm-clone-go(){
