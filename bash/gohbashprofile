@@ -399,3 +399,6 @@ fi
 if [[ -n "$GOPATH" ]]; then
 	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
 fi
+
+# ~/tmp should be the last resort when looking for directories
+augment-cdpath-if-exists ~/tmp
