@@ -6,12 +6,13 @@ if [[ -z "$1" ]]; then
 fi
 file="$1"
 if [[ ! -f "$file" ]]; then
-	echo "File does not exist."
+	echo "File does not exist: $file"
 	exit 2
 fi
+
 fileBase="${file%.*}"
 outFile="$fileBase.pdf"
-wkhtmltopdf --dpi 265 -O portrait "$file" "$outFile"
+wkhtmltopdf --dpi 440 -O portrait "$file" "$outFile"
 if [[ "$2" = "--open" ]]; then 
 	open -g $outFile
 fi

@@ -6,9 +6,10 @@ if [[ -z "$1" ]]; then
 fi
 file="$1"
 if [[ ! -f "$file" ]]; then
-	echo "File does not exist."
+	echo "File does not exist: $file"
 	exit 2
 fi
+
 md-html "$file"
 fileBase="${file%.*}"
 htmlFile="$fileBase.html"

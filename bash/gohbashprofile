@@ -73,6 +73,8 @@ source-if-exists(){
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
 
 export SHRUG='¯\_(ツ)_/¯'
+# verbose output for Terraform whilst I get used to it.
+export TF_LOG=DEBUG
 
 # ALIASES
 # PERMANENT ALIASES
