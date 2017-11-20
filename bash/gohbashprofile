@@ -1,4 +1,5 @@
 HISTSIZE=1000
+HISTTIMEFORMAT="%y/%m/%d %T "
 
 ## Profile Functions
 augment-path-if-exists(){
