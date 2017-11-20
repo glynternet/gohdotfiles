@@ -378,7 +378,7 @@ wifi() {
 	grep -i $name $WIFICODES 
 }
 
-augment-path-if-exists ~/scripts ~/bin
+augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
 export-if-exists GOHBASHPROFILE_DIR "$(dirname $GOHBASHPROFILE)"
 augment-path-if-exists $GOHBASHPROFILE_DIR/scripts
 
