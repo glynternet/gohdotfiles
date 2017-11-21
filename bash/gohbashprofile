@@ -398,9 +398,15 @@ else
 	echo "No hostname specific profile found at $hn"
 fi
 
+source-environment(){
+	source-if-exists $GOHBASHPROFILE_DIR/environment/$1
+}
+
+source-environment git
+
 # Needs to be after hostname profile because they load the GOPATH
 if [[ -n "$GOPATH" ]]; then
-	source-if-exists "$GOHBASHPROFILE_DIR/environment/go"
+	source-environment go
 fi
 
 # ~/tmp should be the last resort when looking for directories

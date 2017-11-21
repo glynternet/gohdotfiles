@@ -1,4 +1,3 @@
-alias golangDocs='godoc -http=:6060'
 alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
 
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"

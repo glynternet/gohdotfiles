@@ -1,7 +1,7 @@
 ## macOS ALIASES
 alias copy="pbcopy"
 alias chrome='open -a "Google Chrome"'
-alias gogland='open -a  /Applications/Gogland\ 1.0\ EAP.app/Contents/MacOS/gogland'
+alias goland='open -a  /Applications/Goland\ 1.0\ EAP.app/Contents/MacOS/goland'
 
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"
