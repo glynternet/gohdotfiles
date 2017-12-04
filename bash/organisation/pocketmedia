@@ -1,0 +1,26 @@
+## FUNCTIONS
+pm-clone-go(){
+	current="$(pwd)"
+	dir=~/go/src/github.com/Pocketbrain/
+	if [[ ! -d $dir ]]; then
+		mkdir -p $dir
+	fi
+	cd $dir
+	repoUrl="ssh://git@github.com/Pocketbrain/$1"
+	git clone "$repoUrl"
+	status=$?
+	if [[ $status -ne 0 ]]; then
+		return "Unable to clone repo at $repoUrl"
+	fi
+	cd "$current"
+}
+
+cdgop(){
+	repo="$1"
+	path="$GOP/$repo"
+	if [[ ! -d "$path" ]]; then
+		echo "$repo repository doesn't exist, cloning..."
+		pm-clone-go "$repo"
+	fi
+	cd  "$path"
+}
