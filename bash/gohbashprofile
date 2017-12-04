@@ -6,7 +6,7 @@ export CDPATH=.:~
 ### Path Functions
 augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
-		echo "Requires argument of path to add."
+		echo "Requires argument of path to add to PATH."
 		exit 1
 	fi
 	for dirPath in "$@"; do
@@ -21,14 +21,14 @@ augment-path-if-exists(){
 
 augment-cdpath-if-exists(){
 	if [[ $# -lt 1 ]]; then
-		echo "Requires argument of path to add."
-		exit 1
+		echo "Requires argument of path to add to CDPATH."
+		return 1
 	fi
 	for dirPath in "$@"; do
 		if [ -d "$dirPath" ]; then
 			export CDPATH="$CDPATH:$dirPath";
 		else
-			echo "Unable to add directory to PATH: unable to find '$dirPath'"
+			echo "Unable to add directory to CDPATH: unable to find '$dirPath'"
 		fi
 	done
 }
@@ -357,22 +357,6 @@ tmux-dev() {
 	tmux -2 attach-session -d 
 }
 
-toucho() {
-	if [ -f "$1" ]; then
-		echo "$1 already exists."
-		read answer
-		echo "Would you like to open it? (yes/no)"
-		if [[ "$answer" =~ ^(yes|ye|y)$ ]]; then 
-			open "$1"
-		else
-		    echo "$answer is not in the list"
-		fi
-	else
-		touch "$1"
-		open "$1"
-	fi
-}
-
 wifiedit(){
 	if [[ ! -f "$WIFICODES" ]]; then
 		echo "Cannot find wifi codes file at $WIFICODES"
@@ -411,11 +395,6 @@ else
 fi
 
 source-environment git
-
-# Needs to be after hostname profile because they load the GOPATH
-if [[ -n "$GOPATH" ]]; then
-	source-environment go
-fi
 
 # ~/tmp should be the last resort when looking for directories
 augment-cdpath-if-exists ~/tmp

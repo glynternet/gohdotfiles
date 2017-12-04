@@ -3,7 +3,7 @@ alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*'
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
 augment-path-if-exists "$GOPATH/bin"
-augment-cdpath-if-exists $GOPATH $GOG $GOBB $GOP
+augment-cdpath-if-exists $GOPATH $GOG $GOBB
 
 moneyjohnandemily() {
 	cd $GOG/GOHMoneyJAndE/
