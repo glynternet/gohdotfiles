@@ -8,3 +8,5 @@ export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
 # DROPBOX PATHS
 augment-path-if-exists "${HOME}/Dropbox/scripts"
 augment-path-if-exists "${HOME}/Dropbox/scripts/music"
+
+source-organisation pocketmedia

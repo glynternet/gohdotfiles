@@ -1,7 +1,9 @@
-HISTSIZE=1000
-HISTTIMEFORMAT="%y/%m/%d %T "
+export HISTSIZE=1000
+export HISTTIMEFORMAT="%y/%m/%d %T "
+export CDPATH=.:~
 
 ## Profile Functions
+### Path Functions
 augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
@@ -17,7 +19,6 @@ augment-path-if-exists(){
 	done
 }
 
-export CDPATH=.:~
 augment-cdpath-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add."
@@ -32,6 +33,7 @@ augment-cdpath-if-exists(){
 	done
 }
 
+### Variable Functions
 export-if-exists(){
 	if [[ $# -lt 2 ]]; then
 		echo "Requires argument of variable name to export and path to check."
@@ -52,6 +54,7 @@ export-if-exists(){
 	fi
 }
 
+### Source Functions
 source-if-exists(){
 	if [[ $# -ne 1 ]]; then
 		echo "Requires 1 argument of file to source."
@@ -68,6 +71,15 @@ source-if-exists(){
 	fi
 	. "$path"
 }
+
+
+source-environment(){
+	source-if-exists $GOHBASHPROFILE_DIR/environment/$1
+}
+source-organisation(){
+	source-if-exists $GOHBASHPROFILE_DIR/organisation/$1	
+}
+
 
 # VARIABLES
 
@@ -396,10 +408,6 @@ if [[ -f $hostnameSpecificProfile ]]; then
 else
 	echo "No hostname specific profile found at $hn"
 fi
-
-source-environment(){
-	source-if-exists $GOHBASHPROFILE_DIR/environment/$1
-}
 
 source-environment git
 
