@@ -79,7 +79,6 @@ export TF_LOG=INFO
 
 # ALIASES
 # PERMANENT ALIASES
-alias cdname='echo ${PWD##*/}'
 alias cp='cp -v'
 alias datestring='date -u "+20%y%m%d_%H%M"'
 alias editcron='env EDITOR=vim crontab -e'

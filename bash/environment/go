@@ -16,10 +16,10 @@ moneyjohnandemily() {
 }
 
 moneyjson() {
-	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
+	cd $GOBB/GOHMoneyQuick/ && make build && ./bin/money-quick
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to build money app and generate new json"
+		echo "Unable to build money-quick and serve"
 		return $exitStatus
 	fi
 }
