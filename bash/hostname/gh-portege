@@ -5,6 +5,7 @@ if [[ -n "$MONEY" ]]; then
 	export-if-exists MONEYDB "$MONEY/db"
 fi
 export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
+export-if-exists AWS_SIGNIN_KV "$HOME/Dropbox/bash/aws/aws_signin_url.kv"
 
 # DROPBOX PATHS
 augment-path-if-exists "${HOME}/Dropbox/scripts"
