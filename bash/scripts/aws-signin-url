@@ -4,13 +4,18 @@ parse-key-value(){
 	key="$2"
 
 	keyValue="$(look "$key" "$keyValueFile")"
+	status="$?"
+	if [[ ! $status = 0 ]]; then
+		echo "could not find value for key: $key"
+		exit $?
+	fi
 
 	value=${keyValue#$key} #what about when there are multiple entries?
 	# If value's first character is an equals
 	if [[ ${value:0:1} == "=" ]] ; then
 		value=${value:1};
 	else
-		echo "Invalid key format. Exiting.";
+		echo "Invalid key format: $key";
 		exit 1;
 	fi
 	echo $value
