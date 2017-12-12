@@ -1,0 +1,37 @@
+if [[ -n "$GOPATH" ]]; then
+	export-if-exists GOP "${GOPATH}/src/github.com/Pocketbrain"
+fi
+augment-cdpath-if-exists $GOP
+source-environment go
+
+## FUNCTIONS
+pm-clone-go(){
+	if [[ -z "$GOP" ]]; then
+		echo "GOP variable is not set"
+		return 1
+	fi
+	current="$(pwd)"
+	if [[ ! -d $GOP ]]; then
+		mkdir -p $GOP
+	fi
+	cd $GOP
+	repoUrl="ssh://git@github.com/Pocketbrain/$1"
+	git clone "$repoUrl"
+	status=$?
+	if [[ $status -ne 0 ]]; then
+		echo "Unable to clone repo at $repoUrl."
+		echo "git exit status: $status"
+		return 2
+	fi
+	cd "$current"
+}
+
+cdgop(){
+	repo="$1"
+	path="$GOP/$repo"
+	if [[ ! -d "$path" ]]; then
+		echo "$repo repository doesn't exist, cloning..."
+		pm-clone-go "$repo"
+	fi
+	cd  "$path"
+}

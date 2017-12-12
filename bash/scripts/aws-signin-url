@@ -34,6 +34,10 @@ parse-key-value(){
 }
 
 awsConsoleSignInKVStore=${AWS_SIGNIN_KV}
+if [[ ! -f "${AWS_SIGNIN_KV}" ]]; then
+	echo "Can't find key value store at $AWS_SIGNIN_KV"
+	exit 1
+fi
 account="$1"
 if [[ -z $account ]]; then
 	cat ${AWS_SIGNIN_KV}

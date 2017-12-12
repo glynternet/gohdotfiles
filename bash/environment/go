@@ -4,7 +4,7 @@ alias gbt="go build ./... && go test ./..."
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
 augment-path-if-exists "$GOPATH/bin"
-augment-cdpath-if-exists $GOPATH $GOG $GOBB $GOP
+augment-cdpath-if-exists $GOPATH $GOG $GOBB
 
 moneyjohnandemily() {
 	cd $GOG/GOHMoneyJAndE/
@@ -17,10 +17,10 @@ moneyjohnandemily() {
 }
 
 moneyjson() {
-	cd $GOBB/GOHMoneyQuick/ && go build && ./GOHMoneyQuick
+	cd $GOBB/GOHMoneyQuick/ && make build && ./bin/money-quick
 	exitStatus="$?"
 	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to build money app and generate new json"
+		echo "Unable to build money-quick and serve"
 		return $exitStatus
 	fi
 }

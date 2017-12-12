@@ -1,31 +1,7 @@
 ## VARIABLES
 export-if-exists GOPATH "${HOME}/go"
-if [[ -n "$GOPATH" ]]; then
-	export-if-exists GOP "${GOPATH}/src/github.com/Pocketbrain"
-fi
+source-environment go
 export-if-exists GOH_MONEY_DB_DATA_DIR "${HOME}/money/db/data"
 augment-cdpath-if-exists ~/Notes
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
-
-## FUNCTIONS
-pm-clone-go(){
-	current="$(pwd)"
-	cd ~/go/src/github.com/Pocketbrain/
-	repoUrl="ssh://git@github.com/Pocketbrain/$1"
-	git clone "$repoUrl"
-	status=$?
-	if [[ $status -ne 0 ]]; then
-		return "Unable to clone repo at $repoUrl"
-	fi
-	cd "$current"
-}
-
-cdgop(){
-	repo="$1"
-	path="$GOP/$repo"
-	if [[ ! -d "$path" ]]; then
-		echo "$repo repository doesn't exist, cloning..."
-		pm-clone-go "$repo"
-	fi
-	cd  "$path"
-}
+source-organisation pocketmedia

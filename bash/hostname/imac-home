@@ -1,6 +1,7 @@
 augment-path-if-exists "/Library/TeX/Distributions/.DefaultTeX/Contents/Programs/texbin"
 
 export-if-exists GOPATH "${HOME}/Dropbox/go"
+source-environment go
 export MUSICDATE="$(date "+20%y-%m_%B")"
 export-if-exists MUSICDIR "$HOME/Music/$MUSICDATE"
 export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
