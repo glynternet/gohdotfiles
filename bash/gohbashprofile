@@ -87,6 +87,10 @@ source-organisation(){
 [[ -n "$GOHBASHPROFILE" ]] && alias editGOHBASHPROFILE="subl -w $(dirname $GOHBASHPROFILE) && . $GOHBASHPROFILE"
 
 export SHRUG='¯\_(ツ)_/¯'
+export MERGED_EMOJI=":dancer: merged"
+export MOVED_EMOJI="moved :dancer:"
+export MERGED_AND_MOVED_EMOJI="$MERGED_EMOJI & $MOVED_EMOJI"
+
 # verbose output for Terraform whilst I get used to it.
 export TF_LOG=INFO
 
@@ -104,6 +108,9 @@ alias lsusers='cut -d: -f1 /etc/passwd'
 alias lslisteningports='netstat -lpn'
 alias mv='mv -v'
 alias shrug="echo '$SHRUG' && echo '$SHRUG' | copy && echo \"Copied to clipboard.\""
+alias merged="echo '$MERGED_EMOJI' && echo '$MERGED_EMOJI' | copy && echo \"Copied to clipboard.\""
+alias moved="echo '$MOVED_EMOJI' && echo '$MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
+alias merged-and-moved="echo '$MERGED_AND_MOVED_EMOJI' && echo '$MERGED_AND_MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias sshhosts='cat ~/.ssh/config | grep Host'
 alias tree="find . -print | sed -e 's;[^/]*/;|____;g;s;____|; |;g'"
 
