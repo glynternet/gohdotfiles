@@ -2,3 +2,9 @@ git-add-commit() {
 	git add "$1"
 	git commit -m "$2"
 }
+
+git-stat-diff() {
+	echo "$(git -c  'color.ui=always' --no-pager status && \
+	git -c  'color.ui=always' --no-pager diff)" | \
+	less -r
+}
