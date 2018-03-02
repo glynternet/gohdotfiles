@@ -12,6 +12,7 @@ fi
 
 fileBase="${file%.*}"
 outFile="$fileBase.pdf"
+wkhtmltopdf -O Landscape --page-size A3 "$file" "$outFile" 
 wkhtmltopdf --dpi 325 -O portrait "$file" "$outFile"
 if [[ "$2" = "--open" ]]; then 
 	open -g $outFile
