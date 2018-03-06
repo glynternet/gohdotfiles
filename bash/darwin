@@ -5,6 +5,7 @@ alias goland='open -a  /Applications/GoLand\ 2018.1\ EAP.app/Contents/MacOS/gola
 
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"
+export GO_METALINTER_CMD=gometalinter
 
 ## macOS PATHS
 augment-path-if-exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"

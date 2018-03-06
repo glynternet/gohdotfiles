@@ -10,6 +10,9 @@ alias chrome='google-chrome'
 alias goland='/opt/*/bin/goland.sh'
 alias mouse-sensitivity="xset m"
 
+## linux variables
+export GO_METALINTER_CMD=gometalinter.v1
+
 rerun-latex() {
 	if [[ $# -lt 1 ]]; then
 		echo "No files given to monitor for changes."

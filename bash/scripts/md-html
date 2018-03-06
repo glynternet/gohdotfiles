@@ -21,7 +21,11 @@ fi
 tmpFile="/tmp/$(basename $outFile.mid)"
 markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
-cat "$GOHBASHPROFILE_DIR/scripts/md.css.html" "$tmpFile" > "$outFile"
+css="$GOHBASHPROFILE_DIR/scripts/md.css.html"
+if [[ ! -f "$css" ]]; then
+	echo "css cannot be found at $css"
+fi
+cat "$css" "$tmpFile" > "$outFile"
 rm "$tmpFile"
 
 # If last argument is --open, open the file

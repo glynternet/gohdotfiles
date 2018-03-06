@@ -1,4 +1,4 @@
-alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} gometalinter {}/..."
+alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} \$GO_METALINTER_CMD {}/..."
 alias gbt="go build ./... && go test -race ./..."
 
 export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
