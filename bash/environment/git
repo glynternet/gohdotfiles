@@ -18,3 +18,9 @@ git-log-adog() {
 git-init-initial-commit(){ 
 	git init && git commit -m "initial commit" --allow-empty
 }
+
+## TODO: Move these into a template file which can be set on each host
+export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
+export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
+export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
+export GIT_COMMITTER_EMAIL="glynhanmer@gmail.com"
