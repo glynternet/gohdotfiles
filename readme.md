@@ -1,6 +1,6 @@
 # gohdotfiles
 
-My organically growing dotfiles.  
+My organically-growing dotfiles.  
 Plz excuse the mess.
 
 ## Install
@@ -15,5 +15,5 @@ Then ```cd``` into appropriate configs directory and run ```install.sh```
 ## bash profile
 ```bash
 cd ./bash
-./install.sh
+make install
 ```
