@@ -18,5 +18,3 @@ git-log-adog() {
 git-init-initial-commit(){ 
 	git init && git commit -m "initial commit" --allow-empty
 }
-
-export GIT_EDITOR=vim
