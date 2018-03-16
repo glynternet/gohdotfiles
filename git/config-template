@@ -1,0 +1,4 @@
+[push]
+	default = simple
+[commit]
+	template = {{COMMIT_TEMPLATE_FILE}}

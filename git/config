@@ -1,4 +1,0 @@
-[push]
-	default = simple
-[commit]
-	template = /home/glynhanmer/gohdotfiles/git/commit-template.txt

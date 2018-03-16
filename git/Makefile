@@ -1,3 +1,13 @@
-# for later 
-#	ln -s /home/glynhanmer/gohdotfiles/git/config ~/.gitconfig
+SHELL = sh
+
+PROFILE_FILENAME ?= .gitconfig
+PROFILE ?= $(HOME)/$(PROFILE_FILENAME)
+
+GOH_DOTFILES ?= $(HOME)/gohdotfiles
+GOH_GITDOTFILES_DIR ?= $(GOH_DOTFILES)/git
+CONFIG_TEMPLATE_FILE ?= $(GOH_GITDOTFILES_DIR)/config-template
+COMMIT_TEMPLATE_FILE ?= $(GOH_GITDOTFILES_DIR)/commit-template
+
+install:
+	sed 's@{{COMMIT_TEMPLATE_FILE}}@$(COMMIT_TEMPLATE_FILE)@g' $(CONFIG_TEMPLATE_FILE) | tee $(PROFILE)
 
