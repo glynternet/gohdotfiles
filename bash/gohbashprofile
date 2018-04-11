@@ -363,19 +363,11 @@ tmux-dev() {
 	tmux -2 attach-session -d 
 }
 
-wifiedit(){
-	if [[ ! -f "$WIFICODES" ]]; then
-		echo "Cannot find wifi codes file at $WIFICODES"
-		exit 1
-	fi
-	vim $WIFICODES
-}
-
 wifi() {
 	name="$1"
 	if [[ -z "$name" ]]; then
 		cat $WIFICODES
-		exit
+		return
 	fi
 	grep -i $name $WIFICODES 
 }
