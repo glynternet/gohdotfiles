@@ -1,5 +1,4 @@
 #!/bin/bash
-# md-html
 if [[ -z "$1" ]]; then
 	echo "No file given."
 	exit 1
@@ -21,7 +20,7 @@ fi
 tmpFile="/tmp/$(basename $outFile.mid)"
 markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
-css="$GOHBASHPROFILE_DIR/scripts/md.css.html"
+css="$GOH_DOTFILES/bash/scripts/md.css.html"
 if [[ ! -f "$css" ]]; then
 	echo "css cannot be found at $css"
 fi
