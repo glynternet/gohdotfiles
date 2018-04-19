@@ -3,6 +3,5 @@ export-if-exists GOPATH "${HOME}/go"
 source-environment go
 export-if-exists GOH_MONEY_DB_DATA_DIR "${HOME}/money/db/data"
 augment-cdpath-if-exists ~/Notes
-augment-cdpath-if-exists ~/Dropbox/pocket
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
 source-organisation pocketmedia
