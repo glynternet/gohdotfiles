@@ -5,22 +5,3 @@ export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
 augment-path-if-exists "$GOPATH/bin"
 augment-cdpath-if-exists $GOPATH $GOG $GOBB
-
-moneyjohnandemily() {
-	cd $GOG/GOHMoneyJAndE/
-	./GOHMoneyJAndE
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Error running GOHMoneyJAndE"
-		return $exitStatus
-	fi
-}
-
-moneyjson() {
-	cd $GOBB/GOHMoneyQuick/ && make build && ./bin/money-quick
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to build money-quick and serve"
-		return $exitStatus
-	fi
-}
