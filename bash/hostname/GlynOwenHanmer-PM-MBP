@@ -1,4 +1,5 @@
 ## VARIABLES
+export SERVER_HOST=http://localhost:8081
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
 export-if-exists GOH_MONEY_DB_DATA_DIR "${HOME}/money/db/data"

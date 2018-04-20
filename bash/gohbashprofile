@@ -303,12 +303,8 @@ mkcd() {
 }
 
 moneybackups() {
-	~/Dropbox/money/db/scripts/create-backups.sh
-	exitStatus="$?"
-	if [[ $exitStatus -ne 0 ]]; then
-		echo "Unable to create-backups.sh. create-backups.sh error: $exitStatus"
-		return $exitStatus
-	fi
+	cd ~/Dropbox/money/db/scripts
+	make backups
 }
 
 moneygraph() {
