@@ -1,3 +1,8 @@
+install:
+	$(MAKE) install-bash
+	$(MAKE) install-git
+	$(MAKE) install-vim
+
 install-bash:
 	$(MAKE) -C bash install
 
