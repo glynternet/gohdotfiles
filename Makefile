@@ -11,3 +11,9 @@ install-git:
 
 install-vim:
 	$(MAKE) -C vim install
+
+dirs:
+	mkdir -p '$(HOME)/scripts'
+	mkdir -p '$(HOME)/bin'
+	mkdir -p '$(HOME)/tmp/scripts'
+	mkdir -p '$(HOME)/tmp'
