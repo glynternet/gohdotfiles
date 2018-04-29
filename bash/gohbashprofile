@@ -307,10 +307,6 @@ moneybackups() {
 	make backups
 }
 
-moneygraph() {
-	cd $HOME/Dropbox/money/moneygraph/src && python -m SimpleHTTPServer 8000
-}
-
 mp3DownloadsToMusic() {
 	if [ -f $DOWNLOADS/*.mp3 ]; then
 		echo "MP3S WOOOOH"
