@@ -1,14 +1,10 @@
-export-if-exists GOPATH "${HOME}/Dropbox/go"
+export-if-exists GOPATH "${HOME}/go"
 source-environment go
-export-if-exists MONEY "$HOME/Dropbox/money"
-if [[ -n "$MONEY" ]]; then
-	export-if-exists MONEYDB "$MONEY/db"
+
+export-if-exists DROPBOX "${HOME}/Dropbox"
+if [[ -n "$DROPBOX" ]]; then
+	export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
+	export-if-exists AWS_SIGNIN_KV "${DROPBOX}/scripts/bash/aws/aws_signin_url.kv"
+	augment-path-if-exists "${DROPBOX}/scripts"
+	augment-path-if-exists "${DROPBOX}/scripts/music"
 fi
-export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
-export-if-exists AWS_SIGNIN_KV "$HOME/Dropbox/bash/aws/aws_signin_url.kv"
-
-# DROPBOX PATHS
-augment-path-if-exists "${HOME}/Dropbox/scripts"
-augment-path-if-exists "${HOME}/Dropbox/scripts/music"
-
-source-organisation pocketmedia
