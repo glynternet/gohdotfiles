@@ -1,6 +1,3 @@
-### linux PATHS
-augment-path-if-exists /usr/local/go/bin
-
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
 
 ## linux ALIASES
@@ -8,23 +5,3 @@ alias copy='xsel -ib'
 alias chrome='google-chrome'
 alias goland='/opt/*/bin/goland.sh'
 alias mouse-sensitivity="xset m"
-
-## linux variables
-export GO_METALINTER_CMD=gometalinter.v1
-
-rerun-latex() {
-	if [[ $# -lt 1 ]]; then
-		echo "No files given to monitor for changes."
-	fi
-	xelatexCommand=""
-	chromeCommand=""
-	joiner=' && '
-	for texFile in "$@"; do
-		xelatexCommand="${xelatexCommand}xelatex $texFile$joiner"
-		pdf="${texFile%tex}pdf"
-		chromeCommand="${chromeCommand}google-chrome $pdf$joiner"
-	done
-	chromeCommand=${chromeCommand%$joiner}
-	echo "$xelatexCommand$chromeCommand"
-	rerun --pattern '**/*.tex' "$xelatexCommand$chromeCommand"
-}
