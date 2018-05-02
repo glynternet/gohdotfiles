@@ -2,7 +2,10 @@
 export SERVER_HOST=http://localhost:8081
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
-export-if-exists GOH_MONEY_DB_DATA_DIR "${HOME}/money/db/data"
+export-if-exists DROPBOX "$HOME/Dropbox"
+export-if-exists WIFICODES "$DROPBOX/wifi_codes.txt"
+
+export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 augment-cdpath-if-exists ~/Notes
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
 source-organisation pocketmedia
