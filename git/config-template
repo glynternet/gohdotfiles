@@ -2,3 +2,5 @@
 	default = simple
 [commit]
 	template = {{COMMIT_TEMPLATE_FILE}}
+[init]
+	templatedir = {{TEMPLATES_DIRECTORY}}
