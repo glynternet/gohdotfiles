@@ -99,7 +99,6 @@ export TF_LOG=INFO
 # PERMANENT ALIASES
 alias cp='cp -v'
 alias datestring='date -u "+20%y%m%d_%H%M"'
-alias externalip='curl -s https://4.ifcfg.me/'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
 alias grep='grep --color=auto'
