@@ -6,6 +6,7 @@ export-if-exists DROPBOX "$HOME/Dropbox"
 export-if-exists WIFICODES "$DROPBOX/wifi_codes.txt"
 
 export-if-exists PG_MON_DATADIR "${HOME}/money/data"
+export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
 augment-cdpath-if-exists ~/Notes
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
 source-organisation pocketmedia
