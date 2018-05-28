@@ -1,7 +1,11 @@
 alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} \$GO_METALINTER_CMD {}/..."
 alias gbt="go build ./... && go test -race ./..."
 
-export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
-export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
-augment-path-if-exists "$GOPATH/bin"
-augment-cdpath-if-exists $GOPATH $GOG $GOBB
+if [[ -n "$GOPATH" ]]; then
+	export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
+	export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
+	augment-path-if-exists "$GOPATH/bin"
+	augment-cdpath-if-exists $GOPATH $GOG $GOBB	#statements
+else
+	echo "GOPATH is not set."
+fi
