@@ -92,9 +92,6 @@ export MERGED_EMOJI=":dancer: merged"
 export MOVED_EMOJI="moved :dancer:"
 export MERGED_AND_MOVED_EMOJI="$MERGED_EMOJI & $MOVED_EMOJI"
 
-# verbose output for Terraform whilst I get used to it.
-export TF_LOG=INFO
-
 # ALIASES
 # PERMANENT ALIASES
 alias cp='cp -v'
