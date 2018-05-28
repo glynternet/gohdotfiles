@@ -380,7 +380,7 @@ hostnameSpecificProfile="$GOH_BASHPROFILE_DIR/hostname/$hn"
 if [[ -f $hostnameSpecificProfile ]]; then
 	. $hostnameSpecificProfile
 else
-	echo "No hostname specific profile found at $hn"
+	echo "No hostname specific profile found at $hostnameSpecificProfile"
 fi
 
 source-environment git
