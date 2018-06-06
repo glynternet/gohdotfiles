@@ -107,7 +107,7 @@ alias shrug="echo '$SHRUG' && echo '$SHRUG' | copy && echo \"Copied to clipboard
 alias merged="echo '$MERGED_EMOJI' && echo '$MERGED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias moved="echo '$MOVED_EMOJI' && echo '$MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias merged-and-moved="echo '$MERGED_AND_MOVED_EMOJI' && echo '$MERGED_AND_MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
-alias sshhosts='cat ~/.ssh/config | grep Host'
+alias ssh-ignore-known-hosts="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
 # AWS ALIASES
 alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
