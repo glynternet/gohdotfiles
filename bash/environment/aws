@@ -1,0 +1,10 @@
+# change permissions and move ssh key
+prep-key() {
+	local keyPath="$1"
+	if [[ -z "$keyPath" ]]; then
+		echo "No key given as argument"
+		return 1
+	fi
+	chmod 400 "$keyPath"
+	mv "$keyPath" "$HOME/.ssh/"
+}

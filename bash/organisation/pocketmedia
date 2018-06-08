@@ -6,6 +6,7 @@ augment-cdpath-if-exists ~/Dropbox/pocket
 augment-cdpath-if-exists $HOME/pocket
 
 source-environment go
+source-environment aws
 
 ## FUNCTIONS
 pm-clone-go(){
