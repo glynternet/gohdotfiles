@@ -8,3 +8,16 @@ prep-key() {
 	chmod 400 "$keyPath"
 	mv "$keyPath" "$HOME/.ssh/"
 }
+
+aws-profile() {
+	profile="$1"
+	if [[ -z "$profile" ]]; then
+		echo "No profile given"
+		return 1
+	fi
+	file="$HOME/.aws/$profile"
+	if [[ ! -f "$file" ]]; then
+		echo "No profile found at $file"
+	fi
+	ln -fs "$file" "$HOME/.aws/credentials"
+}
