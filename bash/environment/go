@@ -9,3 +9,13 @@ if [[ -n "$GOPATH" ]]; then
 else
 	echo "GOPATH is not set."
 fi
+
+lintlint() {
+	# import path (PACKAGE) of current directory is PWD with 
+	# "$GOPATH/src/" stripped from the start
+	local PACKAGE=${PWD#${GOPATH}/src/}
+
+	# lint inside subshell to be returned back to repository
+	# afterwards
+	( cd go-linters && PACKAGE=${PACKAGE} make run )
+}
