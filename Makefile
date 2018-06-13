@@ -1,8 +1,12 @@
+all:
+	$(MAKE) install
+	$(MAKE) dirs
+
 install:
+	$(MAKE) -C mac install
 	$(MAKE) -C bash install
 	$(MAKE) -C git install
 	$(MAKE) -C vim install
-	$(MAKE) -C mac install
 
 dirs:
 	mkdir -p '$(HOME)/scripts'
