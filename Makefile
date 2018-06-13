@@ -7,6 +7,7 @@ install:
 	$(MAKE) -C bash install
 	$(MAKE) -C git install
 	$(MAKE) -C vim install
+	$(MAKE) -C sublime install
 
 dirs:
 	mkdir -p '$(HOME)/scripts'
