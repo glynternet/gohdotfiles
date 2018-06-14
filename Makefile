@@ -4,6 +4,7 @@ all:
 
 install:
 	$(MAKE) -C mac install
+	$(MAKE) -C tools
 	$(MAKE) -C bash install
 	$(MAKE) -C git install
 	$(MAKE) -C vim install
