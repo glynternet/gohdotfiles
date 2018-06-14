@@ -6,6 +6,14 @@ install:
 	$(MAKE) iterm2
 	$(MAKE) bettertouchtool
 
+bootstrap-settings:
+	defaults write com.apple.dock autohide -bool true
+	defaults write com.apple.dock autohide-delay -float 0
+	defaults write com.apple.dock autohide-time-modifier -float 0
+	defaults write com.apple.dock static-only -bool TRUE
+	defaults write com.apple.dock tilesize -int 3
+	killall Dock
+
 alfred:
 	brew cask install alfred
 
