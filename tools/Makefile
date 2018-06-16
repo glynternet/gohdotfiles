@@ -13,6 +13,7 @@ install:
 	$(MAKE) bash-completion
 	$(MAKE) docker
 	$(MAKE) go
+	$(MAKE) aws
 	$(MAKE) commands
 
 bash-completion:
@@ -38,3 +39,12 @@ go-dirs:
 
 commands:
 	$(PACKAGE_INSTALL_CMD) watch
+	$(PACKAGE_INSTALL_CMD) jq
+
+aws:
+	$(PACKAGE_INSTALL_CMD) python
+	curl -O https://bootstrap.pypa.io/get-pip.py
+	python3 get-pip.py --user
+	rm get-pip.py
+	pip3 install awscli --upgrade --user
+	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
