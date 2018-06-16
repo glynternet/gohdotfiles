@@ -12,6 +12,8 @@ endif
 install:
 	$(MAKE) bash-completion
 	$(MAKE) docker
+	$(MAKE) go
+	$(MAKE) commands
 
 bash-completion:
 	$(PACKAGE_INSTALL_CMD) bash-completion
