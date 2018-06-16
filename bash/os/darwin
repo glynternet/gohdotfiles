@@ -5,10 +5,6 @@ alias goland='open -a  /Applications/GoLand.app/Contents/MacOS/goland'
 
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"
-export GO_METALINTER_CMD=gometalinter
-
-## macOS PATHS
-augment-path-if-exists "/Applications/Sublime Text.app/Contents/SharedSupport/bin"
 
 export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
 

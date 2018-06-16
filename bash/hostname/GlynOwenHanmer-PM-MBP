@@ -1,13 +1,14 @@
 ## VARIABLES
-export SERVER_HOST=http://localhost:8081
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
 export-if-exists DROPBOX "$HOME/Dropbox"
 augment-cdpath-if-exists $DROPBOX
 export-if-exists WIFICODES "$DROPBOX/wifi_codes.txt"
 
+export SERVER_HOST=http://localhost:8081
 export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
+
 augment-cdpath-if-exists ~/Notes
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
 source-organisation pocketmedia

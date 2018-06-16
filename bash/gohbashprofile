@@ -69,7 +69,7 @@ source-if-exists(){
 		return 2
 	fi
 	if [[ ! -f "$path" ]]; then
-		eccho "Cannot source file at $path: Not a file."
+		echo "Cannot source file at $path: Not a file."
 		return 3
 	fi
 	. "$path"
@@ -109,9 +109,6 @@ alias moved="echo '$MOVED_EMOJI' && echo '$MOVED_EMOJI' | copy && echo \"Copied 
 alias merged-and-moved="echo '$MERGED_AND_MOVED_EMOJI' && echo '$MERGED_AND_MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias ssh-ignore-known-hosts="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
 
-# AWS ALIASES
-alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
-
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
 
@@ -128,15 +125,6 @@ disk-space(){
 	fi
 	sudo du -d"$depth" "$baseDir" | sort -g
 }
-
-# AWS CLI Completer
-if [ -x /usr/local/bin/aws_completer ]; then
-        complete -C '/usr/local/bin/aws_completer' aws;
-fi;
-
-if [ -x /usr/bin/aws_completer ]; then
-        complete -C '/usr/bin/aws_completer' aws;
-fi;
 
 # FUNCTIONS
 
@@ -215,17 +203,6 @@ fswatchsimple() {
 	# something like this will work but I'm not sure what. fswatch "$1" | grep -Z -v 4913 | xargs -0 -n 1 -I "{}" "${@:2}"
 }
 
-git-checkout-pullrequest() {
-	pr="$1"
-	if [[ -z "$pr" ]]; then
-		echo "No pull request given."
-		return
-	fi
-	branchName="pullrequest-$(datestring)"
-	git fetch origin "pull/$pr/head:$branchName"
-	git checkout "$branchName"
-}
-
 historyplain() {
 	tput bold
 	history $@ | cut -c 8-
@@ -246,39 +223,6 @@ install-and-log(){
 	fi
 	echo "====LOGGED PACKAGES===="
 	cat "$aptGetInstalledList"
-}
-
-kubectl-getall(){
-	for entity in \
-	node \
-	pod \
-	deployment \
-	replicationcontroller "nodes -o jsonpath='{.items[*].status.addresses}'" \
-	replicaset \
-	service \
-	; do
-		printf "\n"
-		echo $entity | tr '[:lower:]' '[:upper:]'
-		kubectl get $entity
-	done
-	printf "\n"
-	echo "Port Forwarding" | tr '[:lower:]' '[:upper:]'
-	ps -ef | grep "kubectl port-forward"
-}
-
-kubectl-watch(){
-	entity="$1"
-	if [[ -z "$entity" ]]; then
-		echo "No entity given."
-		return 1
-	fi
-	for ((i=1;i<=10000;i++)); 
-	do 
-	   sleep 1
-	   clear && \
-		echo "$entity" | tr '[:lower:]' '[:upper:]' | figlet && \
-		kubectl get "$entity"
-	done
 }
 
 mkcd() {
@@ -363,7 +307,7 @@ augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
 augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
-osSpecificProfile="$GOH_BASHPROFILE_DIR/$OS"
+osSpecificProfile="$GOH_BASHPROFILE_DIR/os/$OS"
 if [[ -f $osSpecificProfile ]]; then
 	. $osSpecificProfile
 else
@@ -377,8 +321,6 @@ if [[ -f $hostnameSpecificProfile ]]; then
 else
 	echo "No hostname specific profile found at $hostnameSpecificProfile"
 fi
-
-source-environment git
 
 # ~/tmp should be the last resort when looking for directories
 augment-cdpath-if-exists ~/tmp

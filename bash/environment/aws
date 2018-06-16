@@ -21,3 +21,15 @@ aws-profile() {
 	fi
 	ln -fs "$file" "$HOME/.aws/credentials"
 }
+
+# AWS ALIASES
+alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
+
+# AWS CLI Completer
+if [ -x /usr/local/bin/aws_completer ]; then
+        complete -C '/usr/local/bin/aws_completer' aws;
+fi;
+
+if [ -x /usr/bin/aws_completer ]; then
+        complete -C '/usr/bin/aws_completer' aws;
+fi;
