@@ -10,9 +10,8 @@ install:
 	$(MAKE) -C vim install
 	$(MAKE) -C sublime install
 
+DIRS ?= scripts bin tmp/scripts tmp notes
 dirs:
-	mkdir -p '$(HOME)/scripts'
-	mkdir -p '$(HOME)/bin'
-	mkdir -p '$(HOME)/tmp/scripts'
-	mkdir -p '$(HOME)/tmp'
-
+	for dir in $(DIRS); \
+		do mkdir -pv $(HOME)/$$dir; \
+	done

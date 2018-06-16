@@ -19,5 +19,20 @@ bash-completion:
 docker:
 	$(PACKAGE_INSTALL_CMD) docker
 
+GOPATH ?= $(HOME)/go
+GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
+GOG ?= $(GOPATH)/src/github.com/glynternet
+GOBIN ?= $(GOPATH)/bin
+GODIRS ?= $(GOPATH) $(GOBB) $(GOG) $(GOBIN)
+
 go:
 	$(PACKAGE_INSTALL_CMD) golang
+	$(MAKE) go-dirs
+	
+go-dirs:
+	for dir in $(GODIRS); \
+		do mkdir -pv $(HOME)/$$dir; \
+	done
+
+commands:
+	$(PACKAGE_INSTALL_CMD) watch
