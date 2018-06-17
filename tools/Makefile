@@ -15,6 +15,7 @@ install:
 	$(MAKE) go
 	$(MAKE) aws
 	$(MAKE) commands
+	$(MAKE) $(UNAME)-commands
 
 bash-completion:
 	$(PACKAGE_INSTALL_CMD) bash-completion
@@ -41,6 +42,7 @@ commands:
 	$(PACKAGE_INSTALL_CMD) watch
 	$(PACKAGE_INSTALL_CMD) jq
 	$(PACKAGE_INSTALL_CMD) tree
+	$(PACKAGE_INSTALL_CMD) ncdu
 
 aws:
 	$(PACKAGE_INSTALL_CMD) python
@@ -49,3 +51,6 @@ aws:
 	rm get-pip.py
 	pip3 install awscli --upgrade --user
 	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
+
+Darwin-commands:
+	$(PACKAGE_INSTALL_CMD) trash
