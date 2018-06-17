@@ -1,9 +1,9 @@
 install:
 	$(MAKE) homebrew
-	$(MAKE) cask-install APPLICATION=alfred
-	$(MAKE) cask-install APPLICATION=bettertouchtool
-	$(MAKE) cask-install APPLICATION=iterm2
-	$(MAKE) cask-install APPLICATION=clocker
+	$(MAKE) cask-install APP=alfred
+	$(MAKE) cask-install APP=bettertouchtool
+	$(MAKE) cask-install APP=iterm2
+	$(MAKE) cask-install APP=clocker
 
 bootstrap-settings:
 	defaults write com.apple.dock autohide -bool true
@@ -17,4 +17,4 @@ homebrew:
 	./install-homebrew.sh
 
 cask-install:
-	brew cask install $(APPLICATION)
+	brew cask install $(APP)
