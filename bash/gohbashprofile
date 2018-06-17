@@ -131,14 +131,20 @@ disk-space(){
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
 cdu() {
-	echo "cd .. $1 times"
-	COUNTER=0
+	local ups="$1"
 
-	if ! [[ "$1" =~ ^[0-9]+$ ]]; then
-		return "Argument should be an integer."
+	if [[ -z "$ups" ]]; then
+		ups="1"
+	fi
+	
+	if ! [[ "$ups" =~ ^[0-9]+$ ]]; then
+		return "Argument should be an integer. Given: $ups"
 	fi
 
-	while [[ $COUNTER -lt $1 ]] && [[ "$PWD" != "/" ]]; do
+	echo "cd .. $ups times"
+	COUNTER=0
+	
+	while [[ $COUNTER -lt $ups ]] && [[ "$PWD" != "/" ]]; do
 			pwd
 			cd ..
 			(( COUNTER++ ))
