@@ -18,6 +18,7 @@ aws-profile() {
 	file="$HOME/.aws/$profile"
 	if [[ ! -f "$file" ]]; then
 		echo "No profile found at $file"
+		return 2
 	fi
 	ln -fs "$file" "$HOME/.aws/credentials"
 }
