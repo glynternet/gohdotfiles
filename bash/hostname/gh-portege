@@ -1,5 +1,6 @@
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
+source-environment git
 
 export-if-exists DROPBOX "${HOME}/Dropbox"
 if [[ -n "$DROPBOX" ]]; then

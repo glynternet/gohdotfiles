@@ -12,3 +12,4 @@ export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
 augment-cdpath-if-exists ~/Notes
 export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
 source-organisation pocketmedia
+source-environment git

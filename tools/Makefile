@@ -23,9 +23,9 @@ docker:
 	$(PACKAGE_INSTALL_CMD) docker
 
 GOPATH ?= $(HOME)/go
+GOBIN ?= $(GOPATH)/bin
 GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
 GOG ?= $(GOPATH)/src/github.com/glynternet
-GOBIN ?= $(GOPATH)/bin
 GODIRS ?= $(GOPATH) $(GOBB) $(GOG) $(GOBIN)
 
 go:
@@ -40,6 +40,7 @@ go-dirs:
 commands:
 	$(PACKAGE_INSTALL_CMD) watch
 	$(PACKAGE_INSTALL_CMD) jq
+	$(PACKAGE_INSTALL_CMD) tree
 
 aws:
 	$(PACKAGE_INSTALL_CMD) python

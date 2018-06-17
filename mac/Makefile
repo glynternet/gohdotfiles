@@ -1,10 +1,9 @@
-HOMEBREW_INSTALL_DIR ?= /usr/local/
-
 install:
 	$(MAKE) homebrew
-	$(MAKE) alfred
-	$(MAKE) iterm2
-	$(MAKE) bettertouchtool
+	$(MAKE) cask-install APPLICATION=alfred
+	$(MAKE) cask-install APPLICATION=bettertouchtool
+	$(MAKE) cask-install APPLICATION=iterm2
+	$(MAKE) cask-install APPLICATION=clocker
 
 bootstrap-settings:
 	defaults write com.apple.dock autohide -bool true
@@ -14,14 +13,8 @@ bootstrap-settings:
 	defaults write com.apple.dock tilesize -int 3
 	killall Dock
 
-alfred:
-	brew cask install alfred
-
-bettertouchtool:
-	brew cask install bettertouchtool
-
 homebrew:
 	./install-homebrew.sh
 
-iterm2:
-	brew cask install iterm2
+cask-install:
+	brew cask install $(APPLICATION)
