@@ -3,6 +3,10 @@ git-add-commit() {
 	git commit -m "$2"
 }
 
+git-clone-github() {
+	git clone ssh://git@github.com/$1
+}
+
 git-stat-diff() {
 	echo "$(git -c  'color.ui=always' --no-pager status && \
 	git -c  'color.ui=always' --no-pager diff)" | \
