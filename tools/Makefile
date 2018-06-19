@@ -10,7 +10,10 @@ PACKAGE_INSTALL_CMD ?= apt install
 endif
 
 install:
+	# install bash-completion first so succeeding tools have
+	# their respective bash-completion scripts installed, too
 	$(MAKE) bash-completion
+	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
 	$(MAKE) aws
@@ -28,6 +31,11 @@ GOBIN ?= $(GOPATH)/bin
 GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
 GOG ?= $(GOPATH)/src/github.com/glynternet
 GODIRS ?= $(GOPATH) $(GOBB) $(GOG) $(GOBIN)
+
+# install git again in homebrew location
+# this will help to always have a recent version
+git:
+	$(PACKAGE_INSTALL_CMD) git
 
 go:
 	$(PACKAGE_INSTALL_CMD) golang
