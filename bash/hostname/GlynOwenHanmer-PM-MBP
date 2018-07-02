@@ -10,6 +10,6 @@ export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
 
 augment-cdpath-if-exists ~/Notes
-export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
+export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
 source-organisation pocketmedia
 source-environment git

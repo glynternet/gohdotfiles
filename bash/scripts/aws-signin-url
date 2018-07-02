@@ -1,25 +1,15 @@
 #!/bin/bash
-parse-key-value(){
-	keyValueFile="$1"
-	key="$2"
+get-value(){
+	local jsonFile="$1"
+	local key="$2"
 
-	keyValue="$(look "$key" "$keyValueFile")"
-	status="$?"
-	if [[ ! $status = 0 ]]; then
-		echo "could not find value for key: $key"
-		exit $?
-	fi
+	jq -r .\"$key\" $jsonFile
+}
 
-	value=${keyValue#$key} #what about when there are multiple entries?
-	# If value's first character is an equals
-	if [[ ${value:0:1} == "=" ]] ; then
-		value=${value:1};
-	else
-		echo "Invalid key format: $key";
-		exit 1;
-	fi
-	echo $value
-	os="$(uname)"
+copy-to-clipboard() {
+	local value="$1"
+	local os="$(uname)"
+
 	if [[ $os = 'Darwin' ]]; then
 		echo $value | pbcopy
 	elif [[ $os = 'Linux' ]]; then
@@ -27,21 +17,23 @@ parse-key-value(){
 	else
 		echo "Unable to copy url to clipboard."
 		echo "OS: $os"
-		exit
+		return 1
 	fi
 	echo "Copied to clipboard"
-	# if looking for X, look may return all matching X, X***, etc.
 }
 
-awsConsoleSignInKVStore=${AWS_SIGNIN_KV}
-if [[ ! -f "${AWS_SIGNIN_KV}" ]]; then
-	echo "Can't find key value store at $AWS_SIGNIN_KV"
+if [[ ! -f "${AWS_SIGNIN_URLS}" ]]; then
+	echo "Can't find json store at $AWS_SIGNIN_URLS"
 	exit 1
 fi
+
 account="$1"
 if [[ -z $account ]]; then
-	cat ${AWS_SIGNIN_KV}
+	cat ${AWS_SIGNIN_URLS}
 	printf "\n"
-	exit 1
+	exit 2
 fi
-parse-key-value "${AWS_SIGNIN_KV}" "$account"
+
+value="$(get-value "${AWS_SIGNIN_URLS}" "$account")"
+echo $value
+copy-to-clipboard "$value"
