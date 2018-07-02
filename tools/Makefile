@@ -18,6 +18,7 @@ install:
 	$(MAKE) go
 	$(MAKE) aws
 	$(MAKE) commands
+	# install commands specific to the OS
 	$(MAKE) $(UNAME)-commands
 
 bash-completion:
@@ -30,11 +31,13 @@ GOPATH ?= $(HOME)/go
 GOBIN ?= $(GOPATH)/bin
 GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
 GOG ?= $(GOPATH)/src/github.com/glynternet
-GODIRS ?= $(GOPATH) $(GOBB) $(GOG) $(GOBIN)
+GODIRS ?= $(GOPATH) $(GOBIN) $(GOBB) $(GOG)
 
-# install git again in homebrew location
-# this will help to always have a recent version
 git:
+	# install git again with package installer
+	# this will install any bash-completion scripts.
+	# On macOS it will install git again in homebrew location,
+	# which will help to always have a recent version.
 	$(PACKAGE_INSTALL_CMD) git
 
 go:

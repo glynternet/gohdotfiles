@@ -6,7 +6,7 @@ alias goland='open -a  /Applications/GoLand.app/Contents/MacOS/goland'
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"
 
-export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u-\[\033[32m\]$ \[\033[0m\]"
+export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033[32m\]\$(__git_ps1 \"-(%s)\")$ \[\033[0m\]"
 
 ## BASH COMPLETION
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
