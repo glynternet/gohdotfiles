@@ -95,6 +95,7 @@ export MERGED_AND_MOVED_EMOJI="$MERGED_EMOJI & $MOVED_EMOJI"
 # ALIASES
 # PERMANENT ALIASES
 alias cp='cp -v'
+alias copythis='cat <<EOF | copy'
 alias datestring='date -u "+20%y%m%d_%H%M"'
 alias egrep='egrep --color=auto'
 alias fgrep='fgrep --color=auto'
