@@ -12,3 +12,8 @@ export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033
 if [ -f $(brew --prefix)/etc/bash_completion ]; then
 . $(brew --prefix)/etc/bash_completion
 fi
+
+chromeapp(){
+	echo "requires scheme as part of URL"
+	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app="$1"
+}

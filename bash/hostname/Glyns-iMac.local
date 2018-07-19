@@ -1,5 +1,5 @@
 ## VARIABLES
-export-if-exists GOPATH "${HOME}/Dropbox/go"
+export-if-exists GOPATH "${HOME}/go"
 source-environment go
 export MUSICDATE="$(date "+20%y-%m_%B")"
 export-if-exists MUSICDIR "$HOME/Music/$MUSICDATE"
