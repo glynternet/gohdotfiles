@@ -1,11 +1,12 @@
 if [[ -n "$GOPATH" ]]; then
 	export-if-exists GOP "${GOPATH}/src/github.com/Pocketbrain"
+	augment-cdpath-if-exists $GOP
 fi
-augment-cdpath-if-exists $GOP
+
 augment-cdpath-if-exists ~/Dropbox/pocket
 augment-cdpath-if-exists $HOME/pocket
 
-source-environment go
+source-environment aws
 
 ## FUNCTIONS
 pm-clone-go(){

@@ -1,19 +1,17 @@
+all:
+	$(MAKE) install
+	$(MAKE) dirs
+
 install:
-	$(MAKE) install-bash
-	$(MAKE) install-git
-	$(MAKE) install-vim
-
-install-bash:
+	$(MAKE) -C mac install
+	$(MAKE) -C tools
 	$(MAKE) -C bash install
-
-install-git:
 	$(MAKE) -C git install
-
-install-vim:
 	$(MAKE) -C vim install
+	$(MAKE) -C sublime install
 
+DIRS ?= scripts bin tmp/scripts tmp notes
 dirs:
-	mkdir -p '$(HOME)/scripts'
-	mkdir -p '$(HOME)/bin'
-	mkdir -p '$(HOME)/tmp/scripts'
-	mkdir -p '$(HOME)/tmp'
+	for dir in $(DIRS); \
+		do mkdir -pv $(HOME)/$$dir; \
+	done

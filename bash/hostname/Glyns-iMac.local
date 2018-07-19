@@ -4,7 +4,7 @@ source-environment go
 export MUSICDATE="$(date "+20%y-%m_%B")"
 export-if-exists MUSICDIR "$HOME/Music/$MUSICDATE"
 export-if-exists WIFICODES "$HOME/Dropbox/wifi_codes.txt"
-export-if-exists AWS_SIGNIN_KV "${HOME}/.aws/aws_signin_url.kv"
+export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
 
 # DROPBOX PATHS
 augment-path-if-exists "${HOME}/Dropbox/scripts"

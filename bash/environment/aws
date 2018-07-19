@@ -1,0 +1,36 @@
+# change permissions and move ssh key
+prep-key() {
+	local keyPath="$1"
+	if [[ -z "$keyPath" ]]; then
+		echo "No key given as argument"
+		return 1
+	fi
+	chmod 400 "$keyPath"
+	mv "$keyPath" "$HOME/.ssh/"
+}
+
+aws-profile() {
+	profile="$1"
+	if [[ -z "$profile" ]]; then
+		echo "No profile given"
+		return 1
+	fi
+	file="$HOME/.aws/$profile"
+	if [[ ! -f "$file" ]]; then
+		echo "No profile found at $file"
+		return 2
+	fi
+	ln -fs "$file" "$HOME/.aws/credentials"
+}
+
+# AWS ALIASES
+alias aws-describe-all-instances="aws ec2 describe-instances --query 'Reservations[*].Instances[*].{LaunchTime:LaunchTime,PublicIpAddress:PublicIpAddress,State:State.Name,InstanceId:InstanceId,Tags:Tags}'"
+
+# AWS CLI Completer
+if [ -x /usr/local/bin/aws_completer ]; then
+        complete -C '/usr/local/bin/aws_completer' aws;
+fi;
+
+if [ -x /usr/bin/aws_completer ]; then
+        complete -C '/usr/bin/aws_completer' aws;
+fi;

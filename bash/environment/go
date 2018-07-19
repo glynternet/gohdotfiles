@@ -1,6 +1,4 @@
-alias gometalintermega="find . -type d ! -path './vendor*' ! -path './.wercker*' ! -path './.git*' ! -path './.idea*' ! -path './bin*' ! -path . -print0 | xargs -0 -I {} \$GO_METALINTER_CMD {}/..."
-alias gbt="go build ./... && go test -race ./..."
-
+## setup environment directories
 if [[ -n "$GOPATH" ]]; then
 	export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
 	export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
@@ -9,3 +7,22 @@ if [[ -n "$GOPATH" ]]; then
 else
 	echo "GOPATH is not set."
 fi
+
+## build and test aliases
+alias gbt="go build ./... && go test -race ./..."
+alias gbtv="go build -v ./... && go test -v -race ./..."
+alias gbtc="go build -v ./... && go test -coverprofile=/tmp/go-test-cover-file ./... && go tool cover -func=/tmp/go-test-cover-file"
+alias gbtvc="go build -v ./... && go test -v -coverprofile=/tmp/go-test-cover-file ./... && go tool cover -func=/tmp/go-test-cover-file"
+
+## linting
+alias gometalinter.v2-recursive='gometalinter.v2 --tests --vendor ./...'
+
+lintlint() {
+	# import path (PACKAGE) of current directory is PWD with 
+	# "$GOPATH/src/" stripped from the start
+	local PACKAGE=${PWD#${GOPATH}/src/}
+
+	# lint inside subshell to be returned back to repository
+	# afterwards
+	( cd go-linters && PACKAGE=${PACKAGE} make run )
+}
