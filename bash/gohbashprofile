@@ -57,6 +57,19 @@ export-if-exists(){
 	fi
 }
 
+# runs a command if a variable is not empty
+# usage: run-if-not-empty VAR_NAME COMMAND
+run-if-not-empty() {
+	local varName="$1"
+	local command="$2"
+	local varVal="$(eval echo \$$varName)"
+	if [[ -z "$varVal" ]]; then
+		echo "$varName not set"
+		return 1
+	fi
+	eval "$command"
+}
+
 ### Source Functions
 source-if-exists(){
 	if [[ $# -ne 1 ]]; then
