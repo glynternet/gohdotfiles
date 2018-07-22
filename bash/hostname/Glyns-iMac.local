@@ -1,6 +1,12 @@
 ## VARIABLES
+
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
+
+source-environment git
+
+source-organisation pocketmedia
+
 export MUSICDATE="$(date "+20%y-%m_%B")"
 export-if-exists MUSICDIR "$HOME/Music/$MUSICDATE"
 
