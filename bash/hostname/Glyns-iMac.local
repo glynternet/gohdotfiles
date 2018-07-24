@@ -14,7 +14,9 @@ export SERVER_HOST=http://localhost:8081
 export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
 
-dropbox-paths(){
+dropbox-env(){
+	source-environment dropbox
+
 	export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
 	export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
 	
@@ -26,6 +28,6 @@ dropbox-paths(){
 }
 
 export-if-exists DROPBOX $HOME/Dropbox
-run-if-not-empty DROPBOX dropbox-paths
+run-if-not-empty DROPBOX dropbox-env
 
 alias graphitbro='cd graphitbros && make -C '

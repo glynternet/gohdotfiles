@@ -1,0 +1,5 @@
+notes-search() {
+	cmd=$(echo grep  -i "'$1'" -r "$DROPBOX/Notes")
+	echo "$cmd"
+	eval "$cmd"
+}
