@@ -292,6 +292,12 @@ newscript() {
 	subl $scriptFile --command "move_to args to eof" && subl --command 'move_to {"to": "eof"}'
 }
 
+notes-search() {
+	cmd=$(echo grep  -i "'$1'" -r "$NOTES")
+	echo "$cmd"
+	eval "$cmd"
+}
+
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do

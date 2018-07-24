@@ -15,8 +15,7 @@ export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
 
 dropbox-env(){
-	source-environment dropbox
-
+	export-if-exists NOTES "$DROPBOX/Notes"
 	export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
 	export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
 	
