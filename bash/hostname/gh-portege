@@ -5,8 +5,11 @@ source-environment git
 dropbox-paths(){
 	export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
 	export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
+	
 	augment-path-if-exists "${DROPBOX}/scripts"
 	augment-path-if-exists "${DROPBOX}/scripts/music"
+	
+	augment-cdpath-if-exists $DROPBOX
 }
 
 export-if-exists DROPBOX $HOME/Dropbox
