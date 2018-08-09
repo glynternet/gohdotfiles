@@ -3,5 +3,5 @@ export PS1="\[\033[0;37m\][\!]\[\033[223m\][\w]\[\033[0m\]\[\033[1;36m\]\u\[\033
 ## linux ALIASES
 alias copy='xsel -ib'
 alias chrome='google-chrome'
-alias goland='/opt/*/bin/goland.sh'
+alias goland='/snap/goland/current/bin/goland.sh'
 alias mouse-sensitivity="xset m"
