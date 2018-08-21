@@ -16,3 +16,6 @@ dropbox-env(){
 
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX dropbox-env
+
+export-if-exists PG_MON_DATADIR "${HOME}/money/data"
+export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
