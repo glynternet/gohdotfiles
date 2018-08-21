@@ -10,9 +10,7 @@ To install, run:
 git clone https://Glynny@bitbucket.org/Glynny/gohdotfiles.git
 ```
 
-Then ```cd``` into appropriate configs directory and run ```install.sh```
-
-## bash profile
+### bash profile
 ```bash
 cd ./bash
 make install
