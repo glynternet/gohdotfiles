@@ -1,9 +1,11 @@
+UNAME := $(shell uname)
+
 all:
 	$(MAKE) install
 	$(MAKE) dirs
 
 install:
-	$(MAKE) -C mac install
+	$(MAKE) -C os/$(UNAME) install
 	$(MAKE) -C tools
 	$(MAKE) -C bash install
 	$(MAKE) -C git install
