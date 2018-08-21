@@ -1,6 +1,7 @@
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
 source-environment git
+source-environment cpp
 
 dropbox-env(){
 	export-if-exists NOTES "$DROPBOX/Notes"
