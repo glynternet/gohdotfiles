@@ -263,8 +263,7 @@ mkcd() {
 }
 
 moneybackups() {
-	cd ~/Dropbox/money/db/scripts
-	make backups
+	make -C ~/Dropbox/money/db/scripts backups
 }
 
 mp3DownloadsToMusic() {
