@@ -122,6 +122,7 @@ alias merged="echo '$MERGED_EMOJI' && echo '$MERGED_EMOJI' | copy && echo \"Copi
 alias moved="echo '$MOVED_EMOJI' && echo '$MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias merged-and-moved="echo '$MERGED_AND_MOVED_EMOJI' && echo '$MERGED_AND_MOVED_EMOJI' | copy && echo \"Copied to clipboard.\""
 alias ssh-ignore-known-hosts="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no"
+alias scratchpad='$EDITOR $HOME/.scratchpad'
 
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
