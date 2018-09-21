@@ -9,3 +9,5 @@ run-if-not-empty DROPBOX "source-environment dropbox"
 
 export-if-exists PG_MON_DATADIR "${HOME}/money/data"
 export-if-exists PG_MON_WALARCHIVE_DIR "${HOME}/money/wal_archives"
+
+. <(moncli completion)
