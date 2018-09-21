@@ -333,20 +333,22 @@ augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
 augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
-osSpecificProfile="$GOH_BASHPROFILE_DIR/os/$OS"
-if [[ -f $osSpecificProfile ]]; then
-	. $osSpecificProfile
+profile="$GOH_BASHPROFILE_DIR/os/$OS"
+if [[ -f $profile ]]; then
+	. $profile
 else
-	echo "No OS specific profile found at $osSpecificProfile"
+	echo "No OS specific profile found at $profile"
 fi
+unset profile
 
-hn="$(hostname)"
-hostnameSpecificProfile="$GOH_BASHPROFILE_DIR/hostname/$hn"
-if [[ -f $hostnameSpecificProfile ]]; then
-	. $hostnameSpecificProfile
+alias hostname-bash-profile='echo $GOH_BASHPROFILE_DIR/hostname/$(hostname)'
+profile="$(hostname-bash-profile)"
+if [[ -f $profile ]]; then
+	. $profile
 else
-	echo "No hostname specific profile found at $hostnameSpecificProfile"
+	echo "No hostname specific profile found at $profile"
 fi
+unset profile
 
 # ~/tmp should be the last resort when looking for directories
 augment-cdpath-if-exists ~/tmp
