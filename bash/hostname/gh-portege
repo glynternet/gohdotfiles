@@ -3,8 +3,8 @@ source-environment go
 
 source-environment git
 source-environment cpp
+source-environment moncli
 
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
 
-. <(moncli completion)

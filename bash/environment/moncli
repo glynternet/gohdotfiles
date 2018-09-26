@@ -1,0 +1,3 @@
+alias m="moncli"
+. <(moncli completion)
+. <(moncli completion | sed 's/moncli/m/g')
