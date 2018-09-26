@@ -54,6 +54,7 @@ commands:
 	$(PACKAGE_INSTALL_CMD) jq
 	$(PACKAGE_INSTALL_CMD) tree
 	$(PACKAGE_INSTALL_CMD) ncdu
+	$(PACKAGE_INSTALL_CMD) tmux
 
 aws:
 	$(PACKAGE_INSTALL_CMD) python
@@ -65,3 +66,6 @@ aws:
 
 Darwin-commands:
 	$(PACKAGE_INSTALL_CMD) trash
+
+Linux-commands:
+	
