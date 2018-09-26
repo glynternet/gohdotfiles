@@ -251,15 +251,17 @@ mkcd() {
 		echo "$1 is already a directory"
 		echo "Would you like to go to it? (yes/no)"
 		read answer
-		if [ "$answer" == 'yes' ] || [ "$answer" == 'y' ]; then
-			cd "$1"
+		if [ "$answer" != 'yes' ] && [ "$answer" != 'y' ]; then
+			return 0
 		fi
 	else 
 		echo "Making directory $1..."
 		mkdir -p "$1"
-		echo "Entering directory $1..."
-		cd "$1"
+		test $? -eq 0 || return 1
 	fi
+	
+	echo "Entering directory $1..."
+	cd "$1"
 }
 
 moneybackups() {
