@@ -27,18 +27,18 @@ bash-completion:
 docker:
 	$(PACKAGE_INSTALL_CMD) docker
 
-GOPATH ?= $(HOME)/go
-GOBIN ?= $(GOPATH)/bin
-GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
-GOG ?= $(GOPATH)/src/github.com/glynternet
-GODIRS ?= $(GOPATH) $(GOBIN) $(GOBB) $(GOG)
-
 git:
 	# install git again with package installer
 	# this will install any bash-completion scripts.
 	# On macOS it will install git again in homebrew location,
 	# which will help to always have a recent version.
 	$(PACKAGE_INSTALL_CMD) git
+
+GOPATH ?= $(HOME)/go
+GOBIN ?= $(GOPATH)/bin
+GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
+GOG ?= $(GOPATH)/src/github.com/glynternet
+GODIRS ?= $(GOPATH) $(GOBIN) $(GOBB) $(GOG)
 
 go:
 	$(PACKAGE_INSTALL_CMD) golang
