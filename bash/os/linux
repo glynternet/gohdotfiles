@@ -5,3 +5,14 @@ alias copy='xsel -ib'
 alias chrome='google-chrome'
 alias goland='/snap/goland/current/bin/goland.sh'
 alias mouse-sensitivity="xset m"
+
+set-background() {
+	usage="usage: set-background ABSOLUTE_IMAGE_PATH"
+	image="$1"
+	if [[ ! -f "$image" ]]; then
+		echo "$image is not a file"
+		echo "$usage"
+		exit 1
+	fi
+	gsettings set org.gnome.desktop.background picture-uri "file://$image"
+}
