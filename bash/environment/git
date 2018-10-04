@@ -27,6 +27,8 @@ git-commits-plain() {
 	git log --format=%s%n%b%n%N $@
 }
 
+alias version='git describe --tags --dirty --always'
+
 ## TODO: Move these into a template file which can be set on each host
 export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
 export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
