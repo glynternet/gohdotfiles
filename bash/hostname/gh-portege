@@ -25,3 +25,10 @@ strava-upload() {
 	    -F name="$name" \
 	    -F data_type=fit
 }
+
+music-copy-and-archive() {
+	local usage="Usage: music-copy-and-archive <file>"
+	local file="${1:?$usage}"
+	cp -vr "$file" "$HOME/Music/"
+	mv -v "$file" "$HOME/Downloads/Music/"
+}
