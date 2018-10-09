@@ -15,13 +15,9 @@ git-stat-diff() {
 
 # this is named like this to because if it were just to be git-adog,
 # it would cause autocomplete confliction with git-add-commit
-git-log-adog() {
-	git log --all --decorate --oneline --graph
-}
+alias git-log-adog='git log --all --decorate --oneline --graph'
 
-git-init-initial-commit(){ 
-	git init && git commit -m "initial commit" --allow-empty
-}
+alias git-init-initial-commit='git init && git commit -m "initial commit" --allow-empty'
 
 git-commits-plain() {
 	git log --format=%s%n%b%n%N $@
