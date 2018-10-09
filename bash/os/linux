@@ -8,11 +8,11 @@ alias restart-sound='pulseaudio -k && sudo alsa force-reload'
 
 set-background() {
 	usage="usage: set-background ABSOLUTE_IMAGE_PATH"
-	image="$1"
+	image="${1:?${usage}}"
 	if [[ ! -f "$image" ]]; then
 		echo "$image is not a file"
 		echo "$usage"
-		exit 1
+		return 1
 	fi
 	gsettings set org.gnome.desktop.background picture-uri "file://$image"
 }
