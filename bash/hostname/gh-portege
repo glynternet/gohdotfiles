@@ -32,3 +32,11 @@ music-copy-and-archive() {
 	cp -vr "$file" "$HOME/Music/"
 	mv -v "$file" "$HOME/Downloads/Music/"
 }
+
+copy-args() {
+	echo "$@" | copy
+}
+
+calc() {
+	echo "scale=3; $@" | bc
+}
