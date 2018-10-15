@@ -8,22 +8,10 @@ source-environment moncli
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
 
-strava-upload() {
-	local usage="Usage: strava-upload <file>"
-	local file="${1:?$usage}"
-	local name="${2}"
-	if [[ -z "$STRAVA_KEY" ]]; then
-		echo STRAVA_KEY is not set
-		return 2
-	fi
+export-if-exists ROUTES_ARCHIVE_DIR "$DROPBOX/cycling/Routes"
+export GARMIN_MOUNT=/media/glynhanmer/GARMIN
+source-environment garmin-strava
 
-	curl -X POST https://www.strava.com/api/v3/uploads \
-	    -H "Authorization: Bearer ${STRAVA_KEY}" \
-	    -H "accept: application/json" \
-	    -H "Content-Type: multipart/form-data" \
-	    -F file="@$file" \
-	    -F name="$name" \
-	    -F data_type=fit
 }
 
 music-copy-and-archive() {

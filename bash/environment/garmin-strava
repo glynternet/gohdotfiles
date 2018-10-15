@@ -1,0 +1,74 @@
+if [[ -z "$GARMIN_MOUNT" ]]; then
+	echo "GARMIN_MOUNT should be set before sourcing garmin-strava"
+fi
+
+export GARMIN_ACTIVITIES_DIR="$GARMIN_MOUNT/Garmin/Activities"
+export GARMIN_NEWFILES_DIR="$GARMIN_MOUNT/Garmin/NewFiles"
+
+garmin-upload-and-archive-downloaded-routes() {
+	local routes="$(find "$HOME/Downloads" \
+		-iname '*.tcx' \
+		-or \
+		-iname '*.gpx')"
+
+	if [[ "$routes" = "" ]]; then
+		echo "No routes found."
+		return 1
+	fi
+
+	garmin-upload-and-archive-routes "$routes"
+}
+
+garmin-upload-and-archive-routes() {
+	local usage="usage: garmin-upload-and-archive-routes ROUTES..."
+	local routes="${1:?"$usage"}"
+
+	if [[ ! -d "$GARMIN_NEWFILES_DIR" ]]; then
+		echo "No directory at $GARMIN_NEWFILES_DIR"
+		return 1
+	fi
+
+	if [[ ! -d "$ROUTES_ARCHIVE_DIR" ]]; then
+		echo "No directory at $ROUTES_ARCHIVE_DIR"
+		return 2
+	fi
+
+	for dir in "$garminDir" "$routesArchiveDir"; do
+		parallel cp -v {} "$dir/" ::: "$routes"
+		local code="$?"
+		if [[ "$code" -ne "0" ]]; then
+			echo "parallel exited with code: $code"
+			echo "not continuing"
+			return 3
+		fi
+	done
+
+	parallel trash -v ::: "$routes"
+}
+
+strava-upload() {
+	local usage="Usage: strava-upload <filename>"
+	local filename="${1:?$usage}"
+	local file="$GARMIN_ACTIVITIES_DIR/$filename"
+	local name="${2}"
+	if [[ -z "$STRAVA_KEY" ]]; then
+		echo STRAVA_KEY is not set
+		return 1
+	fi
+
+	curl -X POST https://www.strava.com/api/v3/uploads \
+	    -H "Authorization: Bearer ${STRAVA_KEY}" \
+	    -H "accept: application/json" \
+	    -H "Content-Type: multipart/form-data" \
+	    -F file="@$file" \
+	    -F name="$name" \
+	    -F data_type=fit
+}
+
+_strava-upload-completion() {
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    COMPREPLY=($(compgen -W "$(find $GARMIN_ACTIVITIES_DIR -iname "${word}*.fit" -printf "%f\n")" -- "$word"));
+}
+
+complete -F '_strava-upload-completion' strava-upload
