@@ -1,8 +1,5 @@
 CONFIG_DIR ?= $(HOME)/.config/sublime-text-3/Packages/User
-PROFILE_DIR ?= $(HOME)
-
-GOH_DOTFILES ?= $(HOME)/gohdotfiles
-GOH_SUBLIMEPROFILE_DIR ?= $(GOH_DOTFILES)/profiles/sublime
+GOH_SUBLIMEPROFILE_DIR ?= $(CURDIR)
 
 PREFERENCES_FILENAME ?= Preferences.sublime-settings
 KEYBINDINGS_FILENAME ?= Default (Linux).sublime-keymap
