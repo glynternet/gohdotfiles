@@ -42,14 +42,13 @@ GOBIN ?= $(GOPATH)/bin
 GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
 GOG ?= $(GOPATH)/src/github.com/glynternet
 GODIRS ?= $(GOPATH) $(GOBIN) $(GOBB) $(GOG)
-
 go:
 	$(PACKAGE_INSTALL_CMD) golang
 	$(MAKE) go-dirs
 	
 go-dirs:
 	for dir in $(GODIRS); \
-		do mkdir -pv $(HOME)/$$dir; \
+		do mkdir -pv $$dir; \
 	done
 
 commands:
