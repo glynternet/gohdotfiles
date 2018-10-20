@@ -79,4 +79,5 @@ Darwin-commands:
 
 Linux-commands:
 	$(PACKAGE_INSTALL_CMD) trash-cli
+	$(PACKAGE_INSTALL_CMD) xsel
 	# $(PACKAGE_INSTALL_CMD) nautilus-dropbox
