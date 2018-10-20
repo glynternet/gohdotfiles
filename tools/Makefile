@@ -15,13 +15,13 @@ install:
 	# install bash-completion first so succeeding tools have
 	# their respective bash-completion scripts installed, too
 	$(MAKE) commands
+	# install commands specific to the OS
+	$(MAKE) $(UNAME)-commands
 	$(MAKE) bash-completion
 	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
 	# $(MAKE) aws
-	# install commands specific to the OS
-	$(MAKE) $(UNAME)-commands
 
 bash-completion:
 	$(PACKAGE_INSTALL_CMD) bash-completion
@@ -57,6 +57,7 @@ commands:
 	$(PACKAGE_INSTALL_CMD) tree
 	$(PACKAGE_INSTALL_CMD) ncdu
 	$(PACKAGE_INSTALL_CMD) tmux
+	$(PACKAGE_INSTALL_CMD) htop
 
 aws:
 	$(PACKAGE_INSTALL_CMD) python
@@ -70,4 +71,4 @@ Darwin-commands:
 	$(PACKAGE_INSTALL_CMD) trash
 
 Linux-commands:
-	
+	$(PACKAGE_INSTALL_CMD) trash-cli
