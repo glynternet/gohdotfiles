@@ -12,12 +12,12 @@ endif
 install:
 	# install bash-completion first so succeeding tools have
 	# their respective bash-completion scripts installed, too
+	$(MAKE) commands
 	$(MAKE) bash-completion
 	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
 	$(MAKE) aws
-	$(MAKE) commands
 	# install commands specific to the OS
 	$(MAKE) $(UNAME)-commands
 
