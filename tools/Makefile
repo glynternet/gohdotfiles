@@ -18,6 +18,7 @@ install:
 	# install commands specific to the OS
 	$(MAKE) $(UNAME)-commands
 	$(MAKE) bash-completion
+	$(MAKE) sublime
 	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
@@ -67,8 +68,16 @@ aws:
 	pip3 install awscli --upgrade --user
 	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
 
+sublime:
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	sudo apt-get install apt-transport-https
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+	sudo apt-get update
+	sudo apt-get install sublime-text
+
 Darwin-commands:
 	$(PACKAGE_INSTALL_CMD) trash
 
 Linux-commands:
 	$(PACKAGE_INSTALL_CMD) trash-cli
+	# $(PACKAGE_INSTALL_CMD) nautilus-dropbox
