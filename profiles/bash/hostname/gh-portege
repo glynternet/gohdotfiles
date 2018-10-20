@@ -1,0 +1,53 @@
+export-if-exists GOPATH "${HOME}/go"
+source-environment go
+
+source-environment git
+source-environment cpp
+source-environment moncli
+
+export-if-exists DROPBOX $HOME/Dropbox
+run-if-not-empty DROPBOX "source-environment dropbox"
+
+export-if-exists ROUTES_ARCHIVE_DIR "$DROPBOX/cycling/Routes"
+export GARMIN_MOUNT=/media/glynhanmer/GARMIN
+source-environment garmin-strava
+
+juce-make-run(){ 
+	local juceProjectsDir="$HOME/JUCE/projects"
+	make -C "$juceProjectsDir/$1/Builds/LinuxMakefile" && "$juceProjectsDir/$1/Builds/LinuxMakefile/build/$1"
+}
+
+alias graphitbro='make -C $HOME/Dropbox/money/graphitbros'
+
+install-mon-commands() {
+	local version="$1"
+	if [[ -z "$version" ]]; then
+		echo usage: install-mon-commands VERSION
+		return 1
+	fi
+	wget https://github.com/glynternet/mon/releases/download/v${version}/mon_${version}_linux_amd64.tar.gz \
+		--output-document=/tmp/mon_${version}_linux_amd64.tar.gz
+	local code=$?
+	if [[ "$code" != 0 ]]; then
+		echo wget exited with code "$code"
+		return 2
+	fi
+	( cd /tmp && tar -zxvf ./mon_${version}_linux_amd64.tar.gz )
+	sudo mv -v /tmp/moncli /tmp/monserve /usr/local/bin/
+}
+
+
+music-copy-and-archive() {
+	local usage="Usage: music-copy-and-archive <file>"
+	local file="${1:?$usage}"
+	cp -vr "$file" "$HOME/Music/"
+	mv -v "$file" "$HOME/Downloads/Music/"
+}
+
+copy-args() {
+	echo "$@" | copy
+}
+
+calc() {
+	echo "scale=3; $@" | bc
+}

@@ -34,3 +34,6 @@ fi;
 if [ -x /usr/bin/aws_completer ]; then
         complete -C '/usr/bin/aws_completer' aws;
 fi;
+
+# user the following to do completion for aws-signin-url or wifi
+# jq 'keys' $JSON_FILE

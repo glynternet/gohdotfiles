@@ -7,10 +7,7 @@ all:
 install:
 	$(MAKE) -C os/$(UNAME) install
 	$(MAKE) -C tools
-	$(MAKE) -C bash install
-	$(MAKE) -C git install
-	$(MAKE) -C vim install
-	$(MAKE) -C sublime install
+	$(MAKE) -C profiles 
 
 DIRS ?= scripts bin tmp/scripts tmp notes
 dirs:

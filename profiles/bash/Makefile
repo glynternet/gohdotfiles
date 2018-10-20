@@ -11,7 +11,7 @@ endif
 
 PROFILE ?= $(HOME)/$(PROFILE_FILENAME)
 GOH_DOTFILES ?= $(HOME)/gohdotfiles
-GOH_BASHPROFILE ?= $(GOH_DOTFILES)/bash/gohbashprofile
+GOH_BASHPROFILE ?= $(GOH_DOTFILES)/profiles/bash/gohbashprofile
 
 install:
 	printf "\n" >> $(PROFILE)
