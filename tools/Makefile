@@ -17,7 +17,7 @@ install:
 	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
-	$(MAKE) aws
+	# $(MAKE) aws
 	# install commands specific to the OS
 	$(MAKE) $(UNAME)-commands
 
