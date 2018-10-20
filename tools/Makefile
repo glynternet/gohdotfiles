@@ -3,10 +3,12 @@ UNAME := $(shell uname)
 
 ifeq ($(UNAME), Darwin)
 PACKAGE_INSTALL_CMD ?= brew install
+DOCKER_PACKAGE_NAME ?= docker
 endif
 
 ifeq ($(UNAME), Linux)
-PACKAGE_INSTALL_CMD ?= apt install
+PACKAGE_INSTALL_CMD ?= apt install --assume-yes
+DOCKER_PACKAGE_NAME ?= docker.io
 endif
 
 install:
@@ -25,7 +27,7 @@ bash-completion:
 	$(PACKAGE_INSTALL_CMD) bash-completion
 
 docker:
-	$(PACKAGE_INSTALL_CMD) docker
+	$(PACKAGE_INSTALL_CMD) $(DOCKER_PACKAGE_NAME)
 
 git:
 	# install git again with package installer
