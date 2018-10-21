@@ -51,3 +51,16 @@ copy-args() {
 calc() {
 	echo "scale=3; $@" | bc
 }
+
+cp-extract-rar(){(
+	set -e
+	local usage='usage: cp-extract-rar <rar_archive>
+	
+	Copies a rar archive to the working directory
+	and extracts it into its own directory'
+	local archive="${1:?"$usage"}"
+	local archiveCopy="$(basename "$archive")"
+	cp -v "$archive" "$archiveCopy"
+	extract-rar "$archiveCopy"
+	trash "$archiveCopy"
+)}
