@@ -1,3 +1,11 @@
-alias m="moncli"
-. <(moncli completion)
-. <(moncli completion | sed 's/moncli/m/g')
+moncli-env(){
+	alias m="moncli"
+	. <(moncli completion)
+	. <(moncli completion | sed 's/moncli/m/g')
+}
+
+if command -v moncli; then
+	moncli-env
+else
+	echo moncli not installed
+fi
