@@ -4,7 +4,7 @@ moncli-env(){
 	. <(moncli completion | sed 's/moncli/m/g')
 }
 
-if command -v moncli; then
+if command -v moncli > /dev/null; then
 	moncli-env
 else
 	echo moncli not installed
