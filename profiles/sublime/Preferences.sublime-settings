@@ -1,15 +1,16 @@
 {
+	"bold_folder_labels": true,
 	"caret_style": "phase",
 	"color_scheme": "Packages/Color Scheme - Default/Solarized (Dark).tmTheme",
 	"draw_white_space": "all",
-	"font_size": 9,
+	"font_face": "Consolas",
+	"font_size": 11,
 	"highlight_line": true,
-	"word_wrap": true,
-	
-	"bold_folder_labels": true,
 	"ignored_packages":
 	[
 		"Vintage"
 	],
-	"open_files_in_new_window": false
+	"open_files_in_new_window": false,
+	"theme": "Adaptive.sublime-theme",
+	"word_wrap": true
 }
