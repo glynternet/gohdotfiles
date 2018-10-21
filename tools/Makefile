@@ -8,7 +8,7 @@ endif
 
 ifeq ($(UNAME), Linux)
 PACKAGE_INSTALL_CMD ?= apt install --assume-yes
-DOCKER_PACKAGE_NAME ?= docker.io
+DOCKER_PACKAGE_NAME ?= docker.io docker-compose
 endif
 
 install:
