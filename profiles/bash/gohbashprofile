@@ -98,7 +98,7 @@ source-organisation(){
 }
 
 #
-export-if-exists GOH_BASHPROFILE_DIR $GOH_DOTFILES/profiles/bash
+export-if-exists GOH_BASHPROFILE_DIR "$(dirname $GOH_BASHPROFILE)"
 
 # VARIABLES
 export SHRUG='¯\_(ツ)_/¯'
