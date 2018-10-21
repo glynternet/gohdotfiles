@@ -1,4 +1,4 @@
-settings: appearance screenshots dock menubar
+settings: appearance dock menubar screenshots
 
 appearance:
 	gsettings set org.gnome.desktop.interface text-scaling-factor 0.7
