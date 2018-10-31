@@ -58,6 +58,7 @@ commands:
 	$(PACKAGE_INSTALL_CMD) ncdu
 	$(PACKAGE_INSTALL_CMD) tmux
 	$(PACKAGE_INSTALL_CMD) htop
+	$(PACKAGE_INSTALL_CMD) parallel
 
 aws:
 	$(PACKAGE_INSTALL_CMD) python
