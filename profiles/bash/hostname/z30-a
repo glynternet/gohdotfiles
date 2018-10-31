@@ -4,6 +4,7 @@ source-environment go
 source-environment git
 source-environment cpp
 source-environment moncli
+source-environment aws
 
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"

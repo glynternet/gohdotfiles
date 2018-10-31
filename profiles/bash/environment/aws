@@ -35,6 +35,18 @@ if [ -x /usr/bin/aws_completer ]; then
         complete -C '/usr/bin/aws_completer' aws;
 fi;
 
+aws-signin-url() {
+	local name="$1"
+	if [[ -z "$name" ]]; then
+		cat "$AWS_SIGNIN_URLS"
+		return
+	fi
+	local url="$(jq -r ".[\"$name\"]" "$AWS_SIGNIN_URLS")"
+	echo "$url"
+	echo "$url" | copy
+	echo "Copied to clipboard"
+}
+
 _aws-signin-url(){
 	COMPREPLY=();
 	local word="${COMP_WORDS[COMP_CWORD]}";
