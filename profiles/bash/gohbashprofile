@@ -323,7 +323,7 @@ wifi() {
 		cat "$WIFICODES"
 		return
 	fi
-	grep -i $name "$WIFICODES"
+	jq -r ".[\"$name\"]" "$WIFICODES"
 }
 
 _wifi() {
