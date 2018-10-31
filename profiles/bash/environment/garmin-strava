@@ -33,7 +33,7 @@ garmin-upload-and-archive-routes() {
 		return 2
 	fi
 
-	for dir in "$garminDir" "$routesArchiveDir"; do
+	for dir in "$GARMIN_NEWFILES_DIR" "$ROUTES_ARCHIVE_DIR"; do
 		parallel cp -v {} "$dir/" ::: "$routes"
 		local code="$?"
 		if [[ "$code" -ne "0" ]]; then
