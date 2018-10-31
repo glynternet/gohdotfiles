@@ -37,14 +37,8 @@ fi;
 
 _aws-signin-url(){
 	COMPREPLY=();
-    local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "$word"));
-}
-
-_json_keys_completion(){
-	local file="$1"
-	local word="$2"
-	compgen -W "$(jq -r 'keys'[] "$file" | tr '\n' ' ')" -- "$word"
+	local word="${COMP_WORDS[COMP_CWORD]}";
+	COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "$word"));
 }
 
 complete -F '_aws-signin-url' aws-signin-url

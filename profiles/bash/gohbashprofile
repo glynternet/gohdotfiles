@@ -126,6 +126,18 @@ alias scratchpad='$EDITOR $HOME/.scratchpad'
 # AV ORRON GLYN ALIASES
 alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
 
+# used for generating a bash completion where the
+# suggested values are the keys of a given file
+# this will only work when the keys don't have spaces in
+_json_keys_completion(){
+	local file="$1"
+	local word="$2"
+	# there may be a better way than using tr here.
+	# it seemed that it wouldn't work without removing the new lines.
+	# TODO: come back and look at doing this another way
+	compgen -W "$(jq 'keys'[] "$file" | tr '\n' '\t')" -- "$word"
+}
+
 disk-space(){
 	baseDir="$1"
 	if [[ -z "$baseDir" ]]; then
@@ -308,11 +320,18 @@ tmux-dev() {
 wifi() {
 	name="$1"
 	if [[ -z "$name" ]]; then
-		cat $WIFICODES
+		cat "$WIFICODES"
 		return
 	fi
-	grep -i $name $WIFICODES 
+	grep -i $name "$WIFICODES"
 }
+
+_wifi() {
+	COMPREPLY=();
+	local word="${COMP_WORDS[COMP_CWORD]}";
+	COMPREPLY=($(_json_keys_completion "$WIFICODES" "$word"));
+}
+complete -F '_wifi' wifi
 
 augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
 augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
