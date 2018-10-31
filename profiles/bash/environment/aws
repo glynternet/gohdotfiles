@@ -35,13 +35,16 @@ if [ -x /usr/bin/aws_completer ]; then
         complete -C '/usr/bin/aws_completer' aws;
 fi;
 
-# user the following to do completion for aws-signin-url or wifi
-# jq -r 'keys'[] $JSON_FILE
 _aws-signin-url(){
-	# jq -r 'keys'[] "$AWS_SIGNIN_URLS"
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(jq -r 'keys'[] "$AWS_SIGNIN_URLS" | tr '\n' ' ')" -- "$word"));
+    COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "$word"));
+}
+
+_json_keys_completion(){
+	local file="$1"
+	local word="$2"
+	compgen -W "$(jq -r 'keys'[] "$file" | tr '\n' ' ')" -- "$word"
 }
 
 complete -F '_aws-signin-url' aws-signin-url
