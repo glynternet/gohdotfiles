@@ -9,7 +9,7 @@ export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
 
 export-if-exists ROUTES_ARCHIVE_DIR "$DROPBOX/cycling/Routes"
-export GARMIN_MOUNT=/media/glynhanmer/GARMIN
+export GARMIN_MOUNT=/media/$USER/GARMIN
 source-environment garmin-strava
 
 juce-make-run(){ 
