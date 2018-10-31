@@ -64,3 +64,14 @@ cp-extract-rar(){(
 	extract-rar "$archiveCopy"
 	trash "$archiveCopy"
 )}
+
+mon-insert-oppose(){
+	local usage='usage: mon-move-amount AMOUNT ACCOUNT_INSERT ACCOUNT_OPPOSE [DATE=0]'
+	local amount="${1:?$usage}"
+	local insertAccount="${2:?$usage}"
+	local opposeAccount="${3:?$usage}"
+	local date="${4:-0}"
+
+	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date"
+	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date"
+}
