@@ -10,7 +10,7 @@ export EDITOR=$VISUAL
 augment-path-if-exists(){
 	if [[ $# -lt 1 ]]; then
 		echo "Requires argument of path to add to PATH."
-		exit 1
+		return 1
 	fi
 	for dirPath in "$@"; do
 		# dirPath="$1"
@@ -40,15 +40,15 @@ augment-cdpath-if-exists(){
 export-if-exists(){
 	if [[ $# -lt 2 ]]; then
 		echo "Requires argument of variable name to export and path to check."
-		exit 1
+		return 1
 	fi
 	variableName="$1"
 	if [[ -z "$variableName" ]]; then
-		echo "Empty variable name given. Exiting."
+		echo "Empty variable name given. Returning."
 	fi
 	path="$2"
 	if [[ -z "$path" ]]; then
-		echo "Empty variable name given. Exiting."
+		echo "Empty variable name given. Returning."
 	fi
 	# If something exists at $path
 	if [ -e "$path" ]; then
