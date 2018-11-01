@@ -32,11 +32,11 @@ augment-pathvar-if-exists(){
 	fi
 	local varname="$1"
 	for dirPath in "${@:2}"; do
-		if [ -d "$dirPath" ]; then
-			export $varname="${!varname}:$dirPath";
-		else
-			echo "Unable to add directory to $varname: unable to find '$dirPath'"
+		if [ ! -d "$dirPath" ]; then
+			echo "Unable to add directory to $varname variable: '$dirPath' is not a directory"
+			continue
 		fi
+		export $varname="${!varname}:$dirPath";
 	done
 }
 
