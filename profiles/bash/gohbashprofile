@@ -31,7 +31,6 @@ augment-pathvar-if-exists(){
 		return 1
 	fi
 	local varname="$1"
-	local dir="$2"
 	for dirPath in "${@:2}"; do
 		if [ -d "$dirPath" ]; then
 			export $varname="${!varname}:$dirPath";
