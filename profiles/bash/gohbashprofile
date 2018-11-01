@@ -12,14 +12,7 @@ augment-path-if-exists(){
 		echo "Requires argument of path to add to PATH."
 		return 1
 	fi
-	for dirPath in "$@"; do
-		# dirPath="$1"
-		if [ -d "$dirPath" ]; then
-			export PATH="$PATH:$dirPath";
-		else
-			echo "Unable to add directory to PATH: unable to find '$dirPath'"
-		fi
-	done
+	augment-pathvar-if-exists PATH "$@"
 }
 
 augment-cdpath-if-exists(){
@@ -27,11 +20,23 @@ augment-cdpath-if-exists(){
 		echo "Requires argument of path to add to CDPATH."
 		return 1
 	fi
-	for dirPath in "$@"; do
+	augment-pathvar-if-exists CDPATH "$@"
+}
+
+# Appends ':DIRECTORY' to the variable of a given name for every directory provided
+# Usage: augment-pathvar-if-exists PATHVAR DIRECTORIES..."
+augment-pathvar-if-exists(){
+	if [[ $# -lt 2 ]]; then
+		echo "Requires 2 or more arguments. Usage: augment-pathvar-if-exists PATHVAR DIRECTORIES..."
+		return 1
+	fi
+	local varname="$1"
+	local dir="$2"
+	for dirPath in "${@:2}"; do
 		if [ -d "$dirPath" ]; then
-			export CDPATH="$CDPATH:$dirPath";
+			export $varname="${!varname}:$dirPath";
 		else
-			echo "Unable to add directory to CDPATH: unable to find '$dirPath'"
+			echo "Unable to add directory to $varname: unable to find '$dirPath'"
 		fi
 	done
 }
