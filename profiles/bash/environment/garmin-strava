@@ -24,16 +24,16 @@ garmin-upload-and-archive-routes() {
 	local routes="${1:?"$usage"}"
 
 	if [[ ! -d "$GARMIN_NEWFILES_DIR" ]]; then
-		echo "No directory at $GARMIN_NEWFILES_DIR"
+		echo "Garmin new files directory not found at '$GARMIN_NEWFILES_DIR'"
 		return 1
 	fi
 
-	if [[ ! -d "$ROUTES_ARCHIVE_DIR" ]]; then
-		echo "No directory at $ROUTES_ARCHIVE_DIR"
+	if [[ ! -d "$CYCLING_ROUTES_ARCHIVE" ]]; then
+		echo "Cycling routes archive directory not found at '$CYCLING_ROUTES_ARCHIVE'"
 		return 2
 	fi
 
-	for dir in "$GARMIN_NEWFILES_DIR" "$ROUTES_ARCHIVE_DIR"; do
+	for dir in "$GARMIN_NEWFILES_DIR" "$CYCLING_ROUTES_ARCHIVE"; do
 		parallel cp -v {} "$dir/" ::: "$routes"
 		local code="$?"
 		if [[ "$code" -ne "0" ]]; then
@@ -62,7 +62,8 @@ strava-upload() {
 	    -H "Content-Type: multipart/form-data" \
 	    -F file="@$file" \
 	    -F name="$name" \
-	    -F data_type=fit
+	    -F data_type=fit \
+	    | jq .
 }
 
 _strava-upload-completion() {
@@ -72,3 +73,31 @@ _strava-upload-completion() {
 }
 
 complete -F '_strava-upload-completion' strava-upload
+
+strava-upload-and-archive() {
+	local usage="usage: strava-upload-and-archive ACTIVITY"
+	local activity="${1:?$usage}"
+	local name="${2}"
+
+	if [[ ! -d "$GARMIN_ACTIVITIES_DIR" ]]; then
+		echo "Garmin activities directory not found at '$GARMIN_ACTIVITIES_DIR'"
+		return 1
+	fi
+
+	if [[ ! -d "$CYCLING_ACTIVITIES_ARCHIVE" ]]; then
+		echo "Cycling activities directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
+		return 2
+	fi
+
+	strava-upload "$activity"
+	local code="$?"
+	if [[ "$code" -ne "0" ]]; then
+		echo "strava-upload  exited with code: $code"
+		echo "not continuing"
+		return 3
+	fi
+
+	mv -v "$GARMIN_ACTIVITIES_DIR/$activity" "$CYCLING_ACTIVITIES_ARCHIVE/$activity"
+}
+
+complete -F '_strava-upload-completion' strava-upload-and-archive

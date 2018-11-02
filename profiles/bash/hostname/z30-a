@@ -8,7 +8,8 @@ source-environment moncli
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
 
-export-if-exists ROUTES_ARCHIVE_DIR "$DROPBOX/cycling/Routes"
+export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
+export-if-exists CYCLING_ACTIVITIES_ARCHIVE "$DROPBOX/cycling/activities"
 export GARMIN_MOUNT=/media/$USER/GARMIN
 source-environment garmin-strava
 
