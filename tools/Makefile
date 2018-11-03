@@ -13,7 +13,7 @@ endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion curl git htop jq ncdu parallel python python3-pip source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion curl htop jq ncdu parallel python python3-pip source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
 install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
 
@@ -27,6 +27,17 @@ ifeq ($(UNAME), Linux)
 	# only required in Linux as the homebrew installer does this automatically, I believe
 	sudo gpasswd -a $(shell whoami) docker
 endif
+
+git:
+	# install git again with package installer
+	# this will install any bash-completion scripts.
+	# On macOS it will install git again in homebrew location,
+	# which will help to always have a recent version.
+ifeq ($(UNAME), Linux)
+	add-apt-repository ppa:git-core/ppa
+	apt update
+endif
+	$(PACKAGE_INSTALL_CMD) git
 
 go: go-dirs
 	$(PACKAGE_INSTALL_CMD) golang
