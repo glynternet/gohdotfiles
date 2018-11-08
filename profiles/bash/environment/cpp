@@ -1,5 +1,3 @@
-alias clion="/opt/clion-*/bin/clion.sh"
-
 clang-format-recursive() {
 	local parentDir="${1:-.}"
 	find "$parentDir" -iname '*.h' -o -iname '*.c' -o -iname '*.cpp' -o -iname '*.hpp' \
