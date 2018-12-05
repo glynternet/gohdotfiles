@@ -76,3 +76,30 @@ mon-insert-oppose(){
 	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date"
 	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date"
 }
+
+adventofcode-makeday()
+{
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	mkdir -p "$dayDirname"
+	printf "package main\n\nscannera" >> "$dayDirname/main.go"
+}
+
+adventofcode-profileday() {(
+	set -e
+
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	( go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "./$dayDirname/input" | "/tmp/$dayDirname" & )
+	sleep 1s && go tool pprof -png http://localhost:6060/debug/pprof/profile?seconds=5 > out.png
+)}
+
+adventofcode-traceday() {(
+	set -e
+
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	( go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "./$dayDirname/input" | "/tmp/$dayDirname" & )
+	local traceFile=./trace.out
+	sleep 1s && wget -O "./$traceFile" http://localhost:6060/debug/pprof/trace?seconds=5 && go tool trace "./$traceFile"
+)}
