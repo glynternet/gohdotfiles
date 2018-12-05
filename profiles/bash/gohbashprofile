@@ -231,7 +231,7 @@ fswatchsimple() {
 
 historyplain() {
 	tput bold
-	history $@ | cut -c 8-
+	HISTTIMEFORMAT= history $@ | cut -c 8-
 	tput sgr0
 }
 
