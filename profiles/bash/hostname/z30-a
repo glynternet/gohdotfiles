@@ -63,7 +63,7 @@ cp-extract-rar(){(
 	local archiveCopy="$(basename "$archive")"
 	cp -v "$archive" "$archiveCopy"
 	extract-rar "$archiveCopy"
-	trash "$archiveCopy"
+	trash -v "$archiveCopy"
 )}
 
 mon-insert-oppose(){
