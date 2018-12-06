@@ -24,7 +24,7 @@ lintlint() {
 
 	# lint inside subshell to be returned back to repository
 	# afterwards
-	( cd go-linters && PACKAGE=${PACKAGE} make run )
+	( cd go-linters && PACKAGE=${PACKAGE} GO_GET=${GO_GET:-0} make run )
 }
 
 cdgo(){
