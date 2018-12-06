@@ -85,6 +85,12 @@ adventofcode-makeday()
 	printf "package main\n\nscannera" >> "$dayDirname/main.go"
 }
 
+adventofcode-runday() {
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "./$dayDirname/input" | "/tmp/$dayDirname"
+}
+
 adventofcode-profileday() {(
 	set -e
 
