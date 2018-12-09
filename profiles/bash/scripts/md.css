@@ -1,0 +1,67 @@
+*{
+	line-height: 100%;
+	border:0;
+	margin: 0em;
+	padding: 0em;
+}
+html, body {
+	color:#000000;
+	height:100%;
+	background:#FFFFFF;
+	margin: 0em;
+	padding: 0em;
+}
+h2,h3,h4{margin:0.8rem 0;}
+table{border-collapse:collapse;border-spacing:0}
+img{border:0}
+body{
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+	font-size:0.7rem;
+	text-decoration:none;
+	text-shadow:none;
+	font-weight:normal;
+	font-style:normal;
+}
+
+img{border:0}
+a img{border:none;vertical-align:top}
+p{margin:0 0 0.85rem 0}
+hr{border:none;height:1px;display:block;margin:2.5rem 0;border-bottom:2px dotted #DDD}
+b,strong{font-weight:bold}
+blockquote{margin:2.5rem 0 2.5rem 0px;padding:0 1.25rem 0 1.25rem;border-left:1px solid #EEE}
+blockquote p{color:#AAA !important}
+blockquote p a{color:#AAA !important;border-color:#AAA !important}
+i,em{font-style:italic}
+
+ul {
+    margin: 0em 0em 0em 0em;
+}
+
+div {
+	border: none;
+}
+
+pre, code{
+	background-color: #073642;
+    border-radius: 10px;
+	color: #839496;
+	display:block;
+    font-size: .72rem;
+	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
+    line-height: 1rem;
+	overflow:hidden;
+	padding: 0.5em;
+	white-space: pre-wrap;
+}
+
+h3 code, li code,p code{
+	background:inherit;
+	display:inline;
+    font-size: inherit;
+	color: #738486;
+	font-weight:bold;
+}
+
+li {line-height: 120%}
+
+a{color:#FD6CA3;text-decoration:none}

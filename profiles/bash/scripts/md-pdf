@@ -10,10 +10,26 @@ if [[ ! -f "$file" ]]; then
 	exit 2
 fi
 
-md-html "$file"
-fileBase="${file%.*}"
-htmlFile="$fileBase.html"
-html-pdf "$htmlFile"
-if [[ "$2" = "--open" ]]; then 
-	open -g $fileBase.pdf
+extension="${file##*.}"
+if [[ ! $extension = md ]]; then
+	echo "File doesn't have .md extension, has $extension"
+	exit 3
 fi
+
+css=$GOH_BASHPROFILE_DIR/scripts/md.css
+highlightcss=$GOH_BASHPROFILE_DIR/scripts/solarized-dark.css
+baseName="$(basename $file)"
+fileBase="${baseName%.*}"
+docker run --rm \
+	--user="$(id -u):$(id -g)" \
+	-v "$file:$file" \
+	-v "$PWD:$PWD" \
+	-v "$css:$css" \
+	-v "$highlightcss:$highlightcss" \
+	auchida/markdown-pdf \
+	markdown-pdf \
+	-o "$PWD/$fileBase.pdf" \
+	--css-path "$css" \
+	--highlight-css-path $highlightcss \
+	--paper-border 10mm \
+	$file
