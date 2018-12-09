@@ -45,9 +45,9 @@ git:
 
 GOPATH ?= $(HOME)/go
 GOBIN ?= $(GOPATH)/bin
-GOBB ?= $(GOPATH)/src/bitbucket.org/glynny
+GOB ?= $(GOPATH)/src/bitbucket.org/glynny
 GOG ?= $(GOPATH)/src/github.com/glynternet
-GODIRS ?= $(GOPATH) $(GOBIN) $(GOBB) $(GOG)
+GODIRS ?= $(GOPATH) $(GOBIN) $(GOB) $(GOG)
 go:
 	$(PACKAGE_INSTALL_CMD) golang
 	$(MAKE) go-dirs

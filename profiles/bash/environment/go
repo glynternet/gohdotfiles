@@ -1,9 +1,9 @@
 ## setup environment directories
 if [[ -n "$GOPATH" ]]; then
-	export-if-exists GOBB "${GOPATH}/src/bitbucket.org/glynny"
+	export-if-exists GOB "${GOPATH}/src/bitbucket.org/glynny"
 	export-if-exists GOG "${GOPATH}/src/github.com/glynternet"
 	augment-path-if-exists "$GOPATH/bin"
-	augment-cdpath-if-exists $GOPATH/src $GOG $GOBB	#statements
+	augment-cdpath-if-exists $GOPATH/src $GOG $GOB	#statements
 else
 	echo "GOPATH is not set."
 fi
