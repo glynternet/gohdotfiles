@@ -72,9 +72,10 @@ mon-insert-oppose(){
 	local insertAccount="${2:?$usage}"
 	local opposeAccount="${3:?$usage}"
 	local date="${4:-0}"
+	local note="$amount-$insertAccount-$opposeAccount-$date-$(date +%s%N)"
 
-	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date"
-	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date"
+	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date" --note "$note"
+	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
 }
 
 adventofcode-makeday()
