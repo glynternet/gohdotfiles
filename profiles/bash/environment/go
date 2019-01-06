@@ -26,3 +26,13 @@ lintlint() {
 	# afterwards
 	( cd go-linters && PACKAGE=${PACKAGE} make run )
 }
+
+cdgo(){
+	repo="$1"
+	path="$GOPATH/src/$repo"
+	if [[ ! -d "$path" ]]; then
+		echo "Can't finding $repo locally, go getting..."
+		go get -v "$repo"
+	fi
+	cd  "$path"
+}
