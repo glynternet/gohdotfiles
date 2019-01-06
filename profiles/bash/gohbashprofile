@@ -160,6 +160,17 @@ disk-space(){
 
 # FUNCTIONS
 
+# alert-when-pid-finished depends on notify-send, which is installed on ubuntu.
+# if trying to user alert-when-pid-finished on an unsupported OS, please fix it :)
+alert-when-pid-finished() {
+	local usage="usage: alert-when-pid-finished PID"
+	local pid="${1:?"$usage"}"
+	while [ -d /proc/$pid ] ; do
+		printf .
+		sleep 1
+	done && printf "\n" && notify-send "pid:$pid finished!"
+}
+
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
 cdu() {
