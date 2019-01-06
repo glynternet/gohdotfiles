@@ -216,20 +216,6 @@ exit-if-error() {
 	fi
 }
 
-findflacs() {
-	if [[ -z "$1" ]]; then
-		echo "No find location given."
-		return
-	fi
-	echo $2
-	if [[ "$2" = 'avprobe' ]] || [[ "$2" = '--avprobe' ]] ; then
-		find "$1" -iname '*.flac' -exec avprobe {} \;
-	else
-		find "$1" -iname '*.flac'
-	fi
-	
-}
-
 fswatchsimple() {
 	echo "Watching: $1"
 	echo "Command: ${@:2}"
