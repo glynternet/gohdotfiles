@@ -54,7 +54,7 @@ calc() {
 
 cp-extract-rar(){(
 	set -e
-	local usage='usage: cp-extract-rar <rar_archive>
+	local usage='usage: cp-extract-rar <archive>
 	
 	Copies a rar archive to the working directory
 	and extracts it into its own directory'
@@ -62,6 +62,19 @@ cp-extract-rar(){(
 	local archiveCopy="$(basename "$archive")"
 	cp -v "$archive" "$archiveCopy"
 	extract-rar "$archiveCopy"
+	trash -v "$archiveCopy"
+)}
+
+cp-extract-zip(){(
+	set -e
+	local usage='usage: cp-extract-zip <archive>
+	
+	Copies a zip archive to the working directory
+	and extracts it into its own directory'
+	local archive="${1:?"$usage"}"
+	local archiveCopy="$(basename "$archive")"
+	cp -v "$archive" "$archiveCopy"
+	extract-zip "$archiveCopy"
 	trash -v "$archiveCopy"
 )}
 
