@@ -1,0 +1,39 @@
+adventofcode-makeday()
+{
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	mkdir -p "$dayDirname/internal"
+	printf "package main\n\nscannera" >> "$dayDirname/main.go"
+}
+
+adventofcode-runday() {
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	local input=${2:-"./$dayDirname/input.txt"}
+	go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "$input"  | "/tmp/$dayDirname"
+}
+
+adventofcode-benchday() {
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	go test "./$dayDirname" -trace trace.out -bench=. -benchmem -memprofile memprofile.out -cpuprofile profile.out -benchtime=${DURATION:-1s}
+}
+
+adventofcode-profileday() {(
+	set -e
+
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	( go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "./$dayDirname/input.txt" | "/tmp/$dayDirname" & )
+	sleep 1s && go tool pprof -http=":8082" http://localhost:6060/debug/pprof/profile?seconds=${DURATION:-5}
+)}
+
+adventofcode-traceday() {(
+	set -e
+
+	local day=${1:-$(date -u "+%d")}
+	local dayDirname="day$day"
+	( go build -o "/tmp/$dayDirname" "./$dayDirname" && cat "./$dayDirname/input.txt" | "/tmp/$dayDirname" & )
+	local traceFile=./trace.out
+	sleep 1s && wget -O "./$traceFile" http://localhost:6060/debug/pprof/trace?seconds=${DURATION:-5} && go tool trace "./$traceFile"
+)}
