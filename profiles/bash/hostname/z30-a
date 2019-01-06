@@ -66,12 +66,16 @@ cp-extract-rar(){(
 )}
 
 mon-insert-oppose(){
-	local usage='usage: mon-move-amount AMOUNT ACCOUNT_INSERT ACCOUNT_OPPOSE [DATE=0]'
+	local usage='usage: mon-move-amount AMOUNT ACCOUNT_INSERT ACCOUNT_OPPOSE [DATE=0 [NOTE_SUFFIX=""]]'
 	local amount="${1:?$usage}"
 	local insertAccount="${2:?$usage}"
 	local opposeAccount="${3:?$usage}"
 	local date="${4:-0}"
-	local note="$amount-$insertAccount-$opposeAccount-$date-$(date +%s%N)"
+	local noteSuffix="$5"
+	if [[ ! -z "$noteSuffix" ]]; then
+		local noteSuffix=" $noteSuffix"
+	fi
+	local note="$amount-$insertAccount-$opposeAccount-$date-$(date +%s%N)$noteSuffix"
 
 	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date" --note "$note"
 	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
