@@ -285,6 +285,10 @@ notes-search() {
 	eval "$cmd"
 }
 
+random-string() {
+	cat /dev/urandom | tr -dc 'a-zA-Z0-9!@#$%^_+?><' | head -c ${1:-32}
+}
+
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do
