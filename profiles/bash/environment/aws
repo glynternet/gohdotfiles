@@ -36,10 +36,15 @@ if [ -x /usr/bin/aws_completer ]; then
 fi;
 
 aws-signin-url() {
+	if [[ -z "$AWS_SIGNIN_URLS" ]]; then
+		echo AWS_SIGNIN_URLS is not set
+		return 1
+	fi
+
 	local name="$1"
 	if [[ -z "$name" ]]; then
 		cat "$AWS_SIGNIN_URLS"
-		return
+		return 2
 	fi
 	local url="$(jq -r ".[\"$name\"]" "$AWS_SIGNIN_URLS")"
 	echo "$url"
@@ -48,6 +53,10 @@ aws-signin-url() {
 }
 
 _aws-signin-url(){
+	if [[ -z "$AWS_SIGNIN_URLS" ]]; then
+		printf "\nAWS_SIGNIN_URLS is not set\n"
+		return 1
+	fi
 	COMPREPLY=();
 	local word="${COMP_WORDS[COMP_CWORD]}";
 	COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "$word"));

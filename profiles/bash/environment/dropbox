@@ -4,7 +4,6 @@ export-if-exists NOTES "$DROPBOX/notes"
 alias scratchpad-dropbox='$EDITOR $NOTES/.scratchpad'
 
 export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
-export-if-exists AWS_SIGNIN_URLS "${DROPBOX}/scripts/bash/aws/aws_signin_urls.json"
 	
 augment-path-if-exists "${DROPBOX}/scripts"
 augment-path-if-exists "${DROPBOX}/scripts/music"
