@@ -26,15 +26,17 @@ install-mon-commands() {
 		echo usage: install-mon-commands VERSION
 		return 1
 	fi
+	local outdir=/tmp/mon
+	mkdir /tmp/mon
 	wget https://github.com/glynternet/mon/releases/download/v${version}/mon_${version}_linux_amd64.tar.gz \
-		--output-document=/tmp/mon_${version}_linux_amd64.tar.gz
+		--output-document=$outdir/mon_${version}_linux_amd64.tar.gz
 	local code=$?
 	if [[ "$code" != 0 ]]; then
 		echo wget exited with code "$code"
 		return 2
 	fi
-	( cd /tmp && tar -zxvf ./mon_${version}_linux_amd64.tar.gz )
-	sudo mv -v /tmp/moncli /tmp/monserve /usr/local/bin/
+	( cd $outdir && tar -zxvf ./mon_${version}_linux_amd64.tar.gz )
+	sudo mv -v $outdir/* /usr/local/bin/
 }
 
 music-copy-and-archive() {
