@@ -189,6 +189,8 @@ cdl() {
         ls
 }
 
+dequery() { echo ${1%%\?*}; }
+
 echoArguments() {
 	echo "\$# - $#"
 	echo "\$* - $*"
