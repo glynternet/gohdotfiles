@@ -240,6 +240,10 @@ fswatchsimple() {
 	# something like this will work but I'm not sure what. fswatch "$1" | grep -Z -v 4913 | xargs -0 -n 1 -I "{}" "${@:2}"
 }
 
+highlight-makefile() {
+	source-highlight -s Makefile --out-format esc256 < ${1:-./Makefile}
+}
+
 historyplain() {
 	tput bold
 	HISTTIMEFORMAT= history $@ | cut -c 8-
