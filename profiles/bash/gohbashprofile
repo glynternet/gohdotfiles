@@ -291,6 +291,10 @@ random-string() {
 	cat /dev/urandom | tr -dc 'a-zA-Z0-9!@#$%^_+?><' | head -c ${1:-32}
 }
 
+random-words() {
+	cat /usr/share/dict/words | shuf | head -${1:-5} | tr -d "\n"
+}
+
 ssh-disk-capacity(){
 	echo "ONLY DISKS BEGINNING WITH /dev"
 	for server in "$@"; do
