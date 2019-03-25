@@ -59,7 +59,7 @@ _aws-signin-url(){
 	fi
 	COMPREPLY=();
 	local word="${COMP_WORDS[COMP_CWORD]}";
-	COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "$word"));
+	COMPREPLY=($(_json_keys_completion "$AWS_SIGNIN_URLS" "" "$word"));
 }
 
 complete -F '_aws-signin-url' aws-signin-url
