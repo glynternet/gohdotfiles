@@ -137,11 +137,13 @@ alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p 
 # this will only work when the keys don't have spaces in
 _json_keys_completion(){
 	local file="$1"
-	local word="$2"
+	local parent="$2"
+	local word="$3"
+
 	# there may be a better way than using tr here.
 	# it seemed that it wouldn't work without removing the new lines.
 	# TODO: come back and look at doing this another way
-	compgen -W "$(jq 'keys'[] "$file" | tr '\n' '\t')" -- "$word"
+	compgen -W "$(jq ".$parent | keys[]" "$file" | tr '\n' '\t')" -- "$word"
 }
 
 disk-space(){
@@ -336,18 +338,21 @@ tmux-dev() {
 }
 
 wifi() {
-	name="$1"
-	if [[ -z "$name" ]]; then
+	if [[ $# -eq 0 ]]; then
 		cat "$WIFICODES"
 		return
 	fi
-	jq -r ".[\"$name\"]" "$WIFICODES"
+	local key=$(echo ${@} | tr ' ' '.')
+	jq -r ".$key" "$WIFICODES"
 }
 
 _wifi() {
 	COMPREPLY=();
-	local word="${COMP_WORDS[COMP_CWORD]}";
-	COMPREPLY=($(_json_keys_completion "$WIFICODES" "$word"));
+	if [[ $COMP_CWORD -gt 1 ]]; then
+		local parent="$(echo ${COMP_WORDS[@]:1:${#COMP_WORDS[@]}-2} | tr ' ' '.')"
+	fi
+ 	local word="${COMP_WORDS[COMP_CWORD]}";
+	COMPREPLY=($(_json_keys_completion "$WIFICODES" "$parent" "$word"));
 }
 complete -F '_wifi' wifi
 
