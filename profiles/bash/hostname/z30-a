@@ -19,6 +19,7 @@ juce-make-run(){
 }
 
 alias graphitbro='make -C $HOME/Dropbox/money/graphitbros'
+alias nordvpn-cycle='nordvpn disconnect ; nordvpn connect'
 
 install-mon-commands() {
 	local version="$1"
