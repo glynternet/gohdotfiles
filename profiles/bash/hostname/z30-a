@@ -47,6 +47,19 @@ music-copy-and-archive() {
 	mv -v "$file" "$HOME/Downloads/Music/"
 }
 
+music-download() {
+	local usage="Usage: music-download <url>"
+	local url="${1:?$usage}"
+	local musicDownloadDir="$HOME/Downloads"
+	wget --continue --directory-prefix "$musicDownloadDir" "$url"
+	echo "Files in $musicDownloadDir"
+	ls "$musicDownloadDir"
+	echo "The URL was \"$url\""
+	echo "Which of these files is it?"
+	read file
+	music-copy-and-archive "$musicDownloadDir/$file"
+}
+
 copy-args() {
 	echo "$@" | copy
 }
