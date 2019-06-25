@@ -11,6 +11,7 @@ run-if-not-empty DROPBOX "source-environment dropbox"
 export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
 export-if-exists CYCLING_ACTIVITIES_ARCHIVE "$DROPBOX/cycling/activities"
 export GARMIN_MOUNT=/media/$USER/GARMIN
+export GARMIN_CARD=/media/$USER/3561-3563
 source-environment garmin-strava
 
 export GITMOJIS="$HOME/tmp/gitmojis.json"
