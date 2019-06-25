@@ -101,3 +101,15 @@ strava-upload-and-archive() {
 }
 
 complete -F '_strava-upload-completion' strava-upload-and-archive
+
+garmin-umount() {
+	local umountCmd="umount -v"
+	$umountCmd "$GARMIN_MOUNT"
+	if [[ -z "$GARMIN_CARD" ]]; then
+		echo "GARMIN_CARD is not set. Set to \"none\" to remove this warning"
+		return 1
+	elif [[ "$GARMIN_CARD" = "none" ]]; then
+		return 0
+	fi
+	$umountCmd -v "$GARMIN_CARD"
+}
