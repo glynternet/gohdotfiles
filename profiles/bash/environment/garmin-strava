@@ -89,7 +89,7 @@ strava-upload-and-archive() {
 		return 2
 	fi
 
-	strava-upload "$activity"
+	strava-upload "$@"
 	local code="$?"
 	if [[ "$code" -ne "0" ]]; then
 		echo "strava-upload  exited with code: $code"
