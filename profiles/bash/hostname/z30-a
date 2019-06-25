@@ -13,6 +13,8 @@ export-if-exists CYCLING_ACTIVITIES_ARCHIVE "$DROPBOX/cycling/activities"
 export GARMIN_MOUNT=/media/$USER/GARMIN
 source-environment garmin-strava
 
+export GITMOJIS="$HOME/tmp/gitmojis.json"
+
 juce-make-run(){ 
 	local juceProjectsDir="$HOME/JUCE/projects"
 	make -C "$juceProjectsDir/$1/Builds/LinuxMakefile" && "$juceProjectsDir/$1/Builds/LinuxMakefile/build/$1"
