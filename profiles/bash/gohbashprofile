@@ -328,6 +328,11 @@ stats(){
 	echo "Shell: ${SHELL}"
 }
 
+status-code() {
+	local usage="USAGE: ${FUNCNAME[0]} 3-digit-code"
+	jq ".[] | select(.code == \"${1:?"$usage"}\")" <"${HTTP_STATUS_CODES_JSON:?"HTTP_STATUS_CODES_JSON is not set"}"
+}
+
 tmux-dev() {
 	sessionName="session-$(datestring)"
 	tmux new-session -d -s "$sessionName"
