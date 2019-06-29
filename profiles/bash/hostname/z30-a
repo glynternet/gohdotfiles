@@ -112,3 +112,8 @@ mon-insert-oppose(){
 	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date" --note "$note"
 	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
 }
+
+export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
+export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
+export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
+export GIT_COMMITTER_EMAIL="glynhanmer@gmail.com"
