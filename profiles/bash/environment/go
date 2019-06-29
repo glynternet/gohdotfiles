@@ -25,7 +25,7 @@ lintlint() {
 	( cd go-linters && PACKAGE=${PACKAGE} GO_GET=${GO_GET:-0} make run )
 }
 
-cdgo(){
+cdgo() {
 	repo="$1"
 	path="$GOPATH/src/$repo"
 	if [[ ! -d "$path" ]]; then
@@ -34,3 +34,52 @@ cdgo(){
 	fi
 	cd  "$path"
 }
+
+_cdgo() {
+	local gopathSrcDir=$GOPATH/src
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    COMPREPLY=($(compgen -W "$(find $gopathSrcDir -maxdepth 4 -type d -not -path '*/\.*' | sed "s|$gopathSrcDir/||g")" -- "$word"));
+    # probably a good idea to filter down to pairs of results for directory like "directory" and "directory/" so that we can continue to suggest results if the term ends with slash but not show about 1000 results and force bash autocomplete to ask if we want to show all of the results.
+
+    # cdgo github.com/abc
+
+	# should match
+	# - github.com/abc
+	# - github.com/abc/*
+	#   - subdirs of github.com/abc
+	# - github.com/abc*
+	#   - other directories in github.com whose dirnames begin with abc
+	# should not match
+	# - github.com/abc/def/*
+	#   - subdirectories of subdirectories of github.com/abc/def
+	#     - this sounds like a case for the maxdepth option of `find`
+
+	# cdgo github.com/abc/
+
+	# should match
+	# - github.com/abc/
+	# - github.com/abc/*
+	# 	- subdirs of github.com/abc
+
+	# cdgo github.com/abc/def
+
+	# should match
+	# - github.com/abc/def
+	# - github.com/abc/def/*
+	# 	- subdirs of github.com/abc/def
+	# - github.com/abc/def*
+	# 	- other directories in github.com/abc whose dirnames begin with def
+
+	# cdgo $WORD
+
+	# should match (only directories)
+	# - $WORD
+	# - If $WORD ends in '/'
+	# - $WORD/*
+	# - $WORD*
+	# - a/b/c*
+	# 	- Will have to use `find` with up to the last '/', i.e. `find 'a/b/'`
+}
+
+complete -F '_cdgo' cdgo
