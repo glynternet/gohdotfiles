@@ -78,29 +78,25 @@ run-if-not-empty() {
 }
 
 ### Source Functions
-source-if-exists(){
-	if [[ $# -ne 1 ]]; then
-		echo "Requires 1 argument of file to source."
+
+source-profile() {
+	local usage="usage: ${FUNCNAME[0]} name path"
+	local name="${1:?"$usage"}"
+	local path="${2:?"$usage"}"
+	if [[ ! -f $path ]]; then
+		echo "No $name profile found at $path"
 		return 1
 	fi
-	path="$1"
-	if [[ -z "$path" ]]; then
-		echo "No path provided"
-		return 2
-	fi
-	if [[ ! -f "$path" ]]; then
-		echo "Cannot source file at $path: Not a file."
-		return 3
-	fi
-	. "$path"
+	. $path
 }
-
-
 source-environment(){
-	source-if-exists $GOH_BASHPROFILE_DIR/environment/$1
+	source-profile "environment" "$GOH_BASHPROFILE_DIR/environment/$1"
 }
 source-organisation(){
-	source-if-exists $GOH_BASHPROFILE_DIR/organisation/$1	
+	source-profile "organisation" "$GOH_BASHPROFILE_DIR/organisation/$1"
+}
+source-utilities(){
+	source-profile "utilities" "$GOH_BASHPROFILE_DIR/utilities/$1"
 }
 
 #
@@ -366,21 +362,12 @@ augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 
-source-profile() {
-	local usage='usage: source-profile name path'
-	local name="${1:?"$usage"}"
-	local path="${2:?"$usage"}"
-	if [[ ! -f $path ]]; then
-		echo "No $name profile found at $path"
-		return 1
-	fi
-	. $path
-}
-
 source-profile "OS" "$GOH_BASHPROFILE_DIR/os/$OS"
 
 alias hostname-bash-profile='echo $GOH_BASHPROFILE_DIR/hostname/$(hostname)'
 source-profile "hostname" "$(hostname-bash-profile)"
+
+source-utilities extract
 
 # ~/tmp should be the last resort when looking for directories
 augment-cdpath-if-exists ~/tmp
