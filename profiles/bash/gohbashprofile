@@ -48,11 +48,13 @@ export-if-exists(){
 	fi
 	variableName="$1"
 	if [[ -z "$variableName" ]]; then
-		echo "Empty variable name given. Returning."
+		echo "${FUNCNAME[0]}: Empty variable name given. Returning."
+		return 2
 	fi
 	path="$2"
 	if [[ -z "$path" ]]; then
-		echo "Empty variable name given. Returning."
+		echo "${FUNCNAME[0]}: Empty path given. Returning."
+		return 3
 	fi
 	# If something exists at $path
 	if [ -e "$path" ]; then
