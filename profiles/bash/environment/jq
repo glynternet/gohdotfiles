@@ -1,0 +1,11 @@
+jq-stream() {
+	while read line
+	do
+	  jq . <<<"$line"
+	done < "${1:-/dev/stdin}"
+}
+
+jq-slurpreplacefile() {
+	local logFile=${1:?"must provide file to replace"}
+	jq .[] --slurp <"$logFile" | tee /tmp/slurpy && echo "accept?" && read accept && if [ "$accept" == "y" ]; then cp -v /tmp/slurpy "$logFile"; fi
+}
