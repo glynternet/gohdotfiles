@@ -46,6 +46,28 @@ garmin-upload-and-archive-routes() {
 	parallel trash -v ::: "$routes"
 }
 
+garmin-archive-activity() {
+	local usage="usage: garmin-archive-activity ACTIVITY"
+	local activity="${1:?"$usage"}"
+
+	if [[ ! -d "$CYCLING_ACTIVITIES_ARCHIVE" ]]; then
+		echo "Cycling routes archive directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
+		return 1
+	fi
+
+	mv -v "$activity" "$CYCLING_ACTIVITIES_ARCHIVE/"
+}
+
+garmin-uploaddownloaded-archive-umount() {
+	garmin-upload-and-archive-downloaded-routes
+	code=$?
+	if [[ ! "$code" -eq 0 ]]; then
+		echo Not unmounting
+		return
+	fi
+	garmin-umount
+}
+
 strava-upload() {
 	local usage="Usage: strava-upload <filename>"
 	local filename="${1:?$usage}"
@@ -97,7 +119,7 @@ strava-upload-and-archive() {
 		return 3
 	fi
 
-	mv -v "$GARMIN_ACTIVITIES_DIR/$activity" "$CYCLING_ACTIVITIES_ARCHIVE/$activity"
+	garmin-archive-activity "$activity"
 }
 
 complete -F '_strava-upload-completion' strava-upload-and-archive
