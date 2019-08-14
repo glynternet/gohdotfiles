@@ -326,7 +326,12 @@ stats(){
 
 status-code() {
 	local usage="USAGE: ${FUNCNAME[0]} 3-digit-code"
-	jq ".[] | select(.code == \"${1:?"$usage"}\")" <"${HTTP_STATUS_CODES_JSON:?"HTTP_STATUS_CODES_JSON is not set"}"
+	local codes="${HTTP_STATUS_CODES_JSON:?"HTTP_STATUS_CODES_JSON is not set"}"
+	if [[ ! -f "$codes" ]]; then
+		echo status codes json cannot be found at "$codes"
+		return 1
+	fi
+	jq ".[] | select(.code == \"${1:?"$usage"}\")" <"$codes"
 }
 
 tmux-dev() {
