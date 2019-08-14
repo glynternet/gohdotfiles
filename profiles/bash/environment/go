@@ -29,7 +29,7 @@ cdgo() {
 	repo="$1"
 	path="$GOPATH/src/$repo"
 	if [[ ! -d "$path" ]]; then
-		echo "Can't finding $repo locally, go getting..."
+		echo "Can't find $repo locally, go getting..."
 		go get -v "$repo"
 	fi
 	cd  "$path"
