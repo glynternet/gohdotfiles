@@ -1,0 +1,18 @@
+## LiveTemplates
+
+testt
+
+func Test$NAME$(t *testing.T) {
+	for _, tt := range []struct {
+		name string
+	}{
+		{
+			name: "zero-values",
+			$END$
+		},
+	} {
+		t.Run(tt.name, func(t *testing.T) {
+
+		})
+	}
+}
