@@ -5,6 +5,32 @@ fi
 export GARMIN_ACTIVITIES_DIR="$GARMIN_MOUNT/Garmin/Activities"
 export GARMIN_NEWFILES_DIR="$GARMIN_MOUNT/Garmin/NewFiles"
 
+garmin-upload() {
+	local usage="usage: ${FUNCNAME[0]} ROUTE"
+	local route="${1:?"$usage"}"
+
+	if [[ ! -d ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set} ]]; then
+		echo "Garmin New Files routes archive directory not found at '$GARMIN_NEWFILES_DIR'"
+		return 1
+	fi
+
+	cp -v "$route" ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set}
+}
+export -f garmin-upload
+
+archive-route() {
+	local usage="usage: ${FUNCNAME[0]} ROUTE"
+	local route="${1:?"$usage"}"
+
+	if [[ ! -d ${CYCLING_ROUTES_ARCHIVE:?CYCLING_ROUTES_ARCHIVE not set} ]]; then
+		echo "Cycling routes archive directory not found at '$CYCLING_ROUTES_ARCHIVE'"
+		return 1
+	fi
+
+	mv -v "$route" "$CYCLING_ROUTES_ARCHIVE"
+}
+export -f archive-route
+
 garmin-upload-and-archive-downloaded-routes() {
 	local routes="$(find "$HOME/Downloads" \
 		-iname '*.tcx' \
@@ -20,21 +46,11 @@ garmin-upload-and-archive-downloaded-routes() {
 }
 
 garmin-upload-and-archive-routes() {
-	local usage="usage: garmin-upload-and-archive-routes ROUTES..."
+	local usage="usage: ${FUNCNAME[0]} ROUTES..."
 	local routes="${1:?"$usage"}"
 
-	if [[ ! -d "$GARMIN_NEWFILES_DIR" ]]; then
-		echo "Garmin new files directory not found at '$GARMIN_NEWFILES_DIR'"
-		return 1
-	fi
-
-	if [[ ! -d "$CYCLING_ROUTES_ARCHIVE" ]]; then
-		echo "Cycling routes archive directory not found at '$CYCLING_ROUTES_ARCHIVE'"
-		return 2
-	fi
-
-	for dir in "$GARMIN_NEWFILES_DIR" "$CYCLING_ROUTES_ARCHIVE"; do
-		parallel cp -v {} "$dir/" ::: "$routes"
+	for cmd in garmin-upload archive-route; do
+		parallel "$cmd" {} ::: "$routes"
 		local code="$?"
 		if [[ "$code" -ne "0" ]]; then
 			echo "parallel exited with code: $code"
@@ -42,16 +58,26 @@ garmin-upload-and-archive-routes() {
 			return 3
 		fi
 	done
-
-	parallel trash -v ::: "$routes"
 }
 
 garmin-archive-activity() {
-	local usage="usage: garmin-archive-activity ACTIVITY"
+	local usage="usage: ${FUNCNAME[0]} ACTIVITY"
 	local activity="${1:?"$usage"}"
 
 	if [[ ! -d "$CYCLING_ACTIVITIES_ARCHIVE" ]]; then
-		echo "Cycling routes archive directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
+		echo "Cycling activities archive directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
+		return 1
+	fi
+
+	archive-activity "$GARMIN_ACTIVITIES_DIR/$activity" "$CYCLING_ACTIVITIES_ARCHIVE/"
+}
+
+archive-activity() {
+	local usage="usage: ${FUNCNAME[0]} ACTIVITY"
+	local activity="${1:?"$usage"}"
+
+	if [[ ! -d "${CYCLING_ACTIVITIES_ARCHIVE:?CYCLING_ACTIVITIES_ARCHIVE not set}" ]]; then
+		echo "Cycling activities archive directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
 		return 1
 	fi
 
@@ -68,18 +94,22 @@ garmin-uploaddownloaded-archive-umount() {
 	garmin-umount
 }
 
-strava-upload() {
-	local usage="Usage: strava-upload <filename>"
+strava-upload-garmin-activity() {
+	local usage="Usage: ${FUNCNAME[0]} <filename>"
 	local filename="${1:?$usage}"
 	local file="$GARMIN_ACTIVITIES_DIR/$filename"
 	local name="${2}"
-	if [[ -z "$STRAVA_KEY" ]]; then
-		echo STRAVA_KEY is not set
-		return 1
-	fi
+
+	strava-upload "$file" "$name"
+}
+
+strava-upload() {
+	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local file="${1:?$usage}"
+	local name="${2}"
 
 	curl -X POST https://www.strava.com/api/v3/uploads \
-	    -H "Authorization: Bearer ${STRAVA_KEY}" \
+	    -H "Authorization: Bearer ${STRAVA_KEY:?STRAVA_KEY not set}" \
 	    -H "accept: application/json" \
 	    -H "Content-Type: multipart/form-data" \
 	    -F file="@$file" \
@@ -88,33 +118,38 @@ strava-upload() {
 	    | jq .
 }
 
-_strava-upload-completion() {
+_garmin_activities_completion() {
+	if [[ ! -d "${GARMIN_ACTIVITIES_DIR:?GARMIN_ACTIVITIES_DIR not set}" ]]; then
+		echo "Garmin activities directory not found at '$GARMIN_ACTIVITIES_DIR'"
+		return 1
+	fi
+
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
     COMPREPLY=($(compgen -W "$(find $GARMIN_ACTIVITIES_DIR -iname "${word}*.fit" -printf "%f\n")" -- "$word"));
 }
 
-complete -F '_strava-upload-completion' strava-upload
+complete -F '_garmin_activities_completion' strava-upload-garmin-activity
 
 strava-upload-and-archive() {
 	local usage="usage: strava-upload-and-archive ACTIVITY"
 	local activity="${1:?$usage}"
 	local name="${2}"
 
-	if [[ ! -d "$GARMIN_ACTIVITIES_DIR" ]]; then
+	if [[ ! -d "${GARMIN_ACTIVITIES_DIR:?GARMIN_ACTIVITIES_DIR not set}" ]]; then
 		echo "Garmin activities directory not found at '$GARMIN_ACTIVITIES_DIR'"
 		return 1
 	fi
 
-	if [[ ! -d "$CYCLING_ACTIVITIES_ARCHIVE" ]]; then
+	if [[ ! -d "${CYCLING_ACTIVITIES_ARCHIVE:?CYCLING_ACTIVITIES_ARCHIVE not set}" ]]; then
 		echo "Cycling activities directory not found at '$CYCLING_ACTIVITIES_ARCHIVE'"
 		return 2
 	fi
 
-	strava-upload "$@"
+	strava-upload-garmin-activity "$@"
 	local code="$?"
 	if [[ "$code" -ne "0" ]]; then
-		echo "strava-upload  exited with code: $code"
+		echo "strava-upload-garmin-activity exited with code: $code"
 		echo "not continuing"
 		return 3
 	fi
@@ -122,7 +157,7 @@ strava-upload-and-archive() {
 	garmin-archive-activity "$activity"
 }
 
-complete -F '_strava-upload-completion' strava-upload-and-archive
+complete -F '_garmin_activities_completion' strava-upload-and-archive
 
 garmin-umount() {
 	local umountCmd="umount -v"
@@ -134,4 +169,12 @@ garmin-umount() {
 		return 0
 	fi
 	$umountCmd -v "$GARMIN_CARD"
+}
+
+garmin-is-mounted() {
+	test -d "$GARMIN_MOUNT"
+}
+
+garmin-list-activities() {
+	find $GARMIN_ACTIVITIES_DIR -iname "${word}*.fit" -printf "%f\n"
 }
