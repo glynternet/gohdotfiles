@@ -11,12 +11,13 @@ html, body {
 	margin: 0em;
 	padding: 0em;
 }
-h2,h3,h4{margin:0.8rem 0;}
+h1,h2,h3,h4{margin:0.8rem 0; color:#FF66A1;}
 table{border-collapse:collapse;border-spacing:0}
 img{border:0}
 body{
 	font-family: Menlo,Monaco,Consolas,"Courier New",monospace;
-	font-size:0.7rem;
+	font-size:0.6rem;
+	line-height: 2rem;
 	text-decoration:none;
 	text-shadow:none;
 	font-weight:normal;
