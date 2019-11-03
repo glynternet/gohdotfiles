@@ -44,15 +44,25 @@ install-mon-commands() {
 	sudo mv -v $outdir/* /usr/local/bin/
 }
 
-music-copy-and-archive() {
-	local usage="Usage: music-copy-and-archive <file>"
+music-copy-extract-and-archive() {
+	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	cp -vr "$file" "$HOME/Music/"
-	mv -v "$file" "$HOME/Downloads/Music/"
+	local filename="$(basename "$file")"
+	local musicArchiveDir="$HOME/Downloads/Music/"
+	local musicDir="$HOME/Music"
+	local copied="$musicDir/$filename"
+	cp -vr "$file" "$copied"
+	( cd "$musicDir" && extract "$copied")
+	echo "trash $copied?"
+	read shouldTrash
+	if [ "$shouldTrash" = 'yes' ] || [ "$shouldTrash" = 'y' ]; then
+		trash -v "$copied"
+	fi
+	mv -v "$file" "$musicArchiveDir"
 }
 
 music-download() {
-	local usage="Usage: music-download <url>"
+	local usage="Usage: ${FUNCNAME[0]} <url>"
 	local url="${1:?$usage}"
 	local musicDownloadDir="$HOME/Downloads"
 	wget --continue --directory-prefix "$musicDownloadDir" "$url"
@@ -60,8 +70,8 @@ music-download() {
 	ls "$musicDownloadDir"
 	echo "The URL was \"$url\""
 	echo "Which of these files is it?"
-	read file
-	music-copy-and-archive "$musicDownloadDir/$file"
+	read filename
+	music-copy-extract-and-archive "$musicDownloadDir/$filename"
 }
 
 copy-args() {
