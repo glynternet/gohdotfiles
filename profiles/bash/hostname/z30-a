@@ -1,6 +1,7 @@
 export-if-exists GOPATH "${HOME}/go"
 source-environment go
 
+export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
 source-environment git
 source-environment cpp
 source-environment moncli
@@ -14,7 +15,6 @@ export GARMIN_MOUNT=/media/$USER/GARMIN
 export GARMIN_CARD=/media/$USER/3561-3563
 source-environment garmin-strava
 
-export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
 
 juce-make-run(){ 
 	local juceProjectsDir="$HOME/JUCE/projects"
