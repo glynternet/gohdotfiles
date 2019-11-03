@@ -15,6 +15,7 @@ export GARMIN_MOUNT=/media/$USER/GARMIN
 export GARMIN_CARD=/media/$USER/3561-3563
 source-environment garmin-strava
 
+export-if-exists PACKING_GROUPS_DIR "$DROPBOX/packing/groups"
 
 juce-make-run(){ 
 	local juceProjectsDir="$HOME/JUCE/projects"
