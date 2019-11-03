@@ -141,3 +141,5 @@ export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
 export GIT_COMMITTER_EMAIL="glynhanmer@gmail.com"
 
 export-if-exists EXERCISM_WORKSPACE "$DROPBOX/exercism"
+
+alias wifiscan-glynternet="until-successful bash -c \"sudo iwlist scan | grep -c glynternet\""
