@@ -3,7 +3,7 @@ dev() {
 	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
-		mkcd "$(dirname "$path")" && git clone "ssh://git@$repo"
+		mkdir -p "$(dirname "$path")" && cd "$(dirname "$path")" && git clone "ssh://git@$repo"
 	fi
 	cd  "$path"
 }
