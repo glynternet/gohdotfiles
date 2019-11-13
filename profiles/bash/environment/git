@@ -1,3 +1,23 @@
+alias ga='git add'
+complete -W "-p -u" ga
+alias gch='git checkout'
+complete -F '__git_branch_list_completion' gch
+alias gco="git commit"
+alias gcd='git checkout develop'
+alias gd='git diff'
+complete -F '__git_branch_list_completion' gd
+# TODO(ghanmer): Make it so that we can have flags and branches for gd
+# complete -W "--cached" gd
+alias gdo='git diff origin/$(git-currentbranch)'
+alias gf='git fetch'
+alias gs='git status'
+alias gladog='git log --all --decorate --oneline --graph'
+alias gladog-me='gladog --author=Glyn'
+alias greb='git rebase'
+complete -W "--abort --continue --skip" greb
+alias grp='git remote prune'
+alias grpo='grp origin'
+
 git-add-commit() {
 	git add "$1"
 	git commit -m "$2"
