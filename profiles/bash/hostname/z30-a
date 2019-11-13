@@ -124,17 +124,6 @@ mon-insert-oppose(){
 	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
 }
 
-until-successful() {
-	local backoff=2
-	until "$@";
-	do echo ...;
-	echo sleeping for "${backoff}s"
-	sleep "${backoff}s";
-	(( backoff = backoff * 2 ))
-	date;
-	done;
-}
-
 export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
 export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
 export GIT_COMMITTER_NAME="Glyn Owen Hanmer"

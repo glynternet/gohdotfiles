@@ -343,6 +343,17 @@ tmux-dev() {
 	tmux -2 attach-session -d 
 }
 
+until-successful() {
+	local backoff=2
+	until "$@";
+	do echo ...;
+	echo sleeping for "${backoff}s"
+	sleep "${backoff}s";
+	(( backoff = backoff * 2 ))
+	date;
+	done;
+}
+
 wifi() {
 	if [[ $# -eq 0 ]]; then
 		cat "$WIFICODES"
