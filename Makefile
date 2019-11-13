@@ -1,11 +1,9 @@
-UNAME := $(shell uname)
-
 all:
 	$(MAKE) install
 	$(MAKE) dirs
 
 install:
-	$(MAKE) -C os/$(UNAME) install
+	$(MAKE) -C os
 	$(MAKE) -C tools
 	$(MAKE) -C profiles 
 
