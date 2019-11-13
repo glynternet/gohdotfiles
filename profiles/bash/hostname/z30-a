@@ -3,8 +3,6 @@ run-if-not-empty GOPATH source-environment go
 run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
 run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
 
-export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
-source-environment git
 source-environment cpp
 source-environment moncli
 
@@ -126,10 +124,19 @@ mon-insert-oppose(){
 	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
 }
 
+
+# GIT
+
+source-environment git
+generateGitBranchFunctions gh
 export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
 export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
 export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
 export GIT_COMMITTER_EMAIL="glynhanmer@gmail.com"
+export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
+
+
+# OTHER
 
 export-if-exists EXERCISM_WORKSPACE "$DROPBOX/exercism"
 
