@@ -64,3 +64,35 @@ _gitmoji() {
 }
 complete -F '_gitmoji' gitmoji
 
+grebo() {
+	local branch=${@: -1}
+	local argsLength=$(($#-1))
+	local opts=${@:1:$argsLength}
+	gf && greb $opts origin/$branch
+}
+
+_grebo() {
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    COMPREPLY=($(compgen -W "$(git branch | cut -c 3-)" -- "$word"));
+}
+
+complete -F '_grebo' grebo
+
+greb-last() {
+	local usage="usage: ${FUNCNAME[0]} num_commits"
+	local numCommits="${1:?"$usage"}"
+	greb -i HEAD~$numCommits
+}
+
+greb-since() {
+	local usage="usage ${FUNCNAME[0]} reference"
+	local reference="${1:?"$usage"}"
+	greb -i $reference
+}
+
+greb-since-inclusive() {
+	local usage="usage ${FUNCNAME[0]} reference"
+	local reference="${1:?"$usage"}"
+	greb -i $reference~
+}
