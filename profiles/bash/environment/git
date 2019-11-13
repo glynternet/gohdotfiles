@@ -27,23 +27,19 @@ git-clone-github() {
 	git clone ssh://git@github.com/$1
 }
 
+alias git-log-hash='git log --format=format:%H'
+
 git-stat-diff() {
 	echo "$(git -c  'color.ui=always' --no-pager status && \
 	git -c  'color.ui=always' --no-pager diff)" | \
 	less -r
 }
 
-# this is named like this to because if it were just to be git-adog,
-# it would cause autocomplete confliction with git-add-commit
-alias git-log-adog='git log --all --decorate --oneline --graph'
-
-alias git-init-initial-commit='git init && git commit -m "initial commit" --allow-empty'
+alias git-init-initial-commit='git init && git commit -m "🎉 initial commit" --allow-empty'
 
 git-commits-plain() {
 	git log --format=%s%n%b%n%N $@
 }
-
-alias version='git describe --tags --dirty --always'
 
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?not set}
@@ -63,6 +59,26 @@ _gitmoji() {
     COMPREPLY=($(compgen -W "$(jq -c -r '.[][].name' ${GITMOJIS_JSON:?not set})" -- "$word"));
 }
 complete -F '_gitmoji' gitmoji
+
+
+generateGitBranchFunctions() {
+	prefix="${1:?must provide branch prefix}"
+	eval "${prefix}checkout() {
+		git checkout $prefix/\$1
+	}
+
+	_${prefix}checkout() {
+		COMPREPLY=();
+	    local word=\"\${COMP_WORDS[COMP_CWORD]}\";
+	    COMPREPLY=(\$(compgen -W \"\$(git branch | cut -c 3- | grep --color=never \"^${prefix}/\" | sed \"s@${prefix}/@@\")\" -- \"\$word\"));
+	}
+
+	complete -F '_${prefix}checkout' ${prefix}checkout
+
+	${prefix}newbranch() {
+		git checkout -b ${prefix}/\${1:?\"must provide branch suffix\"}
+	}"
+}
 
 grebo() {
 	local branch=${@: -1}
@@ -95,4 +111,54 @@ greb-since-inclusive() {
 	local usage="usage ${FUNCNAME[0]} reference"
 	local reference="${1:?"$usage"}"
 	greb -i $reference~
+}
+
+git-currentbranch() {
+	git rev-parse --abbrev-ref HEAD
+}
+
+git-push-new-branch() {
+	git push -u origin "$(git-currentbranch)"
+}
+
+greso() {
+	local base="$(git-currentbranch)"
+	local remote=origin
+	local ref="$remote/$base"
+	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
+	read sure
+	if [[ "$sure" = "y" ]]; then
+		git reset --hard "$ref"
+	else
+		echo "answer not 'y', so not calling 'git reset --hard \"$ref\"'"
+	fi
+}
+
+git-branches-onlylocal() {
+	compare-local-and-remote-branches -23
+}
+
+git-branches-intersectlocalandremote() {
+	compare-local-and-remote-branches -13
+}
+
+git-branches-onlyremote() {
+	compare-local-and-remote-branches -12
+}
+
+compare-local-and-remote-branches() {
+	comm ${1} <(git branch --color=never | sort) <(git branch -r | sed 's@origin/@@' | sort)
+}
+
+version() {
+	local rootDir="$(git rev-parse --show-toplevel)"
+	local untracked="$(test -z "$(git ls-files --others --exclude-standard "$rootDir")" || echo -untracked)"
+	local version="$(git describe --tags --dirty --always)$untracked"
+	echo $version
+}
+
+__git_branch_list_completion() {
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    COMPREPLY=($(compgen -W "$(git branch | cut -c 3-)" -- "$word"));
 }
