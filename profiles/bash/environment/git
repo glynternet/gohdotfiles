@@ -25,6 +25,25 @@ git-commits-plain() {
 
 alias version='git describe --tags --dirty --always'
 
+gitmoji() {
+	local gitmojisJson=${GITMOJIS_JSON:?not set}
+	local emojiName=$1
+	if [[ -z "$emojiName" ]]; then
+		less ${GITMOJIS_JSON}
+		return
+	fi
+	local json="$(jq '.[][] | select(.name == "'$emojiName'")' < "$gitmojisJson")"
+	echo $json | jq .
+	echo $json | jq .emoji -j | copy
+	echo "copied to clipboard!"
+}
+_gitmoji() {
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    COMPREPLY=($(compgen -W "$(jq -c -r '.[][].name' ${GITMOJIS_JSON:?not set})" -- "$word"));
+}
+complete -F '_gitmoji' gitmoji
+
 ## TODO: Move these into a template file which can be set on each host
 export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
 export GIT_AUTHOR_EMAIL="glynhanmer@gmail.com"
