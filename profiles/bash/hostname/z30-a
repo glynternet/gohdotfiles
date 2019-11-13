@@ -1,5 +1,7 @@
 export-if-exists GOPATH "${HOME}/go"
-source-environment go
+run-if-not-empty GOPATH source-environment go
+run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
+run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
 
 export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
 source-environment git
