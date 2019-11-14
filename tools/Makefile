@@ -15,17 +15,7 @@ Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
 PACKAGE_MANAGER_INSTALLS ?= bash-completion htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
-install: $(PACKAGE_MANAGER_INSTALLS)
-	# TODO(glynternet): is the following comment even true?
-	# install bash-completion first so succeeding tools have
-	# their respective bash-completion scripts installed, too
-	# install commands specific to the OS
-	$(MAKE) sublime
-	$(MAKE) git
-	$(MAKE) docker
-	$(MAKE) go
-	# $(MAKE) aws
-	$(MAKE) yq
+install: $(PACKAGE_MANAGER_INSTALLS) sublime git docker go yq #aws
 
 $(PACKAGE_MANAGER_INSTALLS):
 	$(PACKAGE_INSTALL_CMD) $@
