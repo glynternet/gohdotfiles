@@ -11,7 +11,3 @@ homebrew:
 
 cask-install:
 	brew cask install $(APP)
-
-java8:
-	brew tap caskroom/versions
-	$(MAKE) cask-install APP=java8
