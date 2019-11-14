@@ -11,21 +11,24 @@ PACKAGE_INSTALL_CMD ?= apt install --assume-yes
 DOCKER_PACKAGE_NAME ?= docker.io docker-compose
 endif
 
-install:
+Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
+Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
+PACKAGE_MANAGER_INSTALLS ?= bash-completion htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+
+install: $(PACKAGE_MANAGER_INSTALLS)
+	# TODO(glynternet): is the following comment even true?
 	# install bash-completion first so succeeding tools have
 	# their respective bash-completion scripts installed, too
-	$(MAKE) commands
 	# install commands specific to the OS
-	$(MAKE) $(UNAME)-commands
-	$(MAKE) bash-completion
 	$(MAKE) sublime
 	$(MAKE) git
 	$(MAKE) docker
 	$(MAKE) go
 	# $(MAKE) aws
+	$(MAKE) yq
 
-bash-completion:
-	$(PACKAGE_INSTALL_CMD) bash-completion
+$(PACKAGE_MANAGER_INSTALLS):
+	$(PACKAGE_INSTALL_CMD) $@
 
 docker:
 	$(PACKAGE_INSTALL_CMD) $(DOCKER_PACKAGE_NAME)
@@ -55,23 +58,14 @@ go-dirs:
 		do mkdir -pv $$dir; \
 	done
 
-commands:
-	$(PACKAGE_INSTALL_CMD) watch
-	$(PACKAGE_INSTALL_CMD) jq
-	$(PACKAGE_INSTALL_CMD) yq
-	$(PACKAGE_INSTALL_CMD) tree
-	$(PACKAGE_INSTALL_CMD) ncdu
-	$(PACKAGE_INSTALL_CMD) tmux
-	$(PACKAGE_INSTALL_CMD) htop
-	$(PACKAGE_INSTALL_CMD) parallel
+aws: pip
+	pip3 install awscli --upgrade --user
+	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
 
-aws:
-	$(PACKAGE_INSTALL_CMD) python
+pip: python
 	curl -O https://bootstrap.pypa.io/get-pip.py
 	python3 get-pip.py --user
 	rm get-pip.py
-	pip3 install awscli --upgrade --user
-	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
 
 sublime:
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
@@ -80,10 +74,5 @@ sublime:
 	sudo apt-get update
 	sudo apt-get install sublime-text
 
-Darwin-commands:
-	$(PACKAGE_INSTALL_CMD) trash
-
-Linux-commands:
-	$(PACKAGE_INSTALL_CMD) trash-cli
-	$(PACKAGE_INSTALL_CMD) xsel
-	# $(PACKAGE_INSTALL_CMD) nautilus-dropbox
+yq: pip
+	pip3 install yq
