@@ -13,9 +13,9 @@ endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion git htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
-install: $(PACKAGE_MANAGER_INSTALLS) sublime git docker go yq #aws
+install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq #aws
 
 $(PACKAGE_MANAGER_INSTALLS):
 	$(PACKAGE_INSTALL_CMD) $@
@@ -29,20 +29,12 @@ ifeq ($(UNAME), Linux)
 	newgrp docker
 endif
 
-git:
-	# install git again with package installer
-	# this will install any bash-completion scripts.
-	# On macOS it will install git again in homebrew location,
-	# which will help to always have a recent version.
-	$(PACKAGE_INSTALL_CMD) git
+go: go-dirs
+	$(PACKAGE_INSTALL_CMD) golang
 
 GOPATH ?= $(HOME)/go
 GOBIN ?= $(GOPATH)/bin
 GODIRS ?= $(GOPATH) $(GOBIN)
-go:
-	$(PACKAGE_INSTALL_CMD) golang
-	$(MAKE) go-dirs
-	
 go-dirs:
 	for dir in $(GODIRS); \
 		do mkdir -pv $$dir; \
