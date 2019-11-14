@@ -12,6 +12,7 @@ endif
 PROFILE ?= $(HOME)/$(PROFILE_FILENAME)
 GOH_BASHPROFILE_DIR ?= $(CURDIR)
 GOH_BASHPROFILE ?= $(GOH_BASHPROFILE_DIR)/gohbashprofile
+HOSTNAME_PROFILE ?= $(GOH_BASHPROFILE_DIR)/hostname/$(shell hostname)
 
 all: install hostname-profile
 
@@ -21,4 +22,4 @@ install:
 	printf '. "$$GOH_BASHPROFILE"\n' >> $(PROFILE)
 
 hostname-profile:
-	touch $(GOH_BASHPROFILE_DIR)/hostname/$(shell hostname)
+	touch $(HOSTNAME_PROFILE)
