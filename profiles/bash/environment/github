@@ -41,7 +41,12 @@ gh-pr-new(){
 		echo "GITHUB_URL must be set to show link to PR"
 		return
 	fi
-	echo Link: https://${GITHUB_URL}/$repo/pull/$prNumber
+	local prURL=https://${GITHUB_URL}/$repo/pull/$prNumber
+	copy <<<$prURL
+	echo "Link: $prURL (copied to dashboard)"
+	if [[ $1 = --open ]]; then
+		open $prURL
+	fi
 }
 gh-new-repo() {
 	# TODO: add settings for branch protection
