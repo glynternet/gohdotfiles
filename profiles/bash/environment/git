@@ -76,7 +76,9 @@ generateGitBranchFunctions() {
 	complete -F '_${prefix}checkout' ${prefix}checkout
 
 	${prefix}newbranch() {
-		git checkout -b ${prefix}/\${1:?\"must provide branch suffix\"}
+		local branchSuffix=\${1:?\"must provide branch suffix\"}
+		shift
+		git checkout -b ${prefix}/\$branchSuffix \$@
 	}"
 }
 
