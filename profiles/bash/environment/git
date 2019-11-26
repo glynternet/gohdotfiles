@@ -5,6 +5,7 @@ complete -F '__git_branch_list_completion' gch
 alias gco="git commit"
 alias gcd='git checkout develop'
 alias gd='git diff'
+alias gdc='git diff --cached'
 complete -F '__git_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
