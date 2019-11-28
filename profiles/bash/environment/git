@@ -9,7 +9,7 @@ alias gdc='git diff --cached'
 complete -F '__git_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
-alias gdo='git diff origin/$(git-currentbranch)'
+alias gdo='git diff $(git-default-remote)/$(git-currentbranch)'
 alias gf='git fetch'
 alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
@@ -17,7 +17,9 @@ alias gladog-me='gladog --author=Glyn'
 alias greb='git rebase'
 complete -W "--abort --continue --skip" greb
 alias grp='git remote prune'
-alias grpo='grp origin'
+alias grpo='grp $(git-default-remote)'
+
+alias git-default-remote='git remote | head -1'
 
 git-add-commit() {
 	git add "$1"
@@ -87,7 +89,7 @@ grebo() {
 	local branch=${@: -1}
 	local argsLength=$(($#-1))
 	local opts=${@:1:$argsLength}
-	gf && greb $opts origin/$branch
+	gf && greb $opts $(git-default-remote)/$branch
 }
 
 _grebo() {
@@ -121,13 +123,12 @@ git-currentbranch() {
 }
 
 git-push-new-branch() {
-	git push -u origin "$(git-currentbranch)"
+	git push -u $(git-default-remote) "$(git-currentbranch)"
 }
 
 greso() {
 	local base="$(git-currentbranch)"
-	local remote=origin
-	local ref="$remote/$base"
+	local ref="$(git-default-remote)/$base"
 	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
 	read sure
 	if [[ "$sure" = "y" ]]; then
@@ -150,7 +151,7 @@ git-branches-onlyremote() {
 }
 
 compare-local-and-remote-branches() {
-	comm ${1} <(git branch --color=never | sort) <(git branch -r | sed 's@origin/@@' | sort)
+	comm ${1} <(git branch --color=never | sort) <(git branch -r | sed "s@$(git-default-remote)/@@" | sort)
 }
 
 version() {
