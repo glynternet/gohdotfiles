@@ -123,6 +123,11 @@ git-currentbranch() {
 }
 
 git-push-new-branch() {
+	local currentBranch="$(git-currentbranch)"
+	if [[ $currentBranch =~ ^develop|master$ ]]; then
+		echo "You're on $currentBranch and probably don't want to be doing this"
+		return 1
+	fi
 	git push -u $(git-default-remote) "$(git-currentbranch)"
 }
 
