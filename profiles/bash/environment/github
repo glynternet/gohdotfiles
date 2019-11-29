@@ -3,30 +3,27 @@ gh-notifications() {
 	curl-github "$GITHUBCURL_API_URL/notifications"
 }
 gh-pr-new(){
-	local defaultRepo="$(basename $(dirname $PWD))/$(basename $PWD)"
+	repoRoot="$(git rev-parse --show-toplevel)"
+	local defaultRepo="$(basename $(dirname $repoRoot))/$(basename $repoRoot)"
 	echo "repo? [$defaultRepo]"
 	local repo
 	read repo
-	if [[ -z "$repo" ]]; then
-		repo=$defaultRepo
-	fi
+	repo=${repo:-$defaultRepo}
 	local defaultTitle="$(git log -1 --pretty=%B | head -1)"
 	echo "title? [$defaultTitle]"
 	local title
 	read title
-	if [[ -z "$title" ]]; then
-		title=$defaultTitle
-	fi
-	echo "body?"
+	title=${title:-$defaultTitle}
+	local defaultBody='===MERGE_WHEN_READY==='
+	echo "body? [$defaultBody]"
 	local body
 	read body
+	body=${body:-$defaultBody}
 	local current="$(git-currentbranch)"
 	echo "head? [$current]"
 	local head
 	read head
-	if [[ "$head" = "" ]]; then
-		local head="$current"
-	fi
+	head=${head:-$current}
 	local payload="{\"title\":\"$title\",\"body\":\"$body\",\"head\":\"$head\",\"base\":\"develop\"}"
 	local out="$(mktemp)"
 	echo Response written to $out
@@ -54,8 +51,7 @@ gh-new-repo() {
 	curl-github -X POST -d "{\"name\":\"$name\"}" "$GITHUBCURL_API_URL/user/repos"
 }
 changelog() {
-	changelog-go generate
-	git add changelog/@unreleased
+	( cd "$(git rev-parse --show-toplevel)" && changelog-go generate && git add changelog/@unreleased )
 	git commit -m "Add changelog"
 	git push
 }
