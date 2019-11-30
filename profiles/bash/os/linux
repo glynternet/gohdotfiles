@@ -4,6 +4,7 @@ alias copy='xsel -ib'
 alias chrome='chromium-browser'
 alias goland='/snap/goland/current/bin/goland.sh'
 alias mouse-sensitivity="xset m"
+alias open=xdg-open
 alias restart-sound='pulseaudio -k && sudo alsa force-reload'
 
 set-background() {
