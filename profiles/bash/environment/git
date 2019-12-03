@@ -14,6 +14,7 @@ alias gf='git fetch'
 alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
+alias gp="git push"
 alias greb='git rebase'
 complete -W "--abort --continue --skip" greb
 alias grp='git remote prune'
@@ -82,6 +83,12 @@ generateGitBranchFunctions() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
 		shift
 		git checkout -b ${prefix}/\$branchSuffix \$@
+	}
+
+	${prefix}newbranch-fromdevelop() {
+		local branchSuffix=\${1:?\"must provide branch suffix\"}
+		echo \$branchSuffix
+		${prefix}newbranch \$branchSuffix o/develop
 	}"
 }
 
