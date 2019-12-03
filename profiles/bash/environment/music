@@ -1,0 +1,14 @@
+music-extract-and-delete() {
+	local musicDir="${MUSIC:?MUSIC env var is not set}"
+	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local file="${1:?$usage}"
+	local filename="$(basename "$file")"
+	local moved="$musicDir/$filename"
+	mv -v "$file" "$moved"
+	( cd "$musicDir" && extract "$moved")
+	echo "trash $moved?"
+	read shouldTrash
+	if [ "$shouldTrash" = 'yes' ] || [ "$shouldTrash" = 'y' ]; then
+		trash -v "$moved"
+	fi
+}
