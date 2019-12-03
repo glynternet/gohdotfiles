@@ -5,6 +5,7 @@ run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glyntern
 
 source-environment cpp
 source-environment moncli
+source-environment github
 
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
