@@ -28,12 +28,15 @@ gh-pr-new(){
 	local payload="{\"title\":\"$title\",\"body\":\"$body\",\"head\":\"$head\",\"base\":\"develop\"}"
 	local out="$(mktemp)"
 	echo Response written to $out
-	curl-github -X POST -d "$payload" "$githubCurlApiURL/repos/$repo/pulls" > $out
-	if [[ ! "$code" -eq 0 ]]; then
-		echo curl-github exited with code $code
-		exit 1
+	if ! curl-github -X POST -d "$payload" "$githubCurlApiURL/repos/$repo/pulls" > $out; then
+		echo curl-github failed. See output at $out
+		return 1
 	fi
-	local prNumber="$(jq .number <"$out")"
+	if ! jq -e .number $out > /dev/null; then
+		 echo Creating PR failed. See details at $out
+		 return 2
+	fi
+	local prNumber="$(jq -e .number <"$out")"
 	echo Name: pr-$prNumber
 	if [[ -z "$GITHUB_URL" ]]; then
 		echo "GITHUB_URL must be set to show link to PR"
@@ -45,6 +48,12 @@ gh-pr-new(){
 	if [[ $1 = --open ]]; then
 		open $prURL
 	fi
+}
+gh-pr-new-from-staged () {
+    local message=${1:?must provide commit message};
+    git commit -m "$message";
+    git-push-new-branch
+    gh-pr-new --open
 }
 gh-new-repo() {
 	# TODO: add settings for branch protection
