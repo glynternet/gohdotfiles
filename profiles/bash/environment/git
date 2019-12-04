@@ -94,6 +94,7 @@ generateGitBranchFunctions() {
 
 grebo() {
 	local branch=${@: -1}
+	branch=${branch:-$(git-currentbranch)}
 	local argsLength=$(($#-1))
 	local opts=${@:1:$argsLength}
 	gf && greb $opts $(git-default-remote)/$branch
