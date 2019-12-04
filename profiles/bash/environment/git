@@ -142,6 +142,10 @@ git-push-new-branch() {
 greso() {
 	local base="$(git-currentbranch)"
 	local ref="$(git-default-remote)/$base"
+	if [[ "$1" = --confirm ]]; then
+		git reset --hard "$ref"
+		return
+	fi
 	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
 	read sure
 	if [[ "$sure" = "y" ]]; then
