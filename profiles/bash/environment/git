@@ -1,12 +1,12 @@
 alias ga='git add'
 complete -W "-p -u" ga
 alias gch='git checkout'
-complete -F '__git_branch_list_completion' gch
+complete -F '__git_all_branch_list_completion' gch
 alias gco="git commit"
 alias gcd='git checkout develop'
 alias gd='git diff'
 alias gdc='git diff --cached'
-complete -F '__git_branch_list_completion' gd
+complete -F '__git_all_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
 alias gdo='git diff $(git-default-remote)/$(git-currentbranch)'
@@ -174,7 +174,7 @@ version() {
 	echo $version
 }
 
-__git_branch_list_completion() {
+__git_all_branch_list_completion() {
     COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
     COMPREPLY=($(compgen -W "$(git branch -a | cut -c 3- | cut -d" " -f1 | sed 's|remotes/||g')" -- "$word"));
