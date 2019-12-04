@@ -176,5 +176,5 @@ version() {
 __git_branch_list_completion() {
     COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(git branch | cut -c 3-)" -- "$word"));
+    COMPREPLY=($(compgen -W "$(git branch -a | cut -c 3- | cut -d" " -f1 | sed 's|remotes/||g')" -- "$word"));
 }
