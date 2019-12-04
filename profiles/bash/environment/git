@@ -191,3 +191,21 @@ git-prep-repository() {
 	fi
 	git checkout develop && git fetch && greso --confirm
 }
+
+git-run-in-repo() {
+	usage="usage: ${FUNCNAME[0]} REPOPATH COMMAND..."
+	repoPath=${1:?"must provide repo path"}
+	firstArg=${2:?"must provide something to run"}
+	shift
+
+	if ! command -V $firstArg > /dev/null; then
+		echo First argument of thing to run, $firstArg is not executable
+		exit 1
+	fi
+
+	echo Running
+	echo "working directory: $repoPath"
+	echo "command: $@"
+	# add a `dev check $repo` subcommand to avoid relying on repoPath implementation above?
+	( cd $repoPath && git-prep-repository && $@ && git status )
+}

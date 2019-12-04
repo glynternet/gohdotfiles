@@ -56,3 +56,20 @@ _dev() {
 }
 
 complete -F '_dev' dev
+
+dev-run-in-repo() {
+	usage="usage: ${FUNCNAME[0]} REPO COMMAND..."
+	repo=${1:?"must provide repo"}
+	shift
+
+	# TODO(glynternet): make subcommand to resolve dev repo
+	repoPath="$DEVPATH/src/$repo"
+	if [[ ! -d "$repoPath" ]]; then
+		echo Cannot find repo at $repoPath
+		exit 1
+	fi
+
+	git-run-in-repo "$repoPath" $@
+}
+
+complete -F '_dev' dev-run-in-repo
