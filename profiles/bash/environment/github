@@ -15,7 +15,7 @@ gh-pr-new(){
 	local title
 	read title
 	title=${title:-$defaultTitle}
-	local defaultBody='===MERGE_WHEN_READY==='
+	local defaultBody='==MERGE_WHEN_READY=='
 	echo "body? [$defaultBody]"
 	local body
 	read body
