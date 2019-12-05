@@ -20,8 +20,6 @@ complete -W "--abort --continue --skip" greb
 alias grp='git remote prune'
 alias grpo='grp $(git-default-remote)'
 
-alias git-default-remote='git remote | head -1'
-
 git-add-commit() {
 	git add "$1"
 	git commit -m "$2"
@@ -29,6 +27,10 @@ git-add-commit() {
 
 git-clone-github() {
 	git clone ssh://git@github.com/$1
+}
+
+git-default-remote() {
+	git remote | head -1
 }
 
 alias git-log-hash='git log --format=format:%H'
@@ -74,7 +76,7 @@ generateGitBranchFunctions() {
 	_${prefix}checkout() {
 		COMPREPLY=();
 	    local word=\"\${COMP_WORDS[COMP_CWORD]}\";
-	    COMPREPLY=(\$(compgen -W \"\$(git branch | cut -c 3- | grep --color=never \"^${prefix}/\" | sed \"s@${prefix}/@@\")\" -- \"\$word\"));
+	    COMPREPLY=(\$(compgen -W \"\$(git-all-branches-remotenames_stripped | grep --color=never \"^${prefix}/\" | sed \"s@${prefix}/@@\")\" -- \"\$word\"));
 	}
 
 	complete -F '_${prefix}checkout' ${prefix}checkout
@@ -88,7 +90,7 @@ generateGitBranchFunctions() {
 	${prefix}newbranch-fromdevelop() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
 		echo \$branchSuffix
-		${prefix}newbranch \$branchSuffix o/develop
+		${prefix}newbranch \$branchSuffix \$(git-default-remote)/develop
 	}"
 }
 
@@ -100,10 +102,11 @@ grebo() {
 	gf && greb $opts $(git-default-remote)/$branch
 }
 
+# this needs fixing
 _grebo() {
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(git branch | cut -c 3-)" -- "$word"));
+    COMPREPLY=($(compgen -W "$(git branch -r | cut -c 3-)" -- "$word"));
 }
 
 complete -F '_grebo' grebo
@@ -178,15 +181,24 @@ version() {
 	echo $version
 }
 
+git-all-branches() {
+	git branch -a | cut -c 3- | cut -d" " -f1 | sed "s|^remotes/||g" | sort | uniq
+}
+
+git-all-branches-remotenames_stripped() {
+	git-all-branches | sed "s|^$(git-default-remote)/||g" | sort | uniq
+}
+
 __git_all_branch_list_completion() {
     COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(git branch -a | cut -c 3- | cut -d" " -f1 | sed 's|remotes/||g')" -- "$word"));
+    COMPREPLY=($(compgen -W "$(git-all-branches)" -- "$word"));
 }
 
 git-prep-repository() {
 	if [[ -n "$(git status --short)" ]] ; then
 		echo "Repository is not clean"
+		git status
 		return 1
 	fi
 	git checkout develop && git fetch && greso --confirm
