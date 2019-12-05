@@ -10,7 +10,7 @@ gh-pr-new(){
 	local repo
 	read repo
 	repo=${repo:-$defaultRepo}
-	local defaultTitle="$(git log -1 --pretty=%B | head -1)"
+	local defaultTitle="$(git-last-commit-message)"
 	echo "title? [$defaultTitle]"
 	local title
 	read title
@@ -50,10 +50,14 @@ gh-pr-new(){
 	fi
 }
 gh-pr-new-from-staged () {
-    local message=${1:?must provide commit message};
-    git commit -m "$message";
-    git-push-new-branch
-    gh-pr-new --open
+	if git diff --cached --quiet; then
+		echo Nothing is staged
+		return 1
+	fi
+	local message="${1:?Must provide commit message}"
+	git commit -m "$message";
+	git-push-new-branch
+	gh-pr-new --open
 }
 gh-new-repo() {
 	# TODO: add settings for branch protection
