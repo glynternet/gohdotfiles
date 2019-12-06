@@ -69,7 +69,7 @@ dev-run-in-repo() {
 		exit 1
 	fi
 
-	git-run-in-repo "$repoPath" $@
+	git-run-in-repo "$repoPath" "$@"
 }
 
 complete -F '_dev' dev-run-in-repo
