@@ -1,4 +1,6 @@
-alias curl-github='curl --max-time 15 -u ${GITHUBCURL_CREDENTIALS:?GITHUBCURL_CREDENTIALS must be set to use curl-github}'
+curl-github() {
+	curl --max-time 15 -u ${GITHUBCURL_CREDENTIALS:?"GITHUBCURL_CREDENTIALS must be set to use curl-github"} "$@"
+}
 gh-notifications() {
 	curl-github "${GITHUBCURL_API_URL:?GITHUBCURL_API_URL not set}/notifications"
 }
