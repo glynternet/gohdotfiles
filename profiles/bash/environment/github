@@ -51,6 +51,10 @@ gh-pr-new(){
 		open $prURL
 	fi
 }
+gh-pr-new-from-head () {
+	git-push-new-branch
+	gh-pr-new --open
+}
 gh-pr-new-from-staged () {
 	if git diff --cached --quiet; then
 		echo Nothing is staged
@@ -58,8 +62,7 @@ gh-pr-new-from-staged () {
 	fi
 	local message="${1:?Must provide commit message}"
 	git commit -m "$message";
-	git-push-new-branch
-	gh-pr-new --open
+	gh-pr-new-from-head
 }
 gh-new-repo() {
 	# TODO: add settings for branch protection
