@@ -66,10 +66,18 @@ dev-run-in-repo() {
 	repoPath="$DEVPATH/src/$repo"
 	if [[ ! -d "$repoPath" ]]; then
 		echo Cannot find repo at $repoPath
-		exit 1
+		return 1
 	fi
 
 	git-run-in-repo "$repoPath" "$@"
 }
 
 complete -F '_dev' dev-run-in-repo
+
+dev-run-in-repo-from-yaml() {
+	local config="${1:?must provide path to config}"
+	local scriptKey="${2:?must provide scripts key}"
+	for repo in $(<$config yq -r .repositories[]); do
+		dev-run-in-repo "$repo" $(<$config yq -r .scripts[\"$scriptKey\"])
+	done
+}
