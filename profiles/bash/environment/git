@@ -29,6 +29,10 @@ git-clone-github() {
 	git clone ssh://git@github.com/$1
 }
 
+git-checkout-detached() {
+	git checkout $(git-sha $1)
+}
+
 git-default-remote() {
 	git remote | head -1
 }
@@ -131,6 +135,10 @@ greb-since-inclusive() {
 
 git-currentbranch() {
 	git rev-parse --abbrev-ref HEAD
+}
+
+git-sha() {
+	git show-ref -s $@
 }
 
 git-last-commit-message() {
