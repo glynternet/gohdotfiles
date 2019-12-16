@@ -16,7 +16,7 @@ alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
 alias gp="git push"
 alias greb='git rebase'
-complete -W "--abort --continue --skip" greb
+complete -F '_greb' greb
 alias grp='git remote prune'
 alias grpo='grp $(git-default-remote)'
 
@@ -70,7 +70,6 @@ _gitmoji() {
 }
 complete -F '_gitmoji' gitmoji
 
-
 generateGitBranchFunctions() {
 	prefix="${1:?must provide branch prefix}"
 	eval "${prefix}checkout() {
@@ -96,6 +95,12 @@ generateGitBranchFunctions() {
 		echo \$branchSuffix
 		${prefix}newbranch \$branchSuffix \$(git-default-remote)/develop
 	}"
+}
+
+_greb() {
+	COMPREPLY=();
+	local word="${COMP_WORDS[COMP_CWORD]}";
+	COMPREPLY=($(compgen -W "$(echo --abort --continue --skip && git-all-branches)" -- "$word"));
 }
 
 grebo() {
@@ -138,7 +143,7 @@ git-currentbranch() {
 }
 
 git-sha() {
-	git show-ref -s $@
+	git show-ref -s $@ | sort | uniq
 }
 
 git-last-commit-message() {
@@ -183,7 +188,7 @@ git-branches-onlyremote() {
 }
 
 compare-local-and-remote-branches() {
-	comm ${1} <(git branch --color=never | sort) <(git branch -r | sed "s@$(git-default-remote)/@@" | sort)
+	comm ${1} <(git branch --color=never | sort) <(git branch -r | sed "s@$(git-default-remote)/@@" | sort) | cut -c 3- | grep -v "^(HEAD detached at"
 }
 
 version() {
@@ -214,6 +219,15 @@ git-prep-repository() {
 		return 1
 	fi
 	git checkout develop && git fetch && greso --confirm
+}
+
+git-prune-local-branches() {
+	select branch in "Nope" $(git-branches-onlylocal); do
+		if [[ $branch = "Nope" ]]; then
+			break
+		fi
+		git branch -D $branch
+	done;
 }
 
 git-run-in-repo() {
