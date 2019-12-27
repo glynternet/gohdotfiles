@@ -238,7 +238,7 @@ git-run-in-repo() {
 
 	if ! command -V $firstArg > /dev/null; then
 		echo First argument of thing to run, $firstArg is not executable
-		exit 1
+		return 1
 	fi
 
 	echo Running
