@@ -12,7 +12,8 @@ _dev() {
 	local devpathSrcDir="${DEVPATH:?"DEVPATH not set"}/src"
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(find $devpathSrcDir -maxdepth 4 -type d -not -path '*/\.*' | sed "s|$devpathSrcDir/||g")" -- "$word"));
+	# Match up to the first and second / after the devpath combined with the current word we are searching on
+    COMPREPLY=($(compgen -W "$(find $devpathSrcDir -maxdepth 4 -type d -not -path '*/\.*' | sed -E "s|$devpathSrcDir/$word([^/]*(/[^/]*)?).*|$word\1|g")" -- "$word"));
     # probably a good idea to filter down to pairs of results for directory like "directory" and "directory/" so that we can continue to suggest results if the term ends with slash but not show about 1000 results and force bash autocomplete to ask if we want to show all of the results.
 
     # dev github.com/abc
