@@ -3,7 +3,7 @@
 testt
 
 func Test$NAME$(t *testing.T) {
-	for _, tt := range []struct {
+	for _, tc := range []struct {
 		name string
 	}{
 		{
@@ -11,7 +11,7 @@ func Test$NAME$(t *testing.T) {
 			$END$
 		},
 	} {
-		t.Run(tt.name, func(t *testing.T) {
+		t.Run(tc.name, func(t *testing.T) {
 
 		})
 	}
