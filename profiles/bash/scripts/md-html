@@ -20,11 +20,11 @@ fi
 tmpFile="/tmp/$(basename $outFile.mid)"
 markdown "$file" > "$tmpFile"
 echo "[$(date +%Y-%m-%dT%H:%M:%S%z)] $file -> $outFile"
-css="$GOH_DOTFILES/bash/scripts/md.css.html"
+css="${GOH_BASHPROFILE_DIR:?GOH_BASHPROFILE_DIR must be set}/scripts/md.css.html"
 if [[ ! -f "$css" ]]; then
 	echo "css cannot be found at $css"
 fi
-cat "$css" "$tmpFile" > "$outFile"
+( echo "<style type=\"text/css\">" && cat "$css" && echo "</style>" && cat "$tmpFile" ) > "$outFile"
 rm "$tmpFile"
 
 # If last argument is --open, open the file
