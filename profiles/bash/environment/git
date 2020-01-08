@@ -37,6 +37,11 @@ git-default-remote() {
 	git remote | head -1
 }
 
+git-default-remote-default-branch() {
+	defaultRemote="$(git-default-remote)" && \
+		git symbolic-ref refs/remotes/$defaultRemote/HEAD | sed "s@^refs/remotes/$defaultRemote/@@"
+}
+
 alias git-log-hash='git log --format=format:%H'
 
 git-stat-diff() {
@@ -218,7 +223,7 @@ git-prep-repository() {
 		git status
 		return 1
 	fi
-	git checkout develop && git fetch && greso --confirm
+	git checkout ${1:-develop} && git fetch && greso --confirm
 }
 
 git-prune-local-branches() {
@@ -245,5 +250,5 @@ git-run-in-repo() {
 	echo "working directory: $repoPath"
 	echo "command: $@"
 	# add a `dev check $repo` subcommand to avoid relying on repoPath implementation above?
-	( cd $repoPath && git-prep-repository && $@ && git status )
+	( cd $repoPath && git-prep-repository $(git-default-remote-default-branch) && $@ && git status )
 }
