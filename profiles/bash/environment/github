@@ -27,7 +27,7 @@ gh-pr-new(){
 	local head
 	read head
 	head=${head:-$current}
-	local payload="{\"title\":\"$title\",\"body\":\"$body\",\"head\":\"$head\",\"base\":\"develop\"}"
+	local payload="{\"title\":\"$title\",\"body\":\"$body\",\"head\":\"$head\",\"base\":\"$(git-default-remote-default-branch)\"}"
 	local out="$(mktemp)"
 	echo Response written to $out
 	if ! curl-github -X POST -d "$payload" "$githubCurlApiURL/repos/$repo/pulls" > $out; then

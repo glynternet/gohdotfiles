@@ -95,10 +95,10 @@ generateGitBranchFunctions() {
 		git checkout -b ${prefix}/\$branchSuffix \$@
 	}
 
-	${prefix}newbranch-fromdevelop() {
+	${prefix}newbranch-fromdefault() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
 		echo \$branchSuffix
-		${prefix}newbranch \$branchSuffix \$(git-default-remote)/develop
+		${prefix}newbranch \$branchSuffix \$(git-default-remote)/\$(git-default-remote-default-branch)
 	}"
 }
 
