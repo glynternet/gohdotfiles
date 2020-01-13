@@ -12,3 +12,8 @@ set smartindent		" automatically indents lines after opening a bracket in progra
 set smarttab		" improves tabbing
 set shiftwidth=4	" assists code formatting
 set tabstop=4		" how much space given to a tab
+
+function NextDone()
+  return search('DONE','n')
+endfunction
+nnoremap <C-d> :echom NextDone()<CR>
