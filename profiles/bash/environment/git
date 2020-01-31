@@ -10,7 +10,7 @@ complete -F '__git_all_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
 alias gdo='git diff $(git-default-remote)/$(git-currentbranch)'
-alias gf='git fetch'
+alias gf='git fetch $(git-default-remote)'
 alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
