@@ -32,6 +32,7 @@ git-clone-github() {
 git-checkout-detached() {
 	git checkout $(git-sha $1)
 }
+complete -F __git_all_branch_list_completion git-checkout-detached
 
 git-default-remote() {
 	git remote | head -1
