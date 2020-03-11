@@ -37,6 +37,10 @@ git-checkout-detached() {
 }
 complete -F __git_all_branch_list_completion git-checkout-detached
 
+git-checkout-detached-default() {
+	git-checkout-detached $(git-default-remote)/$(git-default-remote-default-branch)
+}
+
 git-default-remote() {
 	git remote | head -1
 }
