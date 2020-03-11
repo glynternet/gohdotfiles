@@ -17,11 +17,10 @@ gh-pr-new(){
 	local title
 	read title
 	title=${title:-$defaultTitle}
-	local defaultBody='==MERGE_WHEN_READY=='
-	echo "body? [$defaultBody]"
+	echo "body? [$GH_PR_NEW_DEFAULTBODY]"
 	local body
 	read body
-	body=${body:-$defaultBody}
+	body=${body:-$GH_PR_NEW_DEFAULTBODY}
 	local current="$(git-currentbranch)"
 	echo "head? [$current]"
 	local head
