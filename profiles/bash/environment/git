@@ -116,6 +116,24 @@ _greb() {
 	COMPREPLY=($(compgen -W "$(echo --abort --continue --skip && git-all-branches)" -- "$word"));
 }
 
+greso() {
+	# it may be worth updating this to be more similar to grebo
+	local base=${@: -1}
+	local base="${base:-$(git-currentbranch)}"
+	local ref="$(git-default-remote)/$base"
+	if [[ "$1" = --confirm ]]; then
+		git reset --hard "$ref"
+		return
+	fi
+	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
+	read sure
+	if [[ "$sure" = "y" ]]; then
+		git reset --hard "$ref"
+	else
+		echo "answer not 'y', so not calling 'git reset --hard \"$ref\"'"
+	fi
+}
+
 grebo() {
 	local branch=${@: -1}
 	branch=${branch:-$(git-currentbranch)}
@@ -171,22 +189,6 @@ git-push-new-branch() {
 		return 1
 	fi
 	git push -u $(git-default-remote) "$(git-currentbranch)"
-}
-
-greso() {
-	local base="$(git-currentbranch)"
-	local ref="$(git-default-remote)/$base"
-	if [[ "$1" = --confirm ]]; then
-		git reset --hard "$ref"
-		return
-	fi
-	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
-	read sure
-	if [[ "$sure" = "y" ]]; then
-		git reset --hard "$ref"
-	else
-		echo "answer not 'y', so not calling 'git reset --hard \"$ref\"'"
-	fi
 }
 
 git-branches-onlylocal() {
