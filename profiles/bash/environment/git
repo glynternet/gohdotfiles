@@ -1,4 +1,5 @@
 alias ga='git add'
+alias gap='git add -p'
 complete -W "-p -u" ga
 alias gch='git checkout'
 complete -F '__git_all_branch_list_completion' gch
