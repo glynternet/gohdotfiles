@@ -21,6 +21,11 @@ gh-pr-new(){
 	local body
 	read body
 	body=${body:-$GH_PR_NEW_DEFAULTBODY}
+	local defaultLabels="merge when ready"
+	echo "labels? [$defaultLabels]"
+	local labels
+	read labels
+	labels="${labels:-$defaultLabels}"
 	local current="$(git-currentbranch)"
 	echo "head? [$current]"
 	local head
@@ -43,6 +48,10 @@ gh-pr-new(){
 		echo "GITHUB_URL must be set to show link to PR"
 		return
 	fi
+	set -x
+	curl-github --header "Content-Type:application/json" --request POST --data "{\"labels\":[\"$(sed 's/,/\",\"/g'<<<$labels)\"]}" $GITHUBCURL_API_URL/repos/$repo/issues/$prNumber/labels
+	set +x
+
 	local prURL=https://${GITHUB_URL}/$repo/pull/$prNumber
 	copy <<<$prURL
 	echo "Link: $prURL (copied to dashboard)"
