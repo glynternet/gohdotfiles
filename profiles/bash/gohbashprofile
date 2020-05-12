@@ -194,6 +194,11 @@ cdu() {
 	pwd
 }
 
+convert-to-gif() {
+	local file="${1:?must provide input file}"
+	ffmpeg -i "$file" -pix_fmt rgb24 "$file.gif"
+}
+
 dequery() { echo ${1%%\?*}; }
 
 echoArguments() {
