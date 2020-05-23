@@ -65,6 +65,12 @@ git-commits-plain() {
 	git log --format=%s%n%b%n%N $@
 }
 
+git-commit-dependency-bump() {
+	local dependency=${1:?must provide dependency name}
+	local version=${2:?must new version}
+	git commit -m "⬆️ bump $dependency to $version"
+}
+
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?not set}
 	local emojiName=$1
