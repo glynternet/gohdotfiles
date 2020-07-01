@@ -12,6 +12,8 @@ set smartindent		" automatically indents lines after opening a bracket in progra
 set smarttab		" improves tabbing
 set shiftwidth=4	" assists code formatting
 set tabstop=4		" how much space given to a tab
+nnoremap <S-Up> :m-2<CR>  " shift + up to move line up
+nnoremap <S-Down> :m+<CR> " shift + down to move line down
 
 function NextDone()
   return search('DONE','n')
