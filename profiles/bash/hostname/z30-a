@@ -48,7 +48,7 @@ install-mon-commands() {
 }
 
 music-copy-extract-and-archive() {
-	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local usage="Usage: ${FUNCNAME[0]} <compressed-file>"
 	local file="${1:?$usage}"
 	local filename="$(basename "$file")"
 	local musicArchiveDir="$HOME/Downloads/Music/"
@@ -62,6 +62,18 @@ music-copy-extract-and-archive() {
 		trash -v "$copied"
 	fi
 	mv -v "$file" "$musicArchiveDir"
+}
+
+music-copy-and-archive() {
+	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local file="${1:?$usage}"
+	local filename="$(basename "$file")"
+	local musicArchiveDir="$HOME/Downloads/Music/"
+	local musicDir="$HOME/Music"
+	local copied="$musicDir/$filename"
+	local archived="$musicArchiveDir/$filename"
+	cp -vr "$file" "$copied"
+	mv -v "$file" "$archived"
 }
 
 music-download() {
