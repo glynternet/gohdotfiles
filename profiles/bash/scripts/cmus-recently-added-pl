@@ -1,0 +1,2 @@
+#!/bin/bash
+find $HOME/Music -type f \( -iname \*.mp3 -o -iname \*.flac \) -mtime -40 -exec ls {} \; > $HOME/.config/cmus/playlists/recently_added.pls
