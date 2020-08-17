@@ -26,7 +26,6 @@ ifeq ($(UNAME), Linux)
 	# allow running docker as current user
 	# only required in Linux as the homebrew installer does this automatically, I believe
 	sudo gpasswd -a $(shell whoami) docker
-	newgrp docker
 endif
 
 go: go-dirs
