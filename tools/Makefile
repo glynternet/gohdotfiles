@@ -13,7 +13,7 @@ endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion curl git htop jq ncdu parallel python python3-pip source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion curl git htop jq ncdu parallel python python3-pip source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
 install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
 
