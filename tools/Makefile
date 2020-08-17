@@ -15,7 +15,7 @@ Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
 PACKAGE_MANAGER_INSTALLS ?= bash-completion git htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
-install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq #aws
+install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
 
 $(PACKAGE_MANAGER_INSTALLS):
 	$(PACKAGE_INSTALL_CMD) $@
@@ -39,10 +39,6 @@ go-dirs:
 	for dir in $(GODIRS); \
 		do mkdir -pv $$dir; \
 	done
-
-aws: pip
-	pip3 install awscli --upgrade --user
-	ln -s $(HOME)/Library/Python/3.6/bin/aws /usr/local/bin/aws
 
 pip: python
 	curl -O https://bootstrap.pypa.io/get-pip.py
