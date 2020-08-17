@@ -7,13 +7,13 @@ DOCKER_PACKAGE_NAME ?= docker
 endif
 
 ifeq ($(UNAME), Linux)
-PACKAGE_INSTALL_CMD ?= apt install --assume-yes
+PACKAGE_INSTALL_CMD ?= sudo apt install --assume-yes
 DOCKER_PACKAGE_NAME ?= docker.io docker-compose
 endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion git htop jq ncdu parallel python source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion curl git htop jq ncdu parallel python python3-pip source-highlight tmux tree watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
 install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
 
@@ -39,11 +39,6 @@ go-dirs:
 	for dir in $(GODIRS); \
 		do mkdir -pv $$dir; \
 	done
-
-pip: python
-	curl -O https://bootstrap.pypa.io/get-pip.py
-	python3 get-pip.py --user
-	rm get-pip.py
 
 sublime:
 	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -

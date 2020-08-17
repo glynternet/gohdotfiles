@@ -4,4 +4,4 @@ install:
 	$(MAKE) install-package PACKAGE=exfat-utils
 
 install-package:
-	apt install $(PACKAGE)
+	sudo apt install $(PACKAGE)
