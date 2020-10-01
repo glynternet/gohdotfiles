@@ -13,9 +13,18 @@ I would love to have more of a tidy up and a refactor, however, I feel that ther
 
 ## Usage
 
+For a fresh install you probably want to:  
 
-Ensure you have `make` installed.
-```
+```bash
+# 1. Ensure you have `git` and `make` installed.
+sudo apt install git make
+
+# 2. Clone the repo
+git clone https://github.com/glynternet/gohdotfiles.git
+
+# 3. Change directory to repo
 cd gohdotfiles
+
+# 4. Call make to start the installation
 make
 ```
