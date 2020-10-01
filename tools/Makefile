@@ -46,5 +46,5 @@ sublime:
 	sudo apt-get update
 	sudo apt-get install sublime-text
 
-yq: pip
+yq: python3-pip
 	pip3 install yq
