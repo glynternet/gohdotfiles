@@ -1,0 +1,11 @@
+export-if-exists DEVPATH "${HOME}/go"
+export-if-exists GOPATH "${HOME}/go"
+run-if-not-empty GOPATH source-environment go
+run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
+run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
+
+export-if-exists DROPBOX "$HOME/Dropbox"
+run-if-not-empty DROPBOX "source-environment dropbox"
+
+source-environment git
+source-environment dev
