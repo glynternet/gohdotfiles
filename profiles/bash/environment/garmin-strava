@@ -89,7 +89,7 @@ garmin-uploaddownloaded-archive-umount() {
 	code=$?
 	if [[ ! "$code" -eq 0 ]]; then
 		echo Not unmounting
-		return
+		return 1
 	fi
 	garmin-umount
 }
