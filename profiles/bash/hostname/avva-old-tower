@@ -9,3 +9,6 @@ run-if-not-empty DROPBOX "source-environment dropbox"
 
 source-environment git
 source-environment dev
+
+export-if-exists MUSIC "${HOME}/Music"
+source-environment music
