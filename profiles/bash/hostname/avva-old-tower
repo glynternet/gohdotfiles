@@ -12,3 +12,5 @@ source-environment dev
 
 export-if-exists MUSIC "${HOME}/Music"
 source-environment music
+
+export-if-exists GITMOJIS_JSON "$HOME/tmp/gitmojis.json"
