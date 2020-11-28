@@ -61,14 +61,6 @@ music-download() {
 	music-copy-extract-and-archive "$musicDownloadDir/$filename"
 }
 
-copy-args() {
-	echo "$@" | copy
-}
-
-calc() {
-	echo "scale=3; $@" | bc
-}
-
 cp-extract-rar(){(
 	set -e
 	local usage='usage: cp-extract-rar <archive>
@@ -128,5 +120,3 @@ export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
 export-if-exists EXERCISM_WORKSPACE "$DROPBOX/exercism"
 
 alias wifiscan-glynternet="until-successful bash -c \"sudo iwlist scan | grep -c glynternet\""
-
-. <(oscli completion)
