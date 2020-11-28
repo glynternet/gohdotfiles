@@ -125,7 +125,6 @@ _greb() {
 
 greso() {
 	# it may be worth updating this to be more similar to grebo
-	local base=${@: -1}
 	local base="${base:-$(git-currentbranch)}"
 	local ref="$(git-default-remote)/$base"
 	if [[ "$1" = --confirm ]]; then
