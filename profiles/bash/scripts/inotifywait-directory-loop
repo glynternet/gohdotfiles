@@ -3,13 +3,13 @@ dir="${1:?must provide dir to watch}"
 inotifywaitFlags=-qre
 
 inotifywait -m "$dir" $inotifywaitFlags modify |
-    while read path action file; do
-    	echo "{}" | jq --compact-output \
-    		--arg key0 'path' \
+	while read path action file; do
+		echo "{}" | jq --compact-output \
+			--arg key0 'path' \
 			--arg value0 "$path" \
 			--arg key1   'action' \
 			--arg value1 "$action" \
 			--arg key2   'file' \
 			--arg value2 "$file" \
 			'. | .[$key0]=$value0 | .[$key1]=$value1 | .[$key2]=$value2'
-    done
+	done
