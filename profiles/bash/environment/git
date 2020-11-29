@@ -156,6 +156,10 @@ _grebo() {
 }
 complete -F '_grebo' grebo
 
+grebod() {
+	gf && greb "$@" "$(git-default-remote)/$(git-default-remote-default-branch)"
+}
+
 greb-last() {
 	local usage="usage: ${FUNCNAME[0]} num_commits"
 	local numCommits="${1:?"$usage"}"
