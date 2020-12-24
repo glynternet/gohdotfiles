@@ -93,9 +93,14 @@ source-profile() {
 source-environment(){
 	source-profile "environment" "$GOH_BASHPROFILE_DIR/environment/$1"
 }
-source-organisation(){
-	source-profile "organisation" "$GOH_BASHPROFILE_DIR/organisation/$1"
+_source-environment() {
+	local cur files
+	cur="${COMP_WORDS[COMP_CWORD]}"
+	files="$(ls $GOH_BASHPROFILE_DIR/environment)"
+	COMPREPLY=( $(compgen -W "${files}" -- ${cur}) )
 }
+complete -F _source-environment source-environment
+
 source-utilities(){
 	source-profile "utilities" "$GOH_BASHPROFILE_DIR/utilities/$1"
 }
