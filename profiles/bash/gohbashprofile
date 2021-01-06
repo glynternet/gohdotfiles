@@ -201,6 +201,7 @@ cdu() {
 
 convert-to-gif() {
 	local file="${1:?must provide input file}"
+	# ffmpeg -i "$file" -pix_fmt rgb24 "$file.gif"
 	ffmpeg -i "$file" -vf "fps=30,split[s0][s1];[s0]palettegen[p];[s1][p]paletteuse" -loop 0 "$file.gif"
 }
 
