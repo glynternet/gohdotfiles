@@ -153,7 +153,7 @@ grebo() {
 _grebo() {
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(git branch -r | cut -c 3-)" -- "$word"));
+    COMPREPLY=($(compgen -W "$(git branch -r | cut -c 3- | sed "s@^$(git-default-remote)/@@g")" -- "$word"));
 }
 complete -F '_grebo' grebo
 
