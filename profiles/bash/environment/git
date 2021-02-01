@@ -74,12 +74,12 @@ git-commit-dependency-bump() {
 
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"}
-	local emojiName=$1
-	if [[ -z "$emojiName" ]]; then
+	local emojiCode=$1
+	if [[ -z "$emojiCode" ]]; then
 		less ${GITMOJIS_JSON}
 		return
 	fi
-	local json="$(jq '.[][] | select(.name == "'$emojiName'")' < "$gitmojisJson")"
+	local json="$(jq '.[][] | select(.code == ":'$emojiCode':")' < "$gitmojisJson")"
 	echo $json | jq .
 	echo $json | jq .emoji -j | copy
 	echo "copied to clipboard!"
@@ -87,7 +87,8 @@ gitmoji() {
 _gitmoji() {
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    COMPREPLY=($(compgen -W "$(jq -c -r '.[][].name' ${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"})" -- "$word"));
+    local options="$(jq -c -r '.[][].code' ${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"} | sed 's/://g')"
+    COMPREPLY=($(compgen -W "$options" -- "${word}"));
 }
 complete -F '_gitmoji' gitmoji
 
