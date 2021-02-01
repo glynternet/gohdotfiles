@@ -79,7 +79,11 @@ gitmoji() {
 		less ${GITMOJIS_JSON}
 		return
 	fi
-	local json="$(jq '.[][] | select(.code == ":'$emojiCode':")' < "$gitmojisJson")"
+	local json
+	if ! json="$(jq --exit-status '.[][] | select(.code == ":'$emojiCode':")' < "$gitmojisJson")"; then
+		echo "Gitmoji not found 😔: $emojiCode"
+		return 1
+	fi
 	echo $json | jq .
 	echo $json | jq .emoji -j | copy
 	echo "copied to clipboard!"
