@@ -207,6 +207,9 @@ convert-to-gif() {
 
 dequery() { echo ${1%%\?*}; }
 
+diff-cache-set () { local file="${1:?must provide file}"; cp -v "$file" /tmp/diff-cache.tmp; }
+diff-cache () { local file="${1:?must provide file}"; diff /tmp/diff-cache.tmp "$file"; }
+
 echoArguments() {
 	echo "\$# - $#"
 	echo "\$* - $*"
