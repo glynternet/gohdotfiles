@@ -131,12 +131,8 @@ _greb() {
 
 greso() {
 	# it may be worth updating this to be more similar to grebo
-	local base="${base:-$(git-currentbranch)}"
+	local base="${1:?$(git-currentbranch)}"
 	local ref="$(git-default-remote)/$base"
-	if [[ "$1" = --confirm ]]; then
-		git reset --hard "$ref"
-		return
-	fi
 	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
 	read sure
 	if [[ "$sure" = "y" ]]; then
