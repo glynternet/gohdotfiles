@@ -142,6 +142,10 @@ greso() {
 	fi
 }
 
+gresod() {
+	gf && greso "$(git-default-remote-default-branch)"
+}
+
 grebo() {
 	local branch=${@: -1}
 	branch=${branch:-$(git-currentbranch)}
