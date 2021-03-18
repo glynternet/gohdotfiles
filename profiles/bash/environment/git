@@ -131,7 +131,7 @@ _greb() {
 
 greso() {
 	# it may be worth updating this to be more similar to grebo
-	local base="${1:?$(git-currentbranch)}"
+	local base="${1:-$(git-currentbranch)}"
 	local ref="$(git-default-remote)/$base"
 	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
 	read sure
