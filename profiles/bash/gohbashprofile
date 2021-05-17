@@ -268,16 +268,17 @@ mp3DownloadsToMusic() {
 }
 
 newscript() {
-	scriptFile=$1
-	if [[ -z $scriptFile ]]; then
+	scriptFile="$1"
+	if [[ -z "$scriptFile" ]]; then
 		defaultNew="./newscript.sh"
 		echo "No script file given. Making a new one at $defaultNew"
-		scriptFile=$defaultNew
+		scriptFile="$defaultNew"
 	fi
-	touch $scriptFile
-	chmod 700 $scriptFile
+	touch "$scriptFile"
+	chmod 700 "$scriptFile"
 	echo '#!/bin/bash' > $scriptFile
-	subl $scriptFile --command "move_to args to eof" && subl --command 'move_to {"to": "eof"}'
+	echo 'set -euf -o pipefail' >> $scriptFile
+	subl "$scriptFile" --command "move_to args to eof" && subl --command 'move_to {"to": "eof"}'
 }
 
 notes-search() {
