@@ -45,6 +45,9 @@ git-checkout-detached-default() {
 }
 
 git-default-remote() {
+	# this is most-likely wrong
+	# In fire-engine app, for example, this creates a list of remotes which are gboucher-fork and origin, then selects the first because they're in alphabetical order, I believe.
+	# This needs to be more opinionated: if origin exists, use that. If o exists use that. If not, take first in list.
 	git remote | head -1
 }
 
