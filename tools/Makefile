@@ -13,7 +13,7 @@ endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion curl htop jq ncdu parallel python python3-pip source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion curl htop jq ncdu parallel python source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
 install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
 
@@ -57,5 +57,5 @@ sublime:
 	sudo apt-get update
 	sudo apt-get install sublime-text
 
-yq: python3-pip
+yq:
 	pip3 install yq
