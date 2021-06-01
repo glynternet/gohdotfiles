@@ -21,7 +21,7 @@ gh-pr-new(){
 	local body
 	read body
 	body=${body:-$GH_PR_NEW_DEFAULTBODY}
-	local defaultLabels="merge when ready"
+	local defaultLabels=""
 	echo "labels? [$defaultLabels]"
 	local labels
 	read labels
