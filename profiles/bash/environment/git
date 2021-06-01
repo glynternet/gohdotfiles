@@ -16,6 +16,7 @@ alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
 alias gp="git push"
+alias gprp="git pull --rebase && git push"
 alias greb='git rebase'
 complete -F '_greb' greb
 alias grp='git remote prune'
