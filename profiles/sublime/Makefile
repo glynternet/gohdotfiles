@@ -2,7 +2,7 @@ SHELL ?= sh
 UNAME ?= $(shell uname)
 
 ifeq ($(UNAME),Darwin)
-CONFIG_DIR ?= $(HOME)/Library/Application Support/Sublime Text 3/Packages/User
+CONFIG_DIR ?= $(HOME)/Library/Application Support/Sublime Text/Packages/User
 KEYBINDINGS_FILENAME ?= Default (OSX).sublime-keymap
 endif
 
