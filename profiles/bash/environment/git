@@ -255,6 +255,10 @@ version() {
 	echo $version
 }
 
+version-without-v() {
+	version | cut -c2-
+}
+
 git-all-branches() {
 	git branch -a | cut -c 3- | cut -d" " -f1 | sed "s|^remotes/||g" | sort | uniq
 }
