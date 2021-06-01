@@ -1,13 +1,9 @@
 install:
 	$(MAKE) -C settings
 	$(MAKE) homebrew
-	$(MAKE) cask-install APP=alfred
-	$(MAKE) cask-install APP=bettertouchtool
-	$(MAKE) cask-install APP=goland
-	$(MAKE) cask-install APP=iterm2
+	brew install bettertouchtool
+	brew install goland
+	brew install iterm2
 
 homebrew:
-	./install-homebrew.sh
-
-cask-install:
-	brew cask install $(APP)
+	curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh
