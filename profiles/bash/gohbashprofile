@@ -321,11 +321,11 @@ notify-pushover() {
 }
 
 random-string() {
-	cat /dev/urandom | tr -dc 'a-zA-Z0-9!@#$%^_+?><' | head -c ${1:-32}
+	< /dev/urandom LC_CTYPE=C tr -dc 'a-zA-Z0-9!@#$%^_+?><' | head -c ${1:-32}
 }
 
 random-words() {
-	cat /usr/share/dict/words | shuf | head -${1:-5} | tr -d "\n"
+	< /usr/share/dict/words sort -R | head -${1:-5} | tr "\n" " "
 }
 
 ssh-disk-capacity(){
