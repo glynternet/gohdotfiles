@@ -110,8 +110,8 @@ export-if-exists GOH_BASHPROFILE_DIR "$(dirname $GOH_BASHPROFILE)"
 
 # EMOJIS
 export SHRUG='¯\_(ツ)_/¯'
-alias emoji-cyclist-male='echo "🚴‍♂️" && <<<"🚴‍♂️" copy'
-alias emoji-cyclist-female='echo "🚴‍♀️" && <<<"🚴‍♀️" copy'
+alias emoji-cyclist-male='echo "🚴‍♂️" && <<<"🚴‍♂️" | tr -f "\n" | copy'
+alias emoji-cyclist-female='echo "🚴‍♀️" && <<<"🚴‍♀️" | tr -f "\n" | copy'
 
 # ALIASES
 # PERMANENT ALIASES
