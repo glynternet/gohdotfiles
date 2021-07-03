@@ -10,7 +10,7 @@ garmin-upload() {
 	local route="${1:?"$usage"}"
 
 	if [[ ! -d ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set} ]]; then
-		echo "Garmin New Files routes archive directory not found at '$GARMIN_NEWFILES_DIR'"
+		echo "Garmin New Files directory not found at '$GARMIN_NEWFILES_DIR'"
 		return 1
 	fi
 
