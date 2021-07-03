@@ -16,6 +16,7 @@ source-environment music
 
 export-if-exists GITMOJIS_JSON "$HOME/tmp/gitmojis.json"
 
+export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
 GARMIN_MOUNT=/media/glyn/GARMIN
 GARMIN_CARD=/media/glyn/3561-3563
 source-environment garmin-strava
