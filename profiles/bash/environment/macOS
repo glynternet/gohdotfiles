@@ -7,3 +7,9 @@ notification() {
 	local title=${2:-notification}
 	osascript -e "display notification \"$msg\" with title \"$title\""
 }
+
+time-notification () {
+	local command="$@";
+	local time_out="$(time "$@" 2>&1)"
+	osascript -e "display notification \"$time_out\" with title \"$command\""
+}
