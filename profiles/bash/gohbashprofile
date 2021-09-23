@@ -296,6 +296,10 @@ notes-search() {
 	eval "$cmd"
 }
 
+notification-exit-code() {
+	notification "Exit code: $?" "Command finished"
+}
+
 notify-pushover() {
 	local message="${1:?must provide message body}"
 	curl -s \
