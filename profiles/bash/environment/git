@@ -5,6 +5,7 @@ complete -W "-p -u" ga
 alias gch='git checkout'
 complete -F '__git_all_branch_list_completion' gch
 alias gco="git commit"
+alias gca="git commit --amend"
 alias gcd='git checkout $(git-default-remote-default-branch)'
 alias gd='git diff'
 alias gdc='git diff --cached'
