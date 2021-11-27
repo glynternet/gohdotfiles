@@ -354,25 +354,6 @@ until-successful() {
 	done;
 }
 
-wifi() {
-	if [[ $# -eq 0 ]]; then
-		cat "$WIFICODES"
-		return
-	fi
-	local key=$(echo ${@} | tr ' ' '.')
-	jq -r ".$key" "$WIFICODES"
-}
-
-_wifi() {
-	COMPREPLY=();
-	if [[ $COMP_CWORD -gt 1 ]]; then
-		local parent="$(echo ${COMP_WORDS[@]:1:${#COMP_WORDS[@]}-2} | tr ' ' '.')"
-	fi
- 	local word="${COMP_WORDS[COMP_CWORD]}";
-	COMPREPLY=($(_json_keys_completion "$WIFICODES" "$parent" "$word"));
-}
-complete -F '_wifi' wifi
-
 augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
 augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 
