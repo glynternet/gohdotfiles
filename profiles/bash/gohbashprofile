@@ -127,9 +127,6 @@ alias ssh-ignore-known-hosts="ssh -o UserKnownHostsFile=/dev/null -o StrictHostK
 alias scratchpad='$EDITOR $HOME/.scratchpad'
 alias time='command time'
 
-# AV ORRON GLYN ALIASES
-alias squiggsmp4='ffmpeg -i ./squiggs-%06d.png  -c:v libx264 -vf format=yuv420p -r 30 squiggs.mp4'
-
 # used for generating a bash completion where the
 # suggested values are the keys of a given file
 # this will only work when the keys don't have spaces in
@@ -142,20 +139,6 @@ _json_keys_completion(){
 	# it seemed that it wouldn't work without removing the new lines.
 	# TODO: come back and look at doing this another way
 	compgen -W "$(jq ".$parent | keys[]" "$file" | tr '\n' '\t')" -- "$word"
-}
-
-disk-space(){
-	baseDir="$1"
-	if [[ -z "$baseDir" ]]; then
-		echo "No base directory given, using root."
-		baseDir="/"
-	fi
-	depth="$2"
-	if [[ -z "$depth" ]]; then
-		echo "No max depth given, using 1."
-		depth=1
-	fi
-	sudo du -d"$depth" "$baseDir" | sort -g
 }
 
 # FUNCTIONS
