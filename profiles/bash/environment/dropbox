@@ -1,9 +1,6 @@
 augment-cdpath-if-exists $DROPBOX
 
 export-if-exists NOTES "$DROPBOX/notes"
-alias scratchpad-dropbox='$EDITOR $NOTES/.scratchpad'
-
-export-if-exists WIFICODES "${DROPBOX}/wifi_codes.txt"
 	
 augment-path-if-exists "${DROPBOX}/scripts"
 augment-path-if-exists "${DROPBOX}/scripts/music"
