@@ -12,6 +12,9 @@ source-environment moncli
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
 
+export-if-exists AVVADEPLOY_DIR "$DEVPATH/src/bitbucket.org/glynny/avva.deploy"
+export-if-exists AVVA_ARTIFACTS_DIR "$DROPBOX/DroneBox/AVVA/builds"
+
 export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
 export-if-exists CYCLING_ACTIVITIES_ARCHIVE "$DROPBOX/cycling/activities"
 export GARMIN_MOUNT=/media/$USER/GARMIN
