@@ -156,6 +156,10 @@ alert-when-pid-finished() {
 
 bu() { cp $@ $@.backup-`date +%y%m%d`; echo "`date +%Y-%m-%d` backed up $PWD/$@" >> ${HOME}/.backups.log; }
 
+cdtemp() {
+	cd `mktemp -d`
+}
+
 cdu() {
 	local ups="$1"
 
