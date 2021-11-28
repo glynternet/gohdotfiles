@@ -225,10 +225,12 @@ git-last-commit-message() {
 }
 
 git-push-new-branch() {
-	local currentBranch="$(git-currentbranch)"
-	if [[ $currentBranch =~ ^develop|master$ ]]; then
-		echo "You're on $currentBranch and probably don't want to be doing this"
-		return 1
+	if [[ ! $1 == '-f' ]]; then
+		local currentBranch="$(git-currentbranch)"
+		if [[ $currentBranch =~ ^develop|master$ ]]; then
+			echo "You're on $currentBranch and probably don't want to be doing this"
+			return 1
+		fi
 	fi
 	git push -u $(git-default-remote) "$(git-currentbranch)"
 }
