@@ -13,6 +13,10 @@ if [ -f $(brew --prefix)/etc/bash_completion ]; then
 fi
 
 chromeapp(){
-	echo "requires scheme as part of URL"
-	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app="$1"
+	local url="${1:?must provide url}"
+	if [[ ! "$url" =~ ^https?:// ]]; then
+		echo "URL does not start with scheme, prepending https:// suffix"
+		url="https://$url"
+	fi
+	/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome --app="$url"
 }
