@@ -317,12 +317,8 @@ random-words() {
 	< /usr/share/dict/words sort -R | head -${1:-5} | tr "\n" " "
 }
 
-ssh-disk-capacity(){
-	echo "ONLY DISKS BEGINNING WITH /dev"
-	for server in "$@"; do
-		echo "$server";
-		ssh "$server" 'df -h' | grep --color=none -E '^/dev';
-	done
+serve-directory() {
+	python -m SimpleHTTPServer "${1:-7800}"
 }
 
 stats(){
