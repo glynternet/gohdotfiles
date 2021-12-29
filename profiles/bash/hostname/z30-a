@@ -8,6 +8,7 @@ source-environment cpp
 source-environment dev
 source-environment github
 source-environment moncli
+source-environment music
 
 export-if-exists DROPBOX $HOME/Dropbox
 run-if-not-empty DROPBOX "source-environment dropbox"
