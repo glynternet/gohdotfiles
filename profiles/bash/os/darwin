@@ -1,6 +1,7 @@
 ## macOS ALIASES
 alias copy="pbcopy"
 alias chrome='open -a "Google Chrome"'
+alias refresh-profile='. ~/.bash_profile'
 
 ## macOS VARIABLES
 export-if-exists SERVICES ${HOME}/"Library/Services"

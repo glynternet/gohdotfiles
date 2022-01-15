@@ -7,7 +7,6 @@ export VISUAL=vim
 export EDITOR=$VISUAL
 
 ## Profile Functions
-alias refresh-profile='. ~/.bash_profile'
 
 ### Path Functions
 augment-path-if-exists(){

@@ -6,6 +6,7 @@ alias goland='/snap/goland/current/bin/goland.sh'
 alias mouse-sensitivity="xset m"
 alias open=xdg-open
 alias restart-sound='pulseaudio -k && sudo alsa force-reload'
+alias refresh-profile='. ~/.bashrc'
 
 set-background() {
 	usage="usage: set-background ABSOLUTE_IMAGE_PATH"

@@ -51,7 +51,6 @@ install-mon-commands() {
 	sudo mv -v $outdir/* /usr/local/bin/
 }
 
-
 music-download() {
 	local usage="Usage: ${FUNCNAME[0]} <url>"
 	local url="${1:?$usage}"
