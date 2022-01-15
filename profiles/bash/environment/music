@@ -2,42 +2,30 @@ music-extract-and-delete() {
 	local musicDir="${MUSIC:?MUSIC env var is not set}"
 	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	local filename="$(basename "$file")"
-	local moved="$musicDir/$filename"
-	mv -v "$file" "$moved"
-	( cd "$musicDir" && extract "$moved")
-	echo "trash $moved?"
-	read shouldTrash
-	if [ "$shouldTrash" = 'yes' ] || [ "$shouldTrash" = 'y' ]; then
-		trash -v "$moved"
-	fi
+	local moved="$musicDir/$(basename "$file")"
+	mv -v "$file" "$moved" \
+		&& ( cd "$musicDir" && extract "$moved") \
+		&& trash -v "$moved"
 }
 
 music-copy-extract-and-archive() {
-	local usage="Usage: ${FUNCNAME[0]} <compressed-file>"
+	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	local filename="$(basename "$file")"
 	local musicArchiveDir="$HOME/Downloads/Music/"
 	local musicDir="$HOME/Music"
-	local copied="$musicDir/$filename"
-	cp -vr "$file" "$copied"
-	( cd "$musicDir" && extract "$copied")
-	echo "trash $copied?"
-	read shouldTrash
-	if [ "$shouldTrash" = 'yes' ] || [ "$shouldTrash" = 'y' ]; then
-		trash -v "$copied"
-	fi
-	mv -v "$file" "$musicArchiveDir"
+	local copied="$musicDir/$(basename "$file")"
+	cp -vr "$file" "$copied" \
+		&& ( cd "$musicDir" && extract "$copied") \
+		&& trash -v "$copied" \
+		&& mv -v "$file" "$musicArchiveDir"
 }
 
 music-copy-and-archive() {
 	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	local filename="$(basename "$file")"
 	local musicArchiveDir="$HOME/Downloads/Music/"
 	local musicDir="$HOME/Music"
-	local copied="$musicDir/$filename"
-	local archived="$musicArchiveDir/$filename"
-	cp -vr "$file" "$copied"
-	mv -v "$file" "$archived"
+	local copied="$musicDir/$(basename "$file")"
+	cp -vr "$file" "$copied" \
+		&& mv -v "$file" "$musicArchiveDir"
 }
