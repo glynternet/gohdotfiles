@@ -225,14 +225,25 @@ git-last-commit-message() {
 }
 
 git-push-new-branch() {
-	if [[ ! $1 == '-f' ]]; then
+	local force
+	local upstream
+	while getopts ":fu:" option; do
+	case $option in
+		f)	force="1";;
+		u)	upstream=$OPTARG;;
+		\?) echo "Error: Invalid option"
+			return;;
+	esac
+	done
+
+	if [[ -z "$force" ]]; then
 		local currentBranch="$(git-currentbranch)"
 		if [[ $currentBranch =~ ^develop|master$ ]]; then
 			echo "You're on $currentBranch and probably don't want to be doing this"
 			return 1
 		fi
 	fi
-	git push -u $(git-default-remote) "$(git-currentbranch)"
+	git push -u "${upstream:-$(git-default-remote)}" "$(git-currentbranch)"
 }
 
 git-branches-onlylocal() {
