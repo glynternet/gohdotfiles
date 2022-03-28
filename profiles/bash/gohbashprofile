@@ -344,15 +344,16 @@ tmux-dev() {
 	tmux -2 attach-session -d 
 }
 
-until-successful() {
-	local backoff=2
-	until "$@";
-	do echo ...;
-	echo sleeping for "${backoff}s"
-	sleep "${backoff}s";
-	(( backoff = backoff * 2 ))
-	date;
-	done;
+until-successful (){
+	local backoff=1.5;
+	local exponent=1.5;
+	until "$@"; do
+		echo ...;
+		echo sleeping for "${backoff}s";
+		sleep "${backoff}s";
+		backoff=$(echo "$backoff * $exponent" | bc);
+		date;
+	done
 }
 
 augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
