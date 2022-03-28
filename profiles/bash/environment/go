@@ -83,3 +83,12 @@ _cdgo() {
 }
 
 complete -F '_cdgo' cdgo
+
+gobench() {
+	local path
+	path="${1:?must provide path to package}"
+	local benchTestPattern
+	benchTestPattern="${2:?must provide bench test pattern}"
+	go test -test.run=no -bench="$benchTestPattern" -benchmem -count 1 -memprofile /tmp/memprofile.out "$path"
+	go tool pprof -http localhost:9090 /tmp/memprofile.out
+}
