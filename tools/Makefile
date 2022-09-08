@@ -4,11 +4,24 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 PACKAGE_INSTALL_CMD ?= brew install
 DOCKER_PACKAGE_NAME ?= docker
+
+sublime:
+	$(PACKAGE_INSTALL_CMD) sublime-text
+
 endif
 
 ifeq ($(UNAME), Linux)
 PACKAGE_INSTALL_CMD ?= sudo apt install --assume-yes
 DOCKER_PACKAGE_NAME ?= docker.io docker-compose
+
+# define only for linux a special way to install sublime, the Darwin way can be installed through brew
+sublime:
+	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
+	sudo apt-get install apt-transport-https
+	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
+	sudo apt-get update
+	sudo apt-get install sublime-text
+
 endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
@@ -49,13 +62,6 @@ go-dirs:
 	for dir in $(GODIRS); \
 		do mkdir -pv $$dir; \
 	done
-
-sublime:
-	wget -qO - https://download.sublimetext.com/sublimehq-pub.gpg | sudo apt-key add -
-	sudo apt-get install apt-transport-https
-	echo "deb https://download.sublimetext.com/ apt/stable/" | sudo tee /etc/apt/sources.list.d/sublime-text.list
-	sudo apt-get update
-	sudo apt-get install sublime-text
 
 yq:
 	pip3 install yq
