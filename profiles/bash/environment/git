@@ -77,6 +77,10 @@ git-commit-dependency-bump() {
 	git commit -m "⬆️ bump $dependency to $version"
 }
 
+git-commit-wip() {
+	git commit -m "wip $(git-currentbranch)"
+}
+
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"}
 	local emojiCode=$1
@@ -321,4 +325,8 @@ git-run-in-repo() {
 	echo "command: $@"
 	# add a `dev check $repo` subcommand to avoid relying on repoPath implementation above?
 	( cd $repoPath && git-prep-repository $(git-default-remote-default-branch) && $@ && git status )
+}
+
+git-tidy() {
+	gf && git-checkout-detached-default && grpo && git-prune-local-branches
 }
