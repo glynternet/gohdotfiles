@@ -1,7 +1,6 @@
 install:
 	$(MAKE) -C settings
 	$(MAKE) homebrew
-	brew install bettertouchtool
 	brew install goland
 	brew install iterm2
 
