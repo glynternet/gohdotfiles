@@ -61,12 +61,11 @@ export-if-exists(){
 		return 3
 	fi
 	# If something exists at $path
-	if [ -e "$path" ]; then
-		export "$variableName"="$path";
-	else
+	if [ ! -e "$path" ]; then
 		echo "Unable to export variable $variableName: unable to find '$path'"
 		return 4
 	fi
+	export "$variableName"="$path";
 }
 
 # runs a command if a variable is not empty
