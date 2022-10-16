@@ -1,9 +1,14 @@
+# history settings
 shopt -s histappend
 PROMPT_COMMAND="history -a;$PROMPT_COMMAND"
 export HISTCONTROL=ignorespace
 export HISTSIZE=10000
 export HISTFILESIZE=20000
 export HISTTIMEFORMAT="%y/%m/%d %T "
+
+# expand directory variables in ta completion 
+shopt -s direxpand
+
 export CDPATH=.:~
 export VISUAL=vim
 export EDITOR=$VISUAL
