@@ -20,3 +20,4 @@ install:
 	sed -i $(SED_INPLACE_ARG) 's@{{COMMIT_TEMPLATE_FILE}}@$(COMMIT_TEMPLATE_FILE)@g' $(TMP_CONFIG_FILE)
 	sed -i $(SED_INPLACE_ARG) 's@{{TEMPLATES_DIRECTORY}}@$(TEMPLATES_DIRECTORY)@g' $(TMP_CONFIG_FILE)
 	mv -v $(TMP_CONFIG_FILE) $(PROFILE)
+	git config --global diff.context 10

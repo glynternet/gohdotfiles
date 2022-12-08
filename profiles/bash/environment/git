@@ -121,13 +121,14 @@ generateGitBranchFunctions() {
 
 	${prefix}newbranch() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
+		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
 		shift
 		git checkout -b ${prefix}/\$branchSuffix \$@
 	}
 
 	${prefix}newbranch-fromdefault() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
-		echo \$branchSuffix
+		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
 		${prefix}newbranch \$branchSuffix \$(git-default-remote)/\$(git-default-remote-default-branch)
 	}"
 }
