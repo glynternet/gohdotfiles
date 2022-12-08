@@ -1,5 +1,6 @@
 syntax on			" enable syntax processing
 set relativenumber	" enable relative line numbers
+set number          " enable showing current line number
 set ruler			" enable ruler, shows line,charater-column in bottom-right corner
 set showcmd			" show command in bottom bar
 set cursorline		" highlight currentline
