@@ -7,7 +7,7 @@ KEYBINDINGS_FILENAME ?= Default (OSX).sublime-keymap
 endif
 
 ifeq ($(UNAME),Linux)
-CONFIG_DIR ?= $(HOME)/.config/sublime-text-3/Packages/User
+CONFIG_DIR ?= $(HOME)/.config/sublime-text/Packages/User
 KEYBINDINGS_FILENAME ?= Default ($(UNAME)).sublime-keymap
 endif
 
