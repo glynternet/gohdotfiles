@@ -1,4 +1,4 @@
-settings: appearance dock menubar screenshots
+settings: appearance dock menubar
 
 appearance:
 	gsettings set org.gnome.desktop.interface text-scaling-factor 0.7
@@ -13,8 +13,3 @@ menubar:
 	gsettings set org.gnome.desktop.interface clock-show-date true
 	gsettings set org.gnome.desktop.interface show-battery-percentage true
 	gsettings set org.gnome.desktop.interface clock-show-weekday false
-
-screenshots: SCREENSHOTS_DIR ?= $(HOME)/Pictures/screenshots
-screenshots:
-	mkdir -p $(SCREENSHOTS_DIR)
-	gsettings set org.gnome.gnome-screenshot auto-save-directory 'file://$(SCREENSHOTS_DIR)'
