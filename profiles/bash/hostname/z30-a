@@ -1,5 +1,5 @@
-export-if-exists DEVPATH "${HOME}/go"
-export-if-exists GOPATH "${HOME}/go"
+export-if-exists DEVPATH "${HOME}/dev"
+export-if-exists GOPATH "${HOME}/dev"
 run-if-not-empty GOPATH source-environment go
 run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
 run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
