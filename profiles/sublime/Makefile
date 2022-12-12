@@ -15,9 +15,16 @@ GOH_SUBLIMEPROFILE_DIR ?= $(CURDIR)
 
 PREFERENCES_FILENAME ?= Preferences.sublime-settings
 
+install: link
+
+configdir:
+	# ensure config dir exists.
+	# if run on a fresh setup, the config dir doesn't exist before sublime has been opened and the install fails because of it.
+	mkdir -p "$(CONFIG_DIR)"
+
 link:
 	make link-filename FILENAME="$(PREFERENCES_FILENAME)"
 	make link-filename FILENAME="$(KEYBINDINGS_FILENAME)"
 
-link-filename:
+link-filename: configdir
 	ln -f -s "$(GOH_SUBLIMEPROFILE_DIR)/$(FILENAME)" "$(CONFIG_DIR)/$(FILENAME)"
