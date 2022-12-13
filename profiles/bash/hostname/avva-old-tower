@@ -1,11 +1,9 @@
-export-if-exists DEVPATH "${HOME}/go"
-export-if-exists GOPATH "${HOME}/go"
-run-if-not-empty GOPATH source-environment go
-run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
-run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
-
-export-if-exists DROPBOX "$HOME/Dropbox" && \
-	run-if-not-empty DROPBOX "source-environment dropbox"
+augment-cdpath-if-exists /data/g \
+	&& export-if-exists DEVPATH "/data/g/dev" \
+	&& export-if-exists GOPATH "$DEVPATH" \
+	&& run-if-not-empty GOPATH source-environment go \
+	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny \
+	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
 
 source-environment git
 generateGitBranchFunctions gh
@@ -16,7 +14,6 @@ source-environment music
 
 export-if-exists GITMOJIS_JSON "$HOME/tmp/gitmojis.json"
 
-export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
 GARMIN_MOUNT=/media/g/GARMIN
 GARMIN_CARD=/media/g/3561-3563
 source-environment garmin-strava
