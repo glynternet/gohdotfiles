@@ -1,3 +1,7 @@
+git config --global diff.context 10
+git config --global alias.current-branch 'rev-parse --abbrev-ref HEAD'
+git config --global alias.commit-wip '!git commit -m "wip: $(git current-branch)"'
+
 alias g='git'
 alias ga='git add'
 alias gap='git add -p'
@@ -12,7 +16,7 @@ alias gdc='git diff --cached'
 complete -F '__git_all_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
-alias gdo='git diff $(git-default-remote)/$(git-currentbranch)'
+alias gdo='git diff $(git-default-remote)/$(git current-branch)'
 alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
@@ -77,10 +81,6 @@ git-commit-dependency-bump() {
 	git commit -m "⬆️ bump $dependency to $version"
 }
 
-git-commit-wip() {
-	git commit -m "wip $(git-currentbranch)"
-}
-
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"}
 	local emojiCode=$1
@@ -141,7 +141,7 @@ _greb() {
 
 greso() {
 	# it may be worth updating this to be more similar to grebo
-	local base="${1:-$(git-currentbranch)}"
+	local base="${1:-$(git current-branch)}"
 	local ref="$(git-default-remote)/$base"
 	echo "Are you sure you'd like to call 'git reset --hard \"$ref\"'"
 	read sure
@@ -158,7 +158,7 @@ gresod() {
 
 grebo() {
 	local branch=${@: -1}
-	branch=${branch:-$(git-currentbranch)}
+	branch=${branch:-$(git current-branch)}
 	local argsLength=$(($#-1))
 	local opts=${@:1:$argsLength}
 	gf && greb $opts $(git-default-remote)/$branch
@@ -196,13 +196,10 @@ greb-since-inclusive() {
 }
 complete -F '__git_all_branch_list_completion' greb-since-inclusive
 
-git-currentbranch() {
-	git rev-parse --abbrev-ref HEAD
-}
 
 git-currentbranch-equals() {
 	local checkBranchName="${1:?must provide branch name}"
-	local current="$(git-currentbranch)"
+	local current="$(git current-branch)"
 	if [[ ! "$checkBranchName" = "$current" ]]; then
 		echo "Not on that branch - current:$current, expected:$checkBranchName"
 		return 1
@@ -242,13 +239,13 @@ git-push-new-branch() {
 	done
 
 	if [[ -z "$force" ]]; then
-		local currentBranch="$(git-currentbranch)"
+		local currentBranch="$(git current-branch)"
 		if [[ $currentBranch =~ ^develop|master$ ]]; then
 			echo "You're on $currentBranch and probably don't want to be doing this"
 			return 1
 		fi
 	fi
-	git push -u "${upstream:-$(git-default-remote)}" "$(git-currentbranch)"
+	git push -u "${upstream:-$(git-default-remote)}" "$(git current-branch)"
 }
 
 git-branches-onlylocal() {

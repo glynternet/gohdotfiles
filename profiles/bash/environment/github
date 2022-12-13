@@ -26,7 +26,7 @@ gh-pr-new(){
 	local labels
 	read labels
 	labels="${labels:-$defaultLabels}"
-	local current="$(git-currentbranch)"
+	local current="$(git current-branch)"
 	echo "head? [$current]"
 	local head
 	read head
