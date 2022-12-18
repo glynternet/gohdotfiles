@@ -1,55 +1,19 @@
-export-if-exists DEVPATH "${HOME}/dev"
-export-if-exists GOPATH "${HOME}/dev"
-run-if-not-empty GOPATH source-environment go
-run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny
-run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
+export-if-exists DEVPATH "/data/dev" \
+	&& export-if-exists GOPATH "$DEVPATH" \
+	&& run-if-not-empty GOPATH source-environment go \
+	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny \
+	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
 
 source-environment cpp
 source-environment dev
 source-environment github
-source-environment moncli
 source-environment music
 
-export-if-exists DROPBOX $HOME/Dropbox
-run-if-not-empty DROPBOX "source-environment dropbox"
-
-export-if-exists AVVADEPLOY_DIR "$DEVPATH/src/bitbucket.org/glynny/avva.deploy"
-export-if-exists AVVA_ARTIFACTS_DIR "$DROPBOX/DroneBox/AVVA/builds"
-
-export-if-exists CYCLING_ROUTES_ARCHIVE "$DROPBOX/cycling/Routes"
-export-if-exists CYCLING_ACTIVITIES_ARCHIVE "$DROPBOX/cycling/activities"
 export GARMIN_MOUNT=/media/$USER/GARMIN
 export GARMIN_CARD=/media/$USER/3561-3563
 source-environment garmin-strava
 
-export-if-exists PACKING_GROUPS_DIR "$DROPBOX/packing/groups"
-
-juce-make-run(){ 
-	local juceProjectsDir="$HOME/JUCE/projects"
-	make -C "$juceProjectsDir/$1/Builds/LinuxMakefile" && "$juceProjectsDir/$1/Builds/LinuxMakefile/build/$1"
-}
-
-alias graphitbro='make -C $HOME/Dropbox/money/graphitbros'
-alias nordvpn-cycle='nordvpn disconnect ; nordvpn connect'
-
-install-mon-commands() {
-	local version="$1"
-	if [[ -z "$version" ]]; then
-		echo usage: install-mon-commands VERSION
-		return 1
-	fi
-	local outdir=/tmp/mon
-	mkdir /tmp/mon
-	wget https://github.com/glynternet/mon/releases/download/v${version}/mon_${version}_linux_amd64.tar.gz \
-		--output-document=$outdir/mon_${version}_linux_amd64.tar.gz
-	local code=$?
-	if [[ "$code" != 0 ]]; then
-		echo wget exited with code "$code"
-		return 2
-	fi
-	( cd $outdir && tar -zxvf ./mon_${version}_linux_amd64.tar.gz )
-	sudo mv -v $outdir/* /usr/local/bin/
-}
+export-if-exists PACKING_GROUPS_DIR "$DEVPATH/src/github.com/glynternet/packing-data/groups"
 
 music-download() {
 	local usage="Usage: ${FUNCNAME[0]} <url>"
@@ -90,25 +54,7 @@ cp-extract-zip(){(
 	trash -v "$archiveCopy"
 )}
 
-mon-insert-oppose(){
-	local usage='usage: mon-move-amount AMOUNT ACCOUNT_INSERT ACCOUNT_OPPOSE [DATE=0 [NOTE_SUFFIX=""]]'
-	local amount="${1:?$usage}"
-	local insertAccount="${2:?$usage}"
-	local opposeAccount="${3:?$usage}"
-	local date="${4:-0}"
-	local noteSuffix="$5"
-	if [[ ! -z "$noteSuffix" ]]; then
-		local noteSuffix=" $noteSuffix"
-	fi
-	local note="$amount-$insertAccount-$opposeAccount-$date-$(date +%s%N)$noteSuffix"
-
-	moncli account balance-insert "$insertAccount" -a "$amount" -d "$date" --note "$note"
-	moncli account balance-insert "$opposeAccount" -a "$(echo "$amount * -1" | bc)" -d "$date" --note "$note"
-}
-
-
 # GIT
-
 source-environment git
 generateGitBranchFunctions gh
 export GIT_AUTHOR_NAME="Glyn Owen Hanmer"
@@ -116,10 +62,3 @@ export GIT_AUTHOR_EMAIL="1295698+glynternet@users.noreply.github.com"
 export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
 export GIT_COMMITTER_EMAIL="1295698+glynternet@users.noreply.github.com"
 export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
-
-
-# OTHER
-
-export-if-exists EXERCISM_WORKSPACE "$DROPBOX/exercism"
-
-alias wifiscan-glynternet="until-successful bash -c \"sudo iwlist scan | grep -c glynternet\""
