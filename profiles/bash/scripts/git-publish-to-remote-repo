@@ -1,0 +1,63 @@
+#!/bin/bash
+
+set -euf -o pipefail
+
+usage="USAGE: git-publish-to-remote-repo github|bitbucket [ssh|https] (defaults to ssh)"
+
+hostService="${1:?$usage}"
+method=${2:-ssh}
+
+if [[ ! $hostService =~ ^(github|bitbucket)$ ]]; then
+	echo "hosting service not supported: $hostService"
+	echo "$usage"
+	exit 1
+fi
+
+if [[ ! $method =~ ^(ssh|https)$ ]]; then
+	echo "method not supported: $method"
+	echo "$usage"
+	exit 1
+fi
+
+github(){
+	user=""${GITHUB_USER:?GITHUB_USER must be set}""
+	method="$1"
+	case "$method" in
+	"ssh" )
+	baseURL="git@github.com:$user/"
+		;;
+	"https" )
+	baseURL="https://github.com/$user/"
+		;;
+	esac
+}
+
+bitbucket() {
+	user="${BITBUCKET_USER:?BITBUCKET_USER must be set}"
+	case "$method" in
+		"ssh" )
+		baseURL="git@bitbucket.org:$user/"
+			;;
+		"https" )
+		baseURL="https://$user@bitbucket.org/$user/"
+		;;
+	esac
+}
+
+$hostService $method
+
+currentDir="${PWD##*/}"
+
+printf "What is the name of the remote repository name? [$currentDir] \n"
+read repositoryName
+repositoryName=${repositoryName:-$currentDir}
+lowercaseRepositoryName=$(echo ${repositoryName} | tr '[:upper:]' '[:lower:]')
+remoteRepoURL="${baseURL}${lowercaseRepositoryName}.git"
+
+remoteName=o
+printf "Pushing to %s\n" ${remoteRepoURL}
+git remote add $remoteName ${remoteRepoURL};
+printf "Pushing repo...\n"
+git push -u $remoteName --all; # pushes up the repo and its refs for the first time
+printf "Pushing tags...\n"
+git push -u $remoteName --tags; # pushes up any tags
