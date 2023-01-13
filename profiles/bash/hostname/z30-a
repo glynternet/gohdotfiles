@@ -1,4 +1,5 @@
-export-if-exists DEVPATH "/data/dev" \
+augment-cdpath-if-exists /data \
+	&& export-if-exists DEVPATH "/data/dev" \
 	&& export-if-exists GOPATH "$DEVPATH" \
 	&& run-if-not-empty GOPATH source-environment go \
 	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/bitbucket.org/glynny \
