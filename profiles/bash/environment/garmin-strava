@@ -6,15 +6,18 @@ export GARMIN_ACTIVITIES_DIR="$GARMIN_MOUNT/Garmin/Activities"
 export GARMIN_NEWFILES_DIR="$GARMIN_MOUNT/Garmin/NewFiles"
 
 garmin-upload() {
-	local usage="usage: ${FUNCNAME[0]} ROUTE"
-	local route="${1:?"$usage"}"
+	local usage="usage: ${FUNCNAME[0]} <file> [<file>...]"
+	if [[ ! "$#" -gt 0 ]]; then
+		echo "Must provide at least one file to upload. Usage: $usage"
+		return 1
+	fi
 
 	if [[ ! -d ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set} ]]; then
 		echo "Garmin New Files directory not found at '$GARMIN_NEWFILES_DIR'"
 		return 1
 	fi
 
-	cp -v "$route" ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set}
+	cp -v "$@" ${GARMIN_NEWFILES_DIR:?GARMIN_NEWFILES_DIR not set}
 }
 export -f garmin-upload
 
