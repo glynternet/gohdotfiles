@@ -1,7 +1,6 @@
 install:
 	$(MAKE) -C settings
 	$(MAKE) homebrew
-	brew install goland
 	brew install iterm2
 
 homebrew:
