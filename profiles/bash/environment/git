@@ -89,7 +89,7 @@ gitmoji() {
 		return
 	fi
 	local json
-	if ! json="$(jq --exit-status '.[][] | select(.code == ":'$emojiCode':")' < "$gitmojisJson")"; then
+	if ! json="$(jq --exit-status '.gitmojis[] | select(.code == ":'$emojiCode':")' < "$gitmojisJson")"; then
 		echo "Gitmoji not found 😔: $emojiCode"
 		return 1
 	fi
@@ -100,7 +100,7 @@ gitmoji() {
 _gitmoji() {
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    local options="$(jq -c -r '.[][].code' ${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"} | sed 's/://g')"
+    local options="$(jq -c -r '.gitmojis[].code' ${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/src/data/gitmojis.json ?"} | sed 's/://g')"
     COMPREPLY=($(compgen -W "$options" -- "${word}"));
 }
 complete -F '_gitmoji' gitmoji
