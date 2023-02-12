@@ -13,6 +13,7 @@ export-if-exists MUSIC "${HOME}/Music"
 source-environment music
 
 export-if-exists GITMOJIS_JSON "$HOME/tmp/gitmojis.json"
+export-if-exists EMOJIS_JSON "$HOME/tmp/emojis.json"
 
 GARMIN_MOUNT=/media/g/GARMIN
 GARMIN_CARD=/media/g/3561-3563

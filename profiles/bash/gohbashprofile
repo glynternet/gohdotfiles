@@ -121,6 +121,30 @@ export SHRUG='¯\_(ツ)_/¯'
 alias emoji-cyclist-male='echo "🚴‍♂️" && printf "🚴‍♂️" | copy'
 alias emoji-cyclist-female='echo "🚴‍♀️" && printf "🚴‍♀️" | copy'
 
+emoji() {
+	local emojisJson=${EMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?"}
+	local emojiAlias=$1
+	if [[ -z "$emojiAlias" ]]; then
+		less ${EMOJIS_JSON}
+		return
+	fi
+	local json
+	if ! json="$(jq -r --exit-status '.[]|select(.aliases|index("'"$emojiAlias"'"))' < "$emojisJson")"; then
+		echo "Emoji not found 😔: $emojiAlias"
+		return 1
+	fi
+	echo $json | jq .
+	echo $json | jq .emoji -j | copy
+	echo "copied to clipboard!"
+}
+_emoji() {
+	COMPREPLY=();
+    local word="${COMP_WORDS[COMP_CWORD]}";
+    local options="$(jq -r '.[].aliases[]' "${EMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json  ?"}" | sed 's/://g')"
+    COMPREPLY=($(compgen -W "$options" -- "${word}"));
+}
+complete -F '_emoji' emoji
+
 # ALIASES
 # PERMANENT ALIASES
 alias datestring='date -u "+20%y%m%d_%H%M"'
