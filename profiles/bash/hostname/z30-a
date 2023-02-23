@@ -63,3 +63,4 @@ export GIT_AUTHOR_EMAIL="1295698+glynternet@users.noreply.github.com"
 export GIT_COMMITTER_NAME="Glyn Owen Hanmer"
 export GIT_COMMITTER_EMAIL="1295698+glynternet@users.noreply.github.com"
 export GITMOJIS_JSON="$HOME/tmp/gitmojis.json"
+export GITHUB_USER=glynternet
