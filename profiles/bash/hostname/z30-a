@@ -8,7 +8,8 @@ augment-cdpath-if-exists /data \
 source-environment cpp
 source-environment dev
 source-environment github
-source-environment music
+source-environment music \
+	&& export-if-exists MUSIC /data/Music
 
 export GARMIN_MOUNT=/media/$USER/GARMIN
 export GARMIN_CARD=/media/$USER/3561-3563
