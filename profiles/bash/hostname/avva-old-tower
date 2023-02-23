@@ -9,8 +9,9 @@ source-environment git
 generateGitBranchFunctions gh
 source-environment dev
 
-export-if-exists MUSIC "${HOME}/Music"
-source-environment music
+export-if-exists MUSIC /data/g/Music \
+	&& export-if-exists MUSIC_ARCHIVE /data/g/MusicArchive \
+	&& source-environment music
 
 export-if-exists GITMOJIS_JSON "$HOME/tmp/gitmojis.json"
 export-if-exists EMOJIS_JSON "$HOME/tmp/emojis.json"

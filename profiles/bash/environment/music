@@ -1,31 +1,56 @@
+music-archive() {
+	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local file="${1:?$usage}"
+	local musicArchiveDir="${MUSIC_ARCHIVE:?MUSIC_ARCHIVE must be set}"
+	if [[ ! -f "$file" ]]; then
+		echo "Provided argument is not a file: $file"
+		return 1
+	fi
+	if [[ ! -d "$musicArchiveDir" ]]; then
+		echo "Music archive is not a directory: $musicArchiveDir"
+		return 2
+	fi
+	mv -v "$file" "$musicArchiveDir"
+}
+
+music-extract() {
+	local musicDir="${MUSIC:?MUSIC env var is not set}"
+	local usage="Usage: ${FUNCNAME[0]} <file>"
+	local file="${1:?$usage}"
+	if [[ ! -f "$file" ]]; then
+		echo "Provided argument is not a file: $file"
+		return 1
+	fi
+	if [[ ! -d "$musicDir" ]]; then
+		echo "Music archive is not a directory: $musicArchiveDir"
+		return 2
+	fi
+	( cd "$musicDir" && extract "$file")
+}
+
 music-extract-and-delete() {
 	local musicDir="${MUSIC:?MUSIC env var is not set}"
 	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
 	local moved="$musicDir/$(basename "$file")"
-	mv -v "$file" "$moved" \
-		&& ( cd "$musicDir" && extract "$moved") \
-		&& trash -v "$moved"
+	music-extract "$file" \
+		&& trash -v "$file"
 }
 
-music-copy-extract-and-archive() {
+music-extract-and-archive() {
 	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	local musicArchiveDir="$HOME/Downloads/Music/"
 	local musicDir="${MUSIC:?MUSIC env var is not set}"
 	local copied="$musicDir/$(basename "$file")"
-	cp -vr "$file" "$copied" \
-		&& ( cd "$musicDir" && extract "$copied") \
-		&& trash -v "$copied" \
-		&& mv -v "$file" "$musicArchiveDir"
+	music-extract "$file" \
+		&& music-archive "$file"
 }
 
 music-copy-and-archive() {
 	local usage="Usage: ${FUNCNAME[0]} <file>"
 	local file="${1:?$usage}"
-	local musicArchiveDir="$HOME/Downloads/Music/"
 	local musicDir="${MUSIC:?MUSIC env var is not set}"
 	local copied="$musicDir/$(basename "$file")"
 	cp -vr "$file" "$copied" \
-		&& mv -v "$file" "$musicArchiveDir"
+		&& music-archive "$file"
 }
