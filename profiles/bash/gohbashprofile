@@ -131,7 +131,14 @@ emoji() {
 	local json
 	if ! json="$(jq -r --exit-status '.[]|select(.aliases|index("'"$emojiAlias"'"))' < "$emojisJson")"; then
 		echo "Emoji not found 😔: $emojiAlias"
-		return 1
+		echo "Would you like to fzf? [return to fzf]"
+		read response
+		if [[ "$response" = "" ]]; then
+			emojiAlias="$(jq -r '.[].aliases[]' $emojisJson | fzf --query "$emojiAlias")"
+			json="$(jq -r --exit-status '.[]|select(.aliases|index("'"$emojiAlias"'"))' < "$emojisJson")"
+		else
+			return 1
+		fi
 	fi
 	echo $json | jq .
 	echo $json | jq .emoji -j | copy
