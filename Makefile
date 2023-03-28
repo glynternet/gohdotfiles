@@ -7,7 +7,7 @@ install:
 	$(MAKE) -C tools
 	$(MAKE) -C profiles 
 
-DIRS ?= scripts bin tmp/scripts tmp notes
+DIRS ?= scripts bin tmp notes
 dirs:
 	for dir in $(DIRS); \
 		do mkdir -pv $(HOME)/$$dir; \

@@ -395,7 +395,7 @@ until-successful (){
 	done
 }
 
-augment-path-if-exists ~/scripts ~/bin ~/tmp/scripts
+augment-path-if-exists ~/scripts ~/bin
 augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 
 OS=$( uname | tr '[:upper:]' '[:lower:]')
