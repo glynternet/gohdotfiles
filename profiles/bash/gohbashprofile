@@ -52,7 +52,7 @@ augment-pathvar-if-exists(){
 ### Variable Functions
 export-if-exists(){
 	if [[ $# -lt 2 ]]; then
-		echo "Requires argument of variable name to export and path to check."
+		echo "Requires argument of variable name to export and path to check. Args give ($#): $@"
 		return 1
 	fi
 	variableName="$1"
@@ -122,7 +122,7 @@ alias emoji-cyclist-male='echo "🚴‍♂️" && printf "🚴‍♂️" | copy'
 alias emoji-cyclist-female='echo "🚴‍♀️" && printf "🚴‍♀️" | copy'
 
 emoji() {
-	local emojisJson=${EMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?"}
+	local emojisJson=${EMOJIS_JSON:?'not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?\n\tTry "curl https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json > $HOME/tmp/emoji.json && printf "\nexport-if-exists EMOJIS_JSON $HOME/tmp/emoji.json\n" >> ~/.bashrc"'}
 	local emojiAlias=$1
 	if [[ -z "$emojiAlias" ]]; then
 		less ${EMOJIS_JSON}
@@ -147,7 +147,7 @@ emoji() {
 _emoji() {
 	COMPREPLY=();
     local word="${COMP_WORDS[COMP_CWORD]}";
-    local options="$(jq -r '.[].aliases[]' "${EMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json  ?"}" | sed 's/://g')"
+    local options="$(jq -r '.[].aliases[]' "${EMOJIS_JSON:?'not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?\n\tTry "curl https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json > $HOME/tmp/emoji.json && printf "\nexport-if-exists EMOJIS_JSON $HOME/tmp/emoji.json\n" >> ~/.bashrc"'}" | sed 's/://g')"
     COMPREPLY=($(compgen -W "$options" -- "${word}"));
 }
 complete -F '_emoji' emoji

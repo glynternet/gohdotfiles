@@ -9,7 +9,8 @@ source-environment cpp
 source-environment dev
 source-environment github
 source-environment music \
-	&& export-if-exists MUSIC /data/Music
+	&& export-if-exists MUSIC /data/Music \
+	&& export-if-exists MUSIC_ARCHIVE /data/Downloads/Music
 
 export GARMIN_MOUNT=/media/$USER/GARMIN
 export GARMIN_CARD=/media/$USER/3561-3563
