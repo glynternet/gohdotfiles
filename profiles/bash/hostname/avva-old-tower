@@ -19,3 +19,5 @@ export-if-exists EMOJIS_JSON "$HOME/tmp/emojis.json"
 GARMIN_MOUNT=/media/g/GARMIN
 GARMIN_CARD=/media/g/3561-3563
 source-environment garmin-strava
+
+source-environment image

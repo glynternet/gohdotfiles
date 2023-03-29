@@ -1,0 +1,17 @@
+image-square() {
+	local out_dir="./squared"
+	local image="${1:?must provide image path}"
+	if [[ ! -d "$out_dir" ]]; then
+		echo "$out_dir does not exist, would you like to create it? Answer 'y' to create."
+		local response
+		read response
+		if [[ "$response" != "y" ]]; then
+			echo "Response was not 'y' exiting."
+			return 1
+		else
+			mkdir -v "$out_dir"
+		fi
+	fi
+	local size="$(identify -format "%[fx:max(w,h)]" "$image")"
+	convert -background white -gravity center "$image" -resize "${size}x${size}" -extent "${size}x${size}" "$out_dir/$image"
+}
