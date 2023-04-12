@@ -6,7 +6,7 @@ augment-cdpath-if-exists /data/g \
 	&& run-if-not-empty GOPATH augment-cdpath-if-exists $GOPATH/src/github.com/glynternet
 
 source-environment git
-generateGitBranchFunctions gh
+git-branch-prefix-functions gh
 source-environment dev
 
 export-if-exists MUSIC /data/g/Music \

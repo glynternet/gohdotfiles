@@ -105,31 +105,32 @@ _gitmoji() {
 }
 complete -F '_gitmoji' gitmoji
 
-generateGitBranchFunctions() {
-	prefix="${1:?must provide branch prefix}"
-	eval "${prefix}checkout() {
-		git checkout $prefix/\$1
+git-branch-prefix-functions() {
+	local function_prefix="${1:?must provide functions prefix}"
+	local branch_prefix="${2:-"$function_prefix"}"
+	eval "${function_prefix}checkout() {
+		git checkout $branch_prefix/\$1
 	}
 
-	_${prefix}checkout() {
+	_${function_prefix}checkout() {
 		COMPREPLY=();
 	    local word=\"\${COMP_WORDS[COMP_CWORD]}\";
-	    COMPREPLY=(\$(compgen -W \"\$(git-all-branches-remotenames_stripped | grep --color=never \"^${prefix}/\" | sed \"s@${prefix}/@@\")\" -- \"\$word\"));
+	    COMPREPLY=(\$(compgen -W \"\$(git-all-branches-remotenames_stripped | grep --color=never \"^${branch_prefix}/\" | sed \"s@${branch_prefix}/@@\")\" -- \"\$word\"));
 	}
 
-	complete -F '_${prefix}checkout' ${prefix}checkout
+	complete -F '_${function_prefix}checkout' ${function_prefix}checkout
 
-	${prefix}newbranch() {
+	${function_prefix}newbranch() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
 		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
 		shift
-		git checkout -b ${prefix}/\$branchSuffix \$@
+		git checkout -b ${branch_prefix}/\$branchSuffix \$@
 	}
 
-	${prefix}newbranch-fromdefault() {
+	${function_prefix}newbranch-fromdefault() {
 		local branchSuffix=\${1:?\"must provide branch suffix\"}
 		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
-		${prefix}newbranch \$branchSuffix \$(git-default-remote)/\$(git-default-remote-default-branch)
+		${function_prefix}newbranch \$branchSuffix \$(git-default-remote)/\$(git-default-remote-default-branch)
 	}"
 }
 
