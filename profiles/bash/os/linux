@@ -11,6 +11,24 @@ copy() {
 	xsel -ib
 }
 
+notification() {
+	local title
+	local msg
+	case $# in
+		0)
+			title="🔔"
+			;;
+		1)
+			title="$1"
+			;;
+		2)
+			title="$1"
+			msg="$2"
+			;;
+	esac
+	notify-send "$title" "$msg"
+}
+
 set-background() {
 	usage="usage: set-background ABSOLUTE_IMAGE_PATH"
 	image="${1:?${usage}}"

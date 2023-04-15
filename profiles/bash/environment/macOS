@@ -1,15 +1,23 @@
 notification() {
-	local msg="$1"
-	if [[ -z "$msg" ]]; then
-		echo "No message provided, defaulting to 🔔"
-		msg="🔔"
-	fi
-	local title=${2:-notification}
+	local title
+	local msg
+	case $# in
+		0)
+			title="🔔"
+			;;
+		1)
+			title="$1"
+			;;
+		2)
+			title="$1"
+			msg="$2"
+			;;
+	esac
 	osascript -e "display notification \"$msg\" with title \"$title\""
 }
 
 time-notification () {
 	local command="$@";
 	local time_out="$(time "$@" 2>&1)"
-	osascript -e "display notification \"$time_out\" with title \"$command\""
+	notification "$command" "$time_out"
 }
