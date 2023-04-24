@@ -1,0 +1,29 @@
+trello-post-url() {
+  local list_id="${1:?must provide list id}"
+  local url_source="${2:?must provide URL}"
+  if [[ -z "$TRELLO_API_KEY" ]]; then
+    echo "input TRELLO_API_KEY:"
+    read -s TRELLO_API_KEY
+  fi
+  if [[ -z "$TRELLO_API_TOKEN" ]]; then
+    echo "input TRELLO_API_TOKEN:"
+    read -s TRELLO_API_TOKEN
+  fi
+  curl --request POST \
+    --header 'Accept: application/json' \
+    --url 'https://api.trello.com/1/cards' \
+    -d idList="${list_id}" \
+    -d key="${TRELLO_API_KEY:?must be set}" \
+    -d token="${TRELLO_API_TOKEN:?must be set}" \
+    -d urlSource="$url_source" | jq -r .url
+}
+
+music-post() {
+  local url_source="${1:?must provide URL}"
+  trello-post-url "${TRELLO_MUSIC_LIST_ID?must be set}" "$url_source"
+}
+
+video-post() {
+  local url_source="${1:?must provide URL}"
+  trello-post-url "${TRELLO_VIDEO_LIST_ID?must be set}" "$url_source"
+}
