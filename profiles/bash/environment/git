@@ -1,6 +1,6 @@
 git config --global diff.context 10
 git config --global alias.current-branch 'rev-parse --abbrev-ref HEAD'
-git config --global alias.commit-wip '!git commit -m "wip: $(git current-branch)"'
+git config --global alias.commit-wip '!git -c commit.gpgSign=false commit -m "wip: $(git current-branch)"'
 
 alias g='git'
 alias ga='git add'
