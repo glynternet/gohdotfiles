@@ -7,9 +7,16 @@ alias open=xdg-open
 alias restart-sound='pulseaudio -k && sudo alsa force-reload'
 alias refresh-profile='. ~/.bashrc'
 
-copy() {
-	xsel -ib
-}
+# detect WSL
+if [[ $(grep -i Microsoft /proc/version) ]]; then
+	copy() {
+		clip.exe
+	}
+else
+	copy() {
+		xsel -ib
+	}
+fi
 
 notification() {
 	local title
