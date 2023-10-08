@@ -1,4 +1,0 @@
-export AVVA_PROJECTS=/mnt/c/Users/glynh/AVVA/Projects
-export WINDOWS_USER=/mnt/c/Users/glynh
-
-source-environment git
