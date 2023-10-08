@@ -168,10 +168,15 @@ garmin-umount() {
 	if [[ -z "$GARMIN_CARD" ]]; then
 		echo "GARMIN_CARD is not set. Set to \"none\" to remove this warning"
 		return 1
-	elif [[ "$GARMIN_CARD" = "none" ]]; then
+	fi
+	if [[ "$GARMIN_CARD" = "none" ]]; then
 		return 0
 	fi
-	$umountCmd -v "$GARMIN_CARD"
+	if [[ ! -f "$GARMIN_CARD" ]]; then
+		echo "$GARMIN_CARD does not exist, likely already unmounted."
+		return 0
+	fi
+	$umountCmd "$GARMIN_CARD"
 }
 export -f garmin-umount
 
