@@ -173,6 +173,7 @@ garmin-umount() {
 	fi
 	$umountCmd -v "$GARMIN_CARD"
 }
+export -f garmin-umount
 
 garmin-is-mounted() {
 	test -d "$GARMIN_MOUNT"
