@@ -12,14 +12,16 @@ endif
 PROFILE ?= $(HOME)/$(PROFILE_FILENAME)
 GOH_BASHPROFILE_DIR ?= $(CURDIR)
 GOH_BASHPROFILE ?= $(GOH_BASHPROFILE_DIR)/gohbashprofile
-HOSTNAME_PROFILE ?= $(GOH_BASHPROFILE_DIR)/hostname/$(shell hostname)
+GOH_BASHPROFILE_LOCAL ?= $(HOME)/.gohprofilelocal
 
-all: install hostname-profile
+all: install local-profile
 
 install:
 	printf "\n" >> $(PROFILE)
 	printf "export GOH_BASHPROFILE=\"$(GOH_BASHPROFILE)\"\n" >> $(PROFILE)
 	printf '. "$$GOH_BASHPROFILE"\n' >> $(PROFILE)
+	printf "export GOH_BASHPROFILE_LOCAL=\"$(GOH_BASHPROFILE_LOCAL)\"\n" >> $(PROFILE)
+	printf '. "$$GOH_BASHPROFILE_LOCAL"\n' >> $(PROFILE)
 
-hostname-profile:
-	touch $(HOSTNAME_PROFILE)
+local-profile:
+	touch $(GOH_BASHPROFILE_LOCAL)
