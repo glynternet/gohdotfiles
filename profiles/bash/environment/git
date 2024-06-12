@@ -1,6 +1,9 @@
 git config --global diff.context 10
 git config --global alias.current-branch 'rev-parse --abbrev-ref HEAD'
 git config --global alias.commit-wip '!git -c commit.gpgSign=false commit -m "wip: $(git current-branch)"'
+git config --global alias.sign-last '-c commit.gpgSign=true commit --amend --no-edit'
+git config --global help.autocorrect 20
+git config --global --add --bool rebase.updateRefs
 
 alias g='git'
 alias ga='git add'
@@ -10,6 +13,7 @@ alias gch='git checkout'
 complete -F '__git_all_branch_list_completion' gch
 alias gco="git commit"
 alias gca="git commit --amend"
+alias gcas="git -c commit.gpgSign=true commit --amend"
 alias gcd='git checkout $(git-default-remote-default-branch)'
 alias gd='git diff'
 alias gdc='git diff --cached'
@@ -23,6 +27,7 @@ alias gladog-me='gladog --author=Glyn'
 alias gp="git push"
 alias gprp="git pull --rebase && git push"
 alias greb='git rebase'
+alias gres='git reset'
 complete -F '_greb' greb
 alias grp='git remote prune'
 alias grpo='grp $(git-default-remote)'
@@ -137,7 +142,7 @@ git-branch-prefix-functions() {
 _greb() {
 	COMPREPLY=();
 	local word="${COMP_WORDS[COMP_CWORD]}";
-	COMPREPLY=($(compgen -W "$(echo --abort --continue --skip && git-all-branches)" -- "$word"));
+	COMPREPLY=($(compgen -W "$(echo --abort --continue --skip --show-current-patch && git-all-branches)" -- "$word"));
 }
 
 greso() {
