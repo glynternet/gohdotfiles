@@ -1,11 +1,30 @@
 dev() {
-	repo="$1"
+	repo="${1:?must provide repo}"
+	repo="${repo#"https://"}"
+	repo="${repo%/pull/*}"
 	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
 		mkdir -p "$(dirname "$path")" && cd "$(dirname "$path")" && git clone "ssh://git@$repo"
 	fi
-	cd  "$path"
+	cd "$path"
+}
+
+devtmp() {
+	repo="${1:?must provide repo}"
+	repo="${repo#"https://"}"
+	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
+	reponame="$(basename "$repo")"
+	tmp_parent="$(mktemp -d -t "$reponame.XXXX")"
+	target="$tmp_parent/$reponame"
+	if [[ ! -d "$path" ]]; then
+		echo "Can't find $repo locally, cloning..."
+		cd "$tmp_parent" && git clone --filter=blob:none "ssh://git@$repo"
+	else
+		echo "Creating temporary copy of local repo..."
+		cp -r "$path" "$target"
+	fi
+	cd "$target"
 }
 
 _dev() {
@@ -57,6 +76,7 @@ _dev() {
 }
 
 complete -F '_dev' dev
+complete -F '_dev' devtmp
 
 dev-run-in-repo() {
 	usage="usage: ${FUNCNAME[0]} REPO COMMAND..."
@@ -81,4 +101,8 @@ dev-run-in-repo-from-yaml() {
 	for repo in $(<$config yq -r .repositories[]); do
 		dev-run-in-repo "$repo" $(<$config yq -r .scripts[\"$scriptKey\"])
 	done
+}
+
+dev-browse() {
+	open "https://$(git rev-parse --show-toplevel | sed "s|$DEVPATH/src/||g")"
 }
