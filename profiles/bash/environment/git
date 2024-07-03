@@ -3,7 +3,7 @@ git config --global alias.current-branch 'rev-parse --abbrev-ref HEAD'
 git config --global alias.commit-wip '!git -c commit.gpgSign=false commit -m "wip: $(git current-branch)"'
 git config --global alias.sign-last '-c commit.gpgSign=true commit --amend --no-edit'
 git config --global help.autocorrect 20
-git config --global --add --bool rebase.updateRefs
+git config --global --add --bool rebase.updateRefs true
 
 alias g='git'
 alias ga='git add'
