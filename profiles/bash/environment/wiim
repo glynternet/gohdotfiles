@@ -1,0 +1,33 @@
+wiim-command() {
+	curl --silent --insecure "https://${WIIM_ADDR:?WIIM_ADDR must be set}/httpapi.asp?command=${1:?must provide command}"
+}
+
+wiim-status() {
+	wiim-command "getPlayerStatus"
+
+wiim-vol() {
+	case "$#" in
+		0)
+			wiim-status | jq -r .vol
+			;;
+		1)
+			wiim-command "setPlayerCmd:vol:$1"
+			;;
+		*)
+			printf "usage: wiim-vol [vol]"
+			return 3
+			;;
+	esac
+}
+
+wiim-pause() {
+	wiim-command setPlayerCmd:pause
+}
+
+wiim-resume() {
+	wiim-command setPlayerCmd:resume
+}
+
+wiim-onepause() {
+	wiim-command setPlayerCmd:onepause
+}
