@@ -12,13 +12,28 @@ wiim-vol() {
 			wiim-status | jq -r .vol
 			;;
 		1)
-			wiim-command "setPlayerCmd:vol:$1"
+			_wiim-vol-set "$1"
 			;;
 		*)
 			printf "usage: wiim-vol [vol]"
 			return 3
 			;;
 	esac
+}
+
+_wiim-vol-set() {
+	val="${1:?must pass value}"
+	case "$val" in
+		"up")
+			wiim-vol "$(bc <<<"$(wiim-vol) +4")"
+			;;
+		"down")
+			wiim-vol "$(bc <<<"$(wiim-vol) -4")"
+			;;
+		*)
+			wiim-command "setPlayerCmd:vol:$1"
+			;;
+		esac
 }
 
 wiim-pause() {
