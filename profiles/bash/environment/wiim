@@ -4,6 +4,7 @@ wiim-command() {
 
 wiim-status() {
 	wiim-command "getPlayerStatus"
+}
 
 wiim-vol() {
 	case "$#" in
