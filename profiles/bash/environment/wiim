@@ -25,10 +25,10 @@ _wiim-vol-set() {
 	val="${1:?must pass value}"
 	case "$val" in
 		"up")
-			wiim-vol "$(bc <<<"$(wiim-vol) +4")"
+			_wiim-vol-set "$(bc <<<"$(wiim-vol) +4")"
 			;;
 		"down")
-			wiim-vol "$(bc <<<"$(wiim-vol) -4")"
+			_wiim-vol-set "$(bc <<<"$(wiim-vol) -4")"
 			;;
 		*)
 			wiim-command "setPlayerCmd:vol:$1"
