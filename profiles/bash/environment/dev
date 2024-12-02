@@ -1,7 +1,6 @@
 dev() {
 	repo="${1:?must provide repo}"
-	repo="${repo#"https://"}"
-	repo="${repo%/pull/*}"
+	repo="$(_dev_repopath "$repo")"
 	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
@@ -12,10 +11,10 @@ dev() {
 
 devtmp() {
 	repo="${1:?must provide repo}"
-	repo="${repo#"https://"}"
+	repo="$(_dev_repopath "$repo")"
 	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
 	reponame="$(basename "$repo")"
-	tmp_parent="$(mktemp -d -t "$reponame.XXXX")"
+	tmp_parent="$(mktemp -d -t "$reponame")"
 	target="$tmp_parent/$reponame"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
@@ -25,6 +24,12 @@ devtmp() {
 		cp -r "$path" "$target"
 	fi
 	cd "$target"
+}
+
+_dev_repopath() {
+	repo="${1:?must provide repo}"
+	repo="${repo#"https://"}"
+	printf "${repo%/pull/*}"
 }
 
 _dev() {
