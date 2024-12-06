@@ -1,0 +1,76 @@
+notify-local() {
+	local title
+	local msg
+	case $# in
+		0)
+			title="🔔"
+			;;
+		1)
+			title="$1"
+			;;
+		2)
+			title="$1"
+			msg="$2"
+			;;
+	esac
+	_notify_local "$title" "$msg"
+}
+
+case $OS in
+	linux )
+		_notify_local() {
+			notify-send "$title" "$msg"
+		}
+		;;
+	darwin )
+		_notify_local() {
+			osascript -e "display notification \"$msg\" with title \"$title\""
+		}
+		;;
+	* )
+		echo "Local notify unsupported for OS: $OS" 1>&2
+		return 3
+		;;
+esac
+
+notify-pushover() {
+	local title;
+	local msg;
+	case $# in 
+		0)
+			title="🔔"
+		;;
+		1)
+			title="$1"
+		;;
+		2)
+			title="$1";
+			msg="$2"
+		;;
+	esac;
+
+	if [[ -n "$msg" ]]; then
+		curl -s \
+			--form-string "token=${PUSHOVER_TOKEN:?PUSHOVER_TOKEN is not set}" \
+			--form-string "user=${PUSHOVER_USER_KEY:?PUSHOVER_USER_KEY is not set}" \
+			--form-string "title=$title" \
+			--form-string "message=$msg" \
+			https://api.pushover.net/1/messages.json
+		return
+	fi
+	curl -s \
+		--form-string "token=${PUSHOVER_TOKEN:?PUSHOVER_TOKEN is not set}" \
+		--form-string "user=${PUSHOVER_USER_KEY:?PUSHOVER_USER_KEY is not set}" \
+		--form-string "message=$title" \
+		https://api.pushover.net/1/messages.json
+}
+
+notify-exit-code() {
+	notify "Exit code: $?" "Command finished"
+}
+
+notify-time () {
+	local command="$@";
+	local time_out="$(time "$@" 2>&1)"
+	notify "$command" "$time_out"
+}

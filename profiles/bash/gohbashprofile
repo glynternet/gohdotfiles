@@ -146,9 +146,9 @@ emoji() {
 }
 _emoji() {
 	COMPREPLY=();
-    local word="${COMP_WORDS[COMP_CWORD]}";
-    local options="$(jq -r '.[].aliases[]' "${EMOJIS_JSON:?'not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?\n\tTry "curl https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json > $HOME/tmp/emoji.json && printf "\nexport-if-exists EMOJIS_JSON $HOME/tmp/emoji.json\n" >> $GOH_BASHPROFILE_LOCAL"'}" | sed 's/://g')"
-    COMPREPLY=($(compgen -W "$options" -- "${word}"));
+	local word="${COMP_WORDS[COMP_CWORD]}";
+	local options="$(jq -r '.[].aliases[]' "${EMOJIS_JSON:?'not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?\n\tTry "curl https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json > $HOME/tmp/emoji.json && printf "\nexport-if-exists EMOJIS_JSON $HOME/tmp/emoji.json\n" >> $GOH_BASHPROFILE_LOCAL"'}" | sed 's/://g')"
+	COMPREPLY=($(compgen -W "$options" -- "${word}"));
 }
 complete -F '_emoji' emoji
 
@@ -334,19 +334,6 @@ notes-search() {
 	eval "$cmd"
 }
 
-notification-exit-code() {
-	notification "Exit code: $?" "Command finished"
-}
-
-notify-pushover() {
-	local message="${1:?must provide message body}"
-	curl -s \
-		--form-string "token=${PUSHOVER_TOKEN:?PUSHOVER_TOKEN is not set}" \
-		--form-string "user=${PUSHOVER_USER_KEY:?PUSHOVER_USER_KEY is not set}" \
-		--form-string "message=$message" \
-		https://api.pushover.net/1/messages.json
-}
-
 random-string() {
 	< /dev/urandom LC_CTYPE=C tr -dc 'a-zA-Z0-9!@#$%^_+?><' | head -c ${1:-32}
 }
@@ -401,7 +388,7 @@ augment-path-if-exists $GOH_BASHPROFILE_DIR/scripts
 OS=$( uname | tr '[:upper:]' '[:lower:]')
 
 source-profile "OS" "$GOH_BASHPROFILE_DIR/os/$OS"
-
+source-environment notify
 source-utilities extract
 
 # ~/tmp should be the last resort when looking for directories
