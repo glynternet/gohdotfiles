@@ -28,7 +28,7 @@ case $OS in
 		}
 		;;
 	* )
-		echo "Local notify unsupported for OS: $OS" 1>&2
+		echo "notify-local unsupported for OS: $OS" 1>&2
 		return 3
 		;;
 esac
