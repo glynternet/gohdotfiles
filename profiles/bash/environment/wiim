@@ -36,6 +36,14 @@ _wiim-vol-set() {
 		esac
 }
 
+wiim-next() {
+	wiim-command setPlayerCmd:next
+}
+
+wiim-prev() {
+	wiim-command setPlayerCmd:prev
+}
+
 wiim-pause() {
 	wiim-command setPlayerCmd:pause
 }
