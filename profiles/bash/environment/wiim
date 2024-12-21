@@ -25,9 +25,13 @@ _wiim-vol-set() {
 	val="${1:?must pass value}"
 	case "$val" in
 		"up")
+			;&
+		"+")
 			_wiim-vol-set "$(bc <<<"$(wiim-vol) +4")"
 			;;
 		"down")
+			;&
+		"-")
 			_wiim-vol-set "$(bc <<<"$(wiim-vol) -4")"
 			;;
 		*)
