@@ -1,6 +1,18 @@
 trello-post-url() {
   local list_id="${1:?must provide list id}"
   local url_source="${2:?must provide URL}"
+  trello-post-card "$list_id" "urlSource=$url_source"
+}
+
+trello-post-title() {
+  local list_id="${1:?must provide list id}"
+  local title="${2:?must provide title}"
+  trello-post-card "$list_id" "name=$title"
+}
+
+trello-post-card() {
+  local list_id="${1:?must provide list id}"
+  local extra_payload_data="${2:?must provide extra_payload_data}"
   if [[ -z "$TRELLO_API_KEY" ]]; then
     echo "input TRELLO_API_KEY:"
     read -s TRELLO_API_KEY
@@ -9,21 +21,38 @@ trello-post-url() {
     echo "input TRELLO_API_TOKEN:"
     read -s TRELLO_API_TOKEN
   fi
-  curl --request POST \
+  local response="$(curl --request POST \
     --header 'Accept: application/json' \
     --url 'https://api.trello.com/1/cards' \
-    -d idList="${list_id}" \
     -d key="${TRELLO_API_KEY:?must be set}" \
     -d token="${TRELLO_API_TOKEN:?must be set}" \
-    -d urlSource="$url_source" | jq -r .url
+    -d idList="${list_id}" \
+    -d pos="top" \
+    -d "$extra_payload_data")"
+  local url
+  url="$(<<<"$response" jq -r .url)" || printf "Error parsing output:\n%s" "$response"
+  if [[ -n "$url" ]]; then
+    printf "URL: %s (copied to clipboard)\n" "$url"
+    copy <<<"$url"
+  fi
+}
+
+life-now-post() {
+  local title="${1:?must provide title}"
+  trello-post-title "${TRELLO_LIFE_NOW_LIST_ID?:must be set}" "$title"
 }
 
 music-post() {
   local url_source="${1:?must provide URL}"
-  trello-post-url "${TRELLO_MUSIC_LIST_ID?must be set}" "$url_source"
+  trello-post-url "${TRELLO_MUSIC_LIST_ID?:must be set}" "$url_source"
 }
 
 video-post() {
   local url_source="${1:?must provide URL}"
-  trello-post-url "${TRELLO_VIDEO_LIST_ID?must be set}" "$url_source"
+  trello-post-url "${TRELLO_VIDEO_LIST_ID?:must be set}" "$url_source"
+}
+
+van-post() {
+  local title="${1:?must provide title}"
+  trello-post-title "${TRELLO_VAN_TODO_LIST_ID?:must be set}" "$title"
 }
