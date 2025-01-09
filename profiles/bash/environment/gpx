@@ -1,0 +1,4 @@
+ridewithgps-waypoints() {
+	local route_id="${1:?must provide route id}"
+	curl "https://ridewithgps.com/routes/$route_id.json?count=true" | jq '.points_of_interest|map({name,desc:.description,lat,lon:.lng})'
+}
