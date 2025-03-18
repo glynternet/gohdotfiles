@@ -126,16 +126,15 @@ git-branch-prefix-functions() {
 	complete -F '_${function_prefix}checkout' ${function_prefix}checkout
 
 	${function_prefix}newbranch() {
-		local branchSuffix=\${1:?\"must provide branch suffix\"}
+		local branchSuffix=\"\${1:?\"must provide branch suffix\"}\"
 		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
 		shift
 		git checkout -b ${branch_prefix}/\$branchSuffix \$@
 	}
 
 	${function_prefix}newbranch-fromdefault() {
-		local branchSuffix=\${1:?\"must provide branch suffix\"}
-		branchSuffix=\$(<<<\"\$branchSuffix\" sed -E 's/[[:space:]]/-/g')
-		${function_prefix}newbranch \$branchSuffix \$(git-default-remote)/\$(git-default-remote-default-branch)
+		local branchSuffix=\"\${1:?\"must provide branch suffix\"}\"
+		${function_prefix}newbranch \"\$branchSuffix\" \$(git-default-remote)/\$(git-default-remote-default-branch)
 	}"
 }
 
