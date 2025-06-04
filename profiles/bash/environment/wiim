@@ -40,6 +40,10 @@ _wiim-vol-set() {
 		esac
 }
 
+wiim-meta-info() {
+	wiim-command getMetaInfo
+}
+
 wiim-next() {
 	wiim-command setPlayerCmd:next
 }
