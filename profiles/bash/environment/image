@@ -17,6 +17,17 @@ image-portrait() {
 	convert -background white -gravity center "$image" -resize "${width}x${height}" -extent "${width}x${height}" "$out_dir/$(basename "$image")"
 }
 
+image-split-horizontal() {
+	local image="${1:?must provide image path}"
+	local split="${2:?must provide split number}"
+	_check_image_exists "$image" \
+		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \
+		|| return 1
+	local width="$(bc <<<"$(identify -format "%w" "$image") / $split")"
+	local height="$(identify -format "%h" "$image")"
+	convert "$image" -crop "${width}x${height}" +repage +adjoin "$out_dir/$(basename "$image")"
+}
+
 _check_image_exists() {
 	local image="${1:?must provide image path}"
 	test -f "$image" || (echo "$image not found"; return 1)
