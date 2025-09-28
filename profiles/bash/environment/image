@@ -1,44 +1,41 @@
 image-square() {
 	local image="${1:?must provide image path}"
-	if [[ ! -f "$image" ]]; then
-		echo "$image not found"
-		return 1
-	fi
-	local out_dir="$(dirname $image)/square"
-	if [[ ! -d "$out_dir" ]]; then
-		echo "$out_dir does not exist, would you like to create it? Answer 'y' to create."
-		local response
-		read response
-		if [[ "$response" != "y" ]]; then
-			echo "Response was not 'y' exiting."
-			return 1
-		else
-			mkdir -v "$out_dir"
-		fi
-	fi
+	_check_image_exists "$image" \
+		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \
+		|| return 1
 	local size="$(identify -format "%[fx:max(w,h)]" "$image")"
 	convert -background white -gravity center "$image" -resize "${size}x${size}" -extent "${size}x${size}" "$out_dir/$(basename "$image")"
 }
 
 image-portrait() {
 	local image="${1:?must provide image path}"
-	if [[ ! -f "$image" ]]; then
-		echo "$image not found"
-		return 1
-	fi
-	local out_dir="$(dirname $image)/portrait"
-	if [[ ! -d "$out_dir" ]]; then
-		echo "$out_dir does not exist, would you like to create it? Answer 'y' to create."
-		local response
-		read response
-		if [[ "$response" != "y" ]]; then
-			echo "Response was not 'y' exiting."
-			return 1
-		else
-			mkdir -v "$out_dir"
-		fi
-	fi
+	_check_image_exists "$image" \
+		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \
+		|| return 1
 	local width="$(identify -format "%w" "$image")"
 	local height="$(bc <<<"$width * 1.25")"
 	convert -background white -gravity center "$image" -resize "${width}x${height}" -extent "${width}x${height}" "$out_dir/$(basename "$image")"
+}
+
+_check_image_exists() {
+	local image="${1:?must provide image path}"
+	test -f "$image" || (echo "$image not found"; return 1)
+}
+
+_ensure_directory_with_prompt() {
+	local image="${1:?must provide image path}"
+	local out_dir="$(dirname $image)/processed" || return 1
+	if [[ -d "$out_dir" ]]; then
+		echo "$out_dir"
+		return 0
+	fi
+	echo 1>&2 "$out_dir does not exist, would you like to create it? Answer 'y' to create."
+	local response
+	read response
+	if [[ "$response" != "y" ]]; then
+		echo 1>&2 "Response was not 'y' exiting."
+		return 1
+	else
+		mkdir 1>&2 -p -v "$out_dir" && echo "$out_dir"
+	fi
 }
