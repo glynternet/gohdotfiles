@@ -1,12 +1,3 @@
-image-square() {
-	local image="${1:?must provide image path}"
-	_check_image_exists "$image" \
-		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \
-		|| return 1
-	local size="$(identify -format "%[fx:max(w,h)]" "$image")"
-	convert -background white -gravity center "$image" -resize "${size}x${size}" -extent "${size}x${size}" "$out_dir/$(basename "$image")"
-}
-
 image-portrait() {
 	local image="${1:?must provide image path}"
 	_check_image_exists "$image" \
@@ -26,6 +17,15 @@ image-split-horizontal() {
 	local width="$(bc <<<"$(identify -format "%w" "$image") / $split")"
 	local height="$(identify -format "%h" "$image")"
 	convert "$image" -crop "${width}x${height}" +repage +adjoin "$out_dir/$(basename "$image")"
+}
+
+image-square() {
+	local image="${1:?must provide image path}"
+	_check_image_exists "$image" \
+		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \
+		|| return 1
+	local size="$(identify -format "%[fx:max(w,h)]" "$image")"
+	convert -background white -gravity center "$image" -resize "${size}x${size}" -extent "${size}x${size}" "$out_dir/$(basename "$image")"
 }
 
 _check_image_exists() {
