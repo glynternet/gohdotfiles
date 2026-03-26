@@ -6,6 +6,9 @@ settings:
 	$(MAKE) silence-bootchime
 	$(MAKE) tap-to-click
 
+taskbar:
+	defaults -currentHost write -globalDomain NSStatusItemSpacing -int 1
+
 dock:
 	defaults write com.apple.dock autohide -bool true
 	defaults write com.apple.dock autohide-delay -float 0
