@@ -1,7 +1,7 @@
 dev() {
-	repo="${1:?must provide repo}"
+	local repo="${1:?must provide repo}"
 	repo="$(_dev_repopath "$repo")"
-	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
+	local path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
 		mkdir -p "$(dirname "$path")" && cd "$(dirname "$path")" && git clone "ssh://git@$repo"
@@ -10,15 +10,15 @@ dev() {
 }
 
 devtmp() {
-	repo="${1:?must provide repo}"
+	local repo="${1:?must provide repo}"
 	repo="$(_dev_repopath "$repo")"
-	path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
-	reponame="$(basename "$repo")"
-	tmp_parent="$(mktemp -d -t "$reponame")"
-	target="$tmp_parent/$reponame"
+	local path="${DEVPATH:?"DEVPATH not set"}/src/$repo"
+	local reponame="$(basename "$repo")"
+	local tmp_parent="$(mktemp -d -t "$reponame")"
+	local target="$tmp_parent/$reponame"
 	if [[ ! -d "$path" ]]; then
 		echo "Can't find $repo locally, cloning..."
-		cd "$tmp_parent" && git clone --filter=blob:none "ssh://git@$repo"
+		cd "$tmp_parent" && git clone --depth=1 "ssh://git@$repo"
 	else
 		echo "Creating temporary copy of local repo..."
 		cp -r "$path" "$target"
@@ -30,6 +30,13 @@ _dev_repopath() {
 	repo="${1:?must provide repo}"
 	repo="${repo#"https://"}"
 	printf "${repo%/pull/*}"
+}
+
+# WIP: maybe extract this to github environmen or something?
+_dev_prbanch() {
+	local repo="${1:?must provide repo}"
+	local pr_num="${2:?must provide pr number}"
+	curl-github repos/$repo/pulls/$pr_num --silent | jq -r .head.ref
 }
 
 _dev() {
