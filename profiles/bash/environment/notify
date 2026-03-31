@@ -66,7 +66,7 @@ notify-pushover() {
 }
 
 notify-exit-code() {
-	notify "Exit code: $?" "Command finished"
+	notify-local "Exit code: $?" "Command finished"
 }
 
 notify-time () {
