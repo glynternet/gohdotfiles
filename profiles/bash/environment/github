@@ -1,13 +1,17 @@
 curl-github() {
-	curl --max-time 15 -u ${GITHUBCURL_CREDENTIALS:?"GITHUBCURL_CREDENTIALS must be set to use curl-github"} "$@"
+	local apiURL="${GITHUBCURL_API_URL:?GITHUBCURL_API_URL not set}"
+	if [[ "$apiURL" = "-" ]]; then
+		curl --max-time 15 -u ${GITHUBCURL_CREDENTIALS:?"GITHUBCURL_CREDENTIALS must be set to use curl-github"} "$@"
+		return
+	fi
+	curl --max-time 15 -u ${GITHUBCURL_CREDENTIALS:?"GITHUBCURL_CREDENTIALS must be set to use curl-github"} "$apiURL/$@"
 }
 gh-notifications() {
-	curl-github "${GITHUBCURL_API_URL:?GITHUBCURL_API_URL not set}/notifications"
+	curl-github "notifications"
 }
 gh-pr-new(){
-	local githubCurlApiURL="${GITHUBCURL_API_URL:?GITHUBCURL_API_URL not set}"
-	repoRoot="$(git rev-parse --show-toplevel)"
-	local defaultRepo="$(basename $(dirname $repoRoot))/$(basename $repoRoot)"
+	originRepo="$(git config --get remote.origin.url)"
+	local defaultRepo="$(basename $(dirname $originRepo))/$(basename $originRepo)"
 	echo "repo? [$defaultRepo]"
 	local repo
 	read repo
@@ -21,11 +25,10 @@ gh-pr-new(){
 	local body
 	read body
 	body=${body:-$GH_PR_NEW_DEFAULTBODY}
-	local defaultLabels="$GH_PR_NEW_DEFAULTLABELS"
-	echo "labels? [$defaultLabels]"
+	echo "labels? (tab to select multiple)"
 	local labels
-	read labels
-	labels="${labels:-$defaultLabels}"
+	labels="$(printf "$GH_PR_LABELS_SELECTION" | fzf --multi --height=~10 | grep -v '<none>' | tr '\n' ',' | sed 's/.$//')"
+	echo "$labels"
 	local current="$(git current-branch)"
 	echo "head? [$current]"
 	local head
@@ -34,7 +37,7 @@ gh-pr-new(){
 	local payload="{\"title\":\"$title\",\"body\":\"$body\",\"head\":\"$head\",\"base\":\"$(git-default-remote-default-branch)\"}"
 	local out="$(mktemp)"
 	echo Response written to $out
-	if ! curl-github -X POST -d "$payload" "$githubCurlApiURL/repos/$repo/pulls" > $out; then
+	if ! curl-github "repos/$repo/pulls" -X POST -d "$payload"  > $out; then
 		echo curl-github failed. See output at $out
 		return 1
 	fi
@@ -48,9 +51,7 @@ gh-pr-new(){
 		echo "GITHUB_URL must be set to show link to PR"
 		return
 	fi
-	set -x
-	curl-github --header "Content-Type:application/json" --request POST --data "{\"labels\":[\"$(sed 's/,/\",\"/g'<<<$labels)\"]}" $GITHUBCURL_API_URL/repos/$repo/issues/$prNumber/labels
-	set +x
+	curl-github "repos/$repo/issues/$prNumber/labels" --header "Content-Type:application/json" --request POST --data "{\"labels\":[\"$(sed 's/,/\",\"/g'<<<$labels)\"]}"
 
 	local prURL=https://${GITHUB_URL}/$repo/pull/$prNumber
 	copy <<<$prURL
@@ -60,13 +61,13 @@ gh-pr-new(){
 	fi
 }
 gh-pr-new-from-head () {
-	git-push-new-branch
-	gh-pr-new --open
+	git-push-new-branch \
+		&& gh-pr-new --open
 }
 gh-new-repo() {
 	# TODO: add settings for branch protection
 	local name=${1:?must provide repo name}
-	curl-github -X POST -d "{\"name\":\"$name\"}" "${GITHUBCURL_API_URL:?GITHUBCURL_API_URL not set}/user/repos"
+	curl-github -X POST -d "{\"name\":\"$name\"}" "user/repos"
 }
 changelog() {
 	( cd "$(git rev-parse --show-toplevel)" && changelog-go generate && git add changelog/@unreleased )
