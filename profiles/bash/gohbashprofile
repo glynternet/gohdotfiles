@@ -317,7 +317,7 @@ mp3DownloadsToMusic() {
 newscript() {
 	scriptFile="$1"
 	if [[ -z "$scriptFile" ]]; then
-		defaultNew="./newscript.sh"
+		defaultNew="./newscript-$(date +%s).sh"
 		echo "No script file given. Making a new one at $defaultNew"
 		scriptFile="$defaultNew"
 	fi
@@ -339,7 +339,7 @@ random-string() {
 }
 
 random-words() {
-	< /usr/share/dict/words sort -R | head -${1:-5} | tr "\n" " "
+	< /usr/share/dict/words sort -R | head -${1:-5} | tr "\n" " " | sed 's/ *$//'
 }
 
 serve-directory() {
