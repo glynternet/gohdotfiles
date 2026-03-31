@@ -21,6 +21,7 @@ complete -F '__git_all_branch_list_completion' gd
 # TODO(ghanmer): Make it so that we can have flags and branches for gd
 # complete -W "--cached" gd
 alias gdo='git diff $(git-default-remote)/$(git current-branch)'
+alias gdod='git diff $(git-default-remote)/$(git-default-remote-default-branch)'
 alias gs='git status'
 alias gladog='git log --all --decorate --oneline --graph'
 alias gladog-me='gladog --author=Glyn'
@@ -119,8 +120,8 @@ git-branch-prefix-functions() {
 
 	_${function_prefix}checkout() {
 		COMPREPLY=();
-	    local word=\"\${COMP_WORDS[COMP_CWORD]}\";
-	    COMPREPLY=(\$(compgen -W \"\$(git-all-branches-remotenames_stripped | grep --color=never \"^${branch_prefix}/\" | sed \"s@${branch_prefix}/@@\")\" -- \"\$word\"));
+		local word=\"\${COMP_WORDS[COMP_CWORD]}\";
+		COMPREPLY=(\$(compgen -W \"\$(git-all-branches-remotenames_stripped | grep --color=never \"^${branch_prefix}/\" | sed \"s@${branch_prefix}/@@\")\" -- \"\$word\"));
 	}
 
 	complete -F '_${function_prefix}checkout' ${function_prefix}checkout
@@ -132,16 +133,30 @@ git-branch-prefix-functions() {
 		git checkout -b ${branch_prefix}/\$branchSuffix \$@
 	}
 
+	${function_prefix}newbranch-commit() {
+		local branchSuffixAndMessage=\"\${1:?\"must provide branch suffixand message\"}\"
+		${function_prefix}newbranch \"\$branchSuffixAndMessage\"
+		git commit -m \"\$branchSuffixAndMessage\"
+	}
+
+	${function_prefix}newbranch-commit-rebod() {
+		local branchSuffixAndMessage=\"\${1:?\"must provide branch suffixand message\"}\"
+		${function_prefix}newbranch \"\$branchSuffixAndMessage\"
+		git commit -m \"\$branchSuffixAndMessage\"
+		gfrebod -i
+	}
+
 	${function_prefix}newbranch-fromdefault() {
 		local branchSuffix=\"\${1:?\"must provide branch suffix\"}\"
 		${function_prefix}newbranch \"\$branchSuffix\" \$(git-default-remote)/\$(git-default-remote-default-branch)
-	}"
+	}
+"
 }
 
 _greb() {
 	COMPREPLY=();
 	local word="${COMP_WORDS[COMP_CWORD]}";
-	COMPREPLY=($(compgen -W "$(echo --abort --continue --skip --show-current-patch && git-all-branches)" -- "$word"));
+	COMPREPLY=($(compgen -W "$(echo --abort --autostash --continue --skip --show-current-patch && git-all-branches)" -- "$word"));
 }
 
 greso() {
@@ -178,7 +193,11 @@ _grebo() {
 complete -F '_grebo' grebo
 
 grebod() {
-	gf && greb "$@" "$(git-default-remote)/$(git-default-remote-default-branch)"
+	greb "$@" "$(git-default-remote)/$(git-default-remote-default-branch)"
+}
+
+gfrebod() {
+	gf && grebod "$@"
 }
 
 greb-last() {
@@ -200,7 +219,6 @@ greb-since-inclusive() {
 	greb -i $reference~
 }
 complete -F '__git_all_branch_list_completion' greb-since-inclusive
-
 
 git-currentbranch-equals() {
 	local checkBranchName="${1:?must provide branch name}"
@@ -328,4 +346,40 @@ git-run-in-repo() {
 
 git-tidy() {
 	gf && git-checkout-detached-default && grpo && git-prune-local-branches
+}
+
+git-checkout-pr() {
+	local prNumber="${1:?must provide PR number}"
+	local branchName
+
+	if ! branchName="$(gh pr view "$prNumber" --json headRefName --jq '.headRefName' 2>/dev/null)"; then
+		echo "Error: Could not find PR #$prNumber or failed to get branch name"
+		return 1
+	fi
+
+	echo "Checking out branch '$branchName' for PR #$prNumber"
+	git checkout "$branchName"
+}
+
+alias gpr='git-checkout-pr'
+
+git-worktree-tmp () {
+    local ref
+    case $# in
+        0)
+            ref="$(git-default-remote)/$(git-default-remote-default-branch)"
+            ;;
+        1)
+            ref="$1"
+            ;;
+        *)
+            echo "Error: Too many arguments. Expected 0 or 1 argument." >&2
+            return 1
+            ;;
+    esac
+
+    local dir="$(mktemp -d)"
+    git worktree add "$dir" "$ref"
+    echo "Worktree added in $dir at $ref"
+    cd "$dir"
 }
