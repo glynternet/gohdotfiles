@@ -5,12 +5,13 @@
 	"draw_white_space": "all",
 	"font_face": "Consolas",
 	"highlight_line": true,
-	"font_size": 9,
+	"font_size": 12,
 	"ignored_packages":
 	[
-		"Vintage"
+		"Vintage",
 	],
 	"open_files_in_new_window": false,
 	"theme": "Adaptive.sublime-theme",
-	"word_wrap": true
+	"word_wrap": true,
+	"index_files": false,
 }
