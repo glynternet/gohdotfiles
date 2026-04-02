@@ -1,5 +1,5 @@
 # this config is managed by gohdotfiles.
-# manual changes may be overwritten at any point.
+# do not edit - changes will be overwritten. Override settings in ~/.gitconfig instead.
 
 [column]
 	ui = auto
