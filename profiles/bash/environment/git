@@ -87,6 +87,33 @@ git-commit-dependency-bump() {
 	git commit -m "⬆️ bump $dependency to $version"
 }
 
+git_date() {
+    local start="${1:?Usage: git_date HHMM HHMM}"
+    local end="${2:?Usage: git_date HHMM HHMM}"
+
+    local start_min=$(( 10#${start:0:2} * 60 + 10#${start:2:2} ))
+    local end_min=$(( 10#${end:0:2} * 60 + 10#${end:2:2} ))
+    local range=$(( end_min - start_min ))
+    local offset=$(( RANDOM % (range + 1) ))
+    local total=$(( start_min + offset ))
+    local hh=$(( total / 60 ))
+    local mm=$(( total % 60 ))
+    local ss=$(( RANDOM % 60 ))
+
+    printf "%s %02d:%02d:%02d %s\n" "$(date +%Y-%m-%d)" "$hh" "$mm" "$ss" "$(date +%z)"
+}
+export -f git_date
+
+gcomd() {
+	local start="${1:?Usage: gcomd HHMM HHMM <git commit args...>}"
+	local end="${2:?Usage: gcomd HHMM HHMM <git commit args...>}"
+	shift 2
+	local date
+	date="$(git_date "$start" "$end")" || return
+	GIT_AUTHOR_DATE="$date" GIT_COMMITTER_DATE="$date" git commit "$@"
+}
+export -f gcomd
+
 gitmoji() {
 	local gitmojisJson=${GITMOJIS_JSON:?"not set. Do you need to fetch https://raw.githubusercontent.com/carloscuesta/gitmoji/master/packages/gitmojis/src/gitmojis.json ?"}
 	local emojiCode=$1
