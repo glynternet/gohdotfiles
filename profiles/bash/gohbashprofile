@@ -118,8 +118,6 @@ export-if-exists GOH_BASHPROFILE_DIR "$(dirname $GOH_BASHPROFILE)"
 
 # EMOJIS
 export SHRUG='¯\_(ツ)_/¯'
-alias emoji-cyclist-male='echo "🚴‍♂️" && printf "🚴‍♂️" | copy'
-alias emoji-cyclist-female='echo "🚴‍♀️" && printf "🚴‍♀️" | copy'
 
 emoji() {
 	local emojisJson=${EMOJIS_JSON:?'not set. Do you need to fetch https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json ?\n\tTry "curl https://raw.githubusercontent.com/github/gemoji/master/db/emoji.json > $HOME/tmp/emoji.json && printf "\nexport-if-exists EMOJIS_JSON $HOME/tmp/emoji.json\n" >> $GOH_BASHPROFILE_LOCAL"'}
