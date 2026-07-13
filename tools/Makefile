@@ -4,6 +4,8 @@ UNAME := $(shell uname)
 ifeq ($(UNAME), Darwin)
 PACKAGE_INSTALL_CMD ?= brew install
 DOCKER_PACKAGE_NAME ?= docker
+Darwin_BREW_CASK_INSTALLS ?= rectangle
+Darwin_SPECIFIC_INSTALL_RULES ?= $(Darwin_BREW_CASK_INSTALLS)
 endif
 
 ifeq ($(UNAME), Linux)
@@ -13,12 +15,16 @@ endif
 
 Darwin_PACKAGE_MANAGER_INSTALLS ?= trash
 Linux_PACKAGE_MANAGER_INSTALLS ?= trash-cli xsel
-PACKAGE_MANAGER_INSTALLS ?= bash-completion curl git htop jq ncdu parallel python3 python3-pip source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
+PACKAGE_MANAGER_INSTALLS ?= bash-completion curl fzf git htop jq ncdu parallel python3 source-highlight tmux tree vim watch $($(UNAME)_PACKAGE_MANAGER_INSTALLS)
 
-install: $(PACKAGE_MANAGER_INSTALLS) docker go git sublime yq
+install: $(PACKAGE_MANAGER_INSTALLS) $($(UNAME)_SPECIFIC_INSTALL_RULES) docker go git sublime yq
 
 $(PACKAGE_MANAGER_INSTALLS):
 	$(PACKAGE_INSTALL_CMD) $@
+
+# must be placed below 'install' rule for 'install' to be the default rule
+$(Darwin_BREW_CASK_INSTALLS):
+	brew install --cask $@
 
 docker:
 	$(PACKAGE_INSTALL_CMD) $(DOCKER_PACKAGE_NAME)
@@ -54,5 +60,5 @@ sublime:
 	sudo apt-get install sublime-text
 endif
 
-yq: python3-pip
+yq: python3
 	pip3 install yq

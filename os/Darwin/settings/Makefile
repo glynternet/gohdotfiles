@@ -5,6 +5,11 @@ settings:
 	$(MAKE) screencapture
 	$(MAKE) silence-bootchime
 	$(MAKE) tap-to-click
+	$(MAKE) keyboard
+
+keyboard:
+	defaults write -g com.apple.keyboard.fnState 1
+
 
 taskbar:
 	defaults -currentHost write -globalDomain NSStatusItemSpacing -int 1
@@ -23,6 +28,7 @@ finder:
 	# Finder: allow quitting via ⌘ + Q; doing so will also hide desktop icons
 	defaults write com.apple.finder QuitMenuItem -bool true
 	defaults write com.apple.finder ShowStatusBar -bool true
+	defaults write com.apple.finder AppleShowAllFiles YES
 	killall Finder
 
 desktopservices:

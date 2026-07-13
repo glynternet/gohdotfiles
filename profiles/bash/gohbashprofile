@@ -179,6 +179,9 @@ _json_keys_completion(){
 	compgen -W "$(jq ".$parent | keys[]" "$file" | tr '\n' '\t')" -- "$word"
 }
 
+# TOOLS / PROFILES
+eval "$(fzf --bash)"
+
 # FUNCTIONS
 
 # alert-when-pid-finished depends on notify-send, which is installed on ubuntu.
