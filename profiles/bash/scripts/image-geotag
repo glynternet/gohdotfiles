@@ -1,0 +1,234 @@
+#!/bin/bash
+# image-geotag - set image GPS location from a recorded GPX track, by capture time.
+#
+# usage: image-geotag <track.gpx> <image>...
+#
+# Each image's location is interpolated between the track points either side of its capture time.
+# Every image must sit inside the track's time range, and between two track points no further apart
+# than MAX_TRACK_GAP_SECONDS. If any image fails a check, nothing is written to any of them:
+# exiftool itself reports an out-of-range image as a warning and still exits 0, having already
+# applied the other edits, so the checks have to happen up front.
+#
+# The image's own clock is the only time reference there is, so an image whose clock was wrong gets
+# a confidently wrong location. Nothing here can detect that.
+#
+# The C2PA signature (JUMBF) is removed: any metadata edit invalidates it, and a signature that
+# fails to verify is worse than no signature at all. Location metadata that the new position would
+# contradict - XMP GPS mirrors, reverse-geocoded place names - is removed too. GPSImgDirection is
+# kept: it comes from the magnetometer and stays true no matter where the camera thought it was.
+#
+# env:
+#   EXIFTOOL                     exiftool to use (default: exiftool)
+#   SKIP_EXIFTOOL_VERSION_CHECK  set non-empty to bypass the minimum version check
+#   MAX_TRACK_GAP_SECONDS        largest allowed spacing of the track points either side of an
+#                                image (default: 120)
+#   KEEP_ORIGINALS               set to 0 to write in place without *_original backups
+
+set -euo pipefail
+
+# 12.64 is the first version listing JUMBF as a deletable group. Older versions can only remove it
+# by rebuilding all metadata, which also discards the Ultra HDR gain map.
+readonly MIN_EXIFTOOL_VERSION=12.64
+
+readonly exiftool="${EXIFTOOL:-exiftool}"
+readonly max_track_gap_seconds="${MAX_TRACK_GAP_SECONDS:-120}"
+readonly keep_originals="${KEEP_ORIGINALS:-1}"
+
+die() {
+	echo 1>&2 "image-geotag: $*"
+	exit 1
+}
+
+readable() {
+	date -u -d "@$1" +%Y-%m-%dT%H:%M:%SZ
+}
+
+check_exiftool() {
+	command -v "$exiftool" >/dev/null || die "exiftool not found: $exiftool"
+	command -v jq >/dev/null || die "jq not found"
+	local version
+	version="$("$exiftool" -ver)"
+	if [[ -n "${SKIP_EXIFTOOL_VERSION_CHECK:-}" ]]; then
+		echo 1>&2 "image-geotag: skipping version check, using exiftool $version"
+		return 0
+	fi
+	# exiftool versions are always major.NN, so comparing them as numbers is well defined.
+	awk -v have="$version" -v want="$MIN_EXIFTOOL_VERSION" 'BEGIN { exit !(have + 0 >= want + 0) }' \
+		|| die "exiftool $version cannot delete JUMBF, need $MIN_EXIFTOOL_VERSION or newer." \
+			"Set SKIP_EXIFTOOL_VERSION_CHECK=1 to run anyway, or point EXIFTOOL at a newer one."
+}
+
+# track_epochs prints the unix time of every timestamped track point, ascending. Waypoint and
+# metadata times are deliberately not included: exiftool geotags from <trkpt> alone.
+track_epochs() {
+	local track="${1:?must provide track}"
+	"$exiftool" -q -a -s3 -d '%s' -GpxTrkTrksegTrkptTime "$track" | sort -n
+}
+
+# image_times prints one tab separated "path, capture unix time, utc offset" record per image.
+# Missing values print as "-". SourceFile only appears in exiftool's JSON output, hence jq.
+image_times() {
+	"$exiftool" -q -j -d '%s' -SourceFile -SubSecDateTimeOriginal -OffsetTimeOriginal "$@" \
+		| jq -r '.[] | [.SourceFile, (.SubSecDateTimeOriginal // "-"), (.OffsetTimeOriginal // "-")] | @tsv'
+}
+
+# image_gps prints one tab separated "path, gps unix time, signature label" record per image.
+image_gps() {
+	"$exiftool" -q -j -d '%s' -SourceFile -GPSDateTime -JUMBF:JUMDLabel "$@" \
+		| jq -r '.[] | [.SourceFile, (.GPSDateTime // "-"), (.JUMDLabel // "-")] | @tsv'
+}
+
+# check reads the two files produced above and prints one tab separated record per problem found,
+# for the caller to render. Checking every image before writing any of them keeps a failure from
+# leaving half the set edited.
+check() {
+	local track_file="${1:?must provide track file}" image_file="${2:?must provide image file}"
+	awk -F'\t' -v max_gap="$max_track_gap_seconds" '
+		FNR == NR { track[++n] = $1 + 0; next }
+		{
+			path = $1
+			if ($2 == "-") { print "no-capture-time\t" path; next }
+			if ($3 == "-") { print "no-utc-offset\t" path; next }
+			epoch = $2 + 0
+			if (epoch < track[1]) { print "before-track\t" path "\t" epoch; next }
+			if (epoch > track[n]) { print "after-track\t" path "\t" epoch; next }
+			# smallest index whose point is at or after the image
+			lo = 1; hi = n
+			while (lo < hi) {
+				mid = int((lo + hi) / 2)
+				if (track[mid] < epoch) lo = mid + 1; else hi = mid
+			}
+			# lo > 1 unless the times are equal, since the image is not before the first point
+			gap = (track[lo] == epoch) ? 0 : track[lo] - track[lo - 1]
+			if (gap > max_gap) { print "track-gap\t" path "\t" epoch "\t" gap }
+		}
+	' "$track_file" "$image_file"
+}
+
+report() {
+	local first="${1:?must provide first track time}" last="${2:?must provide last track time}"
+	local kind path epoch gap
+	while IFS=$'\t' read -r kind path epoch gap; do
+		case "$kind" in
+			no-capture-time)
+				echo 1>&2 "  $path: no DateTimeOriginal, nothing to look up"
+				;;
+			no-utc-offset)
+				echo 1>&2 "  $path: no OffsetTimeOriginal, so its capture time has no time zone" \
+					"and cannot be resolved to an instant"
+				;;
+			before-track)
+				echo 1>&2 "  $path: taken $(readable "$epoch"), before the track starts $(readable "$first")"
+				;;
+			after-track)
+				echo 1>&2 "  $path: taken $(readable "$epoch"), after the track ends $(readable "$last")"
+				;;
+			track-gap)
+				echo 1>&2 "  $path: taken $(readable "$epoch"), inside a ${gap}s gap in the track" \
+					"(limit ${max_track_gap_seconds}s, raise MAX_TRACK_GAP_SECONDS to allow it)"
+				;;
+		esac
+	done
+}
+
+write() {
+	local track="${1:?must provide track}"
+	shift
+	local -a args=(
+		-geotag "$track"
+		"-Geotime<SubSecDateTimeOriginal"
+		# belt and braces: the checks above should already have caught both of these
+		-api "GeoMaxIntSecs=$max_track_gap_seconds"
+		-api GeoMaxExtSecs=0
+		# the signature cannot survive an edit, and location the new position contradicts
+		-JUMBF:all=
+		-XMP-exif:GPSLatitude= -XMP-exif:GPSLongitude=
+		-XMP-exif:GPSAltitude= -XMP-exif:GPSAltitudeRef=
+		-XMP-iptcExt:LocationCreated= -XMP-iptcExt:LocationShown=
+		-XMP-photoshop:City= -XMP-photoshop:State= -XMP-photoshop:Country=
+		-IPTC:City= -IPTC:Sub-location= -IPTC:Province-State=
+		-IPTC:Country-PrimaryLocationName= -IPTC:Country-PrimaryLocationCode=
+	)
+	test "$keep_originals" != 0 || args+=(-overwrite_original)
+	"$exiftool" "${args[@]}" "$@"
+}
+
+# verify re-reads what was written, so a silent no-op cannot pass for success. Every image must now
+# report a GPS time matching its capture time, and carry no signature. Anything it complains about
+# is a bug in the checks above, or an exiftool that ignored an edit.
+verify() {
+	local expected_file="${1:?must provide expected file}"
+	shift
+	local written_file problems
+	written_file="$(mktemp)"
+	# shellcheck disable=SC2064 # expand now, the path must survive the enclosing function
+	trap "rm -f '$written_file'" RETURN
+	image_gps "$@" >"$written_file"
+
+	problems="$(awk -F'\t' '
+		FNR == NR { want[$1] = $2; next }
+		{
+			if (!($1 in want)) { print "  " $1 ": not reported back by exiftool"; next }
+			if ($2 != want[$1]) { print "  " $1 ": expected GPS time " want[$1] ", found " $2 }
+			if ($3 != "-") { print "  " $1 ": signature still present" }
+		}
+	' "$expected_file" "$written_file")"
+
+	test -z "$problems" || {
+		echo 1>&2 "image-geotag: verification failed, images may be in an unexpected state:"
+		echo 1>&2 "$problems"
+		return 1
+	}
+}
+
+main() {
+	if [[ $# -lt 2 ]]; then
+		echo 1>&2 "usage: image-geotag <track.gpx> <image>..."
+		exit 1
+	fi
+	local track="$1"
+	shift
+	test -f "$track" || die "track not found: $track"
+
+	local image
+	for image in "$@"; do
+		test -f "$image" || die "image not found: $image"
+	done
+
+	check_exiftool
+
+	local track_file image_file problems_file
+	track_file="$(mktemp)"
+	image_file="$(mktemp)"
+	problems_file="$(mktemp)"
+	# shellcheck disable=SC2064 # expand now, the paths must survive to exit
+	trap "rm -f '$track_file' '$image_file' '$problems_file'" EXIT
+
+	track_epochs "$track" >"$track_file"
+	test -s "$track_file" || die "$track has no timestamped track points"
+	# an exiftool too old to know these are dates prints them verbatim rather than as unix times,
+	# which only happens when the version check has been skipped
+	if grep -qvE '^-?[0-9]+$' "$track_file"; then
+		die "$exiftool did not resolve $track's point times to unix times"
+	fi
+	local first last
+	first="$(head -1 "$track_file")"
+	last="$(tail -1 "$track_file")"
+
+	image_times "$@" >"$image_file"
+	check "$track_file" "$image_file" >"$problems_file"
+	if [[ -s "$problems_file" ]]; then
+		echo 1>&2 "image-geotag: $track covers $(readable "$first") to $(readable "$last");" \
+			"nothing written because:"
+		report "$first" "$last" <"$problems_file"
+		exit 1
+	fi
+
+	write "$track" "$@"
+	verify "$image_file" "$@"
+	test "$keep_originals" = 0 \
+		|| echo 1>&2 "image-geotag: originals kept alongside as *_original; remove them with" \
+			"'$exiftool -delete_original', or set KEEP_ORIGINALS=0 to skip them next time"
+}
+
+main "$@"

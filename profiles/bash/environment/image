@@ -20,6 +20,26 @@ image-split-horizontal() {
 }
 
 image-square() {
+	case "$#" in
+		0)
+			echo "usage: image-square [...images]" 1>&2
+			return 1
+			;;
+		1)
+			_image-square-single "$1"
+			return $?
+			;;
+		*)
+			for img in "$@"; do
+				_image-square-single "$img"
+				local code=$?
+				test $code -eq 0 || return $code
+			done
+			;;
+	esac
+}
+
+_image-square-single() {
 	local image="${1:?must provide image path}"
 	_check_image_exists "$image" \
 		&& local out_dir="$(_ensure_directory_with_prompt "$image")" \

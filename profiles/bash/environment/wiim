@@ -28,13 +28,17 @@ _wiim-vol-set() {
 			_wiim-vol-set "$(bc <<<"$(wiim-vol) +4")"
 			;;
 		"+")
-			_wiim-vol-set "$(bc <<<"$(wiim-vol) +4")"
+			local current="$(wiim-vol)"
+			local new="$(bc <<<"$current +4")"
+			_wiim-vol-set "$new" && printf "\n%d => %d\n" "$current" "$new"
 			;;
 		"down")
 			_wiim-vol-set "$(bc <<<"$(wiim-vol) -4")"
 			;;
 		"-")
-			_wiim-vol-set "$(bc <<<"$(wiim-vol) -4")"
+			local current="$(wiim-vol)"
+			local new="$(bc <<<"$current -4")"
+			_wiim-vol-set "$new" && printf "\n%d => %d\n" "$current" "$new"
 			;;
 		*)
 			wiim-command "setPlayerCmd:vol:$1"
